@@ -15,7 +15,7 @@ import org.bukkit.event.Event;
 import javax.annotation.Nullable;
 @Name("Make Player Emote/Stop Emoting")
 @Description({"Force player to emote/stop emoting"})
-@Examples({"force all players to perform emote fortinayt"})
+@Examples({"force all players to perform emote \"fortinayt\""})
 public class EffPlayerEmote extends Effect {
     private Expression<Player> players;
     private Expression<String> emote;
@@ -26,7 +26,15 @@ public class EffPlayerEmote extends Effect {
                 "(make|force) %players% [perform] [(custom|ia|itemsadder)] (emote|dance|animation) %string%",
                 "(make|force) %players% [to] stop emoting");
     }
-
+    @Override
+    public boolean init(Expression<?>[] exprs, int matchedPattern, Kleenean isDelayed, SkriptParser.ParseResult parseResult) {
+        players = (Expression<Player>) exprs[0];
+        pattern = matchedPattern;
+        if (matchedPattern == 0) {
+            emote = (Expression<String>) exprs[1];
+        }
+        return true;
+    }
     protected void execute(Event e) {
         Player[] ps = players.getAll(e);
 
@@ -50,16 +58,5 @@ public class EffPlayerEmote extends Effect {
     public String toString(@Nullable Event e, boolean debug) {
         return pattern == 0 ? "make " + players.toString(e, debug) + " play animation " + emote.toString(e, debug)
                 : "make " + players.toString(e, debug) + " stop emoting";
-    }
-
-    @SuppressWarnings("unchecked")
-    @Override
-    public boolean init(Expression<?>[] exprs, int matchedPattern, Kleenean isDelayed, SkriptParser.ParseResult parseResult) {
-        players = (Expression<Player>) exprs[0];
-        pattern = matchedPattern;
-        if (matchedPattern == 0) {
-            emote = (Expression<String>) exprs[1];
-        }
-        return true;
     }
 }

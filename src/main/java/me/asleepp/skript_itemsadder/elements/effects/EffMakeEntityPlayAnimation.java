@@ -15,7 +15,7 @@ import org.bukkit.event.Event;
 import javax.annotation.Nullable;
 @Name("Make Entity Play Animation")
 @Description({"Makes an ItemsAdder entity play an animation."})
-@Examples({"make jonesy play animation defaultdance"})
+@Examples({"make \"jonesy\" play animation \"default_dance\""})
 public class EffMakeEntityPlayAnimation extends Effect {
 
     private Expression<Entity> entityExpr;
@@ -25,9 +25,17 @@ public class EffMakeEntityPlayAnimation extends Effect {
     static {
         Skript.registerEffect(EffMakeEntityPlayAnimation.class, new String[] {"(make|force) %entities% [to] play (anim|animation) %string%"});
     }
+
+    @Override
+    public boolean init(Expression<?>[] exprs, int matchedPattern, Kleenean isDelayed, SkriptParser.ParseResult parseResult) {
+        entityExpr = (Expression<Entity>) exprs[0];
+        animationIdExpr = (Expression<String>) exprs[1];
+        return true;
+    }
+
     @Override
     protected void execute(Event e) {
-        Entity[] entities = entityExpr.getAll(e);
+        Entity[] entities = entityExpr.getArray(e);
         String animationId = animationIdExpr.getSingle(e);
 
         if (entities == null || animationId == null) {
@@ -42,16 +50,11 @@ public class EffMakeEntityPlayAnimation extends Effect {
         }
     }
 
-    @Override
-    public boolean init(Expression<?>[] exprs, int matchedPattern, Kleenean isDelayed, SkriptParser.ParseResult parseResult) {
-        entityExpr = (Expression<Entity>) exprs[0];
-        animationIdExpr = (Expression<String>) exprs[1];
-        return true;
-    }
 
     @Override
     public String toString(@Nullable Event e, boolean debug) {
-        return null;
+        return "make " + entityExpr.toString(e, debug) + " play animation " + animationIdExpr.toString(e, debug);
     }
+
 
 }

@@ -23,10 +23,14 @@ public class EffSendIAResourcePack extends Effect {
     static {
         Skript.registerEffect(EffSendIAResourcePack.class, "(send|apply) [current] (itemsadder|ia) (texture|resource) pack to %players%");
     }
-
+    @Override
+    public boolean init(Expression<?>[] exprs, int matchedPattern, Kleenean isDelayed, SkriptParser.ParseResult parseResult) {
+        players = (Expression<Player>) exprs[0];
+        return true;
+    }
     @Override
     protected void execute(Event e) {
-        Player[] ps = players.getAll(e);
+        Player[] ps = players.getArray(e);
 
         if (ps != null) {
             for (Player p : ps) {
@@ -38,11 +42,5 @@ public class EffSendIAResourcePack extends Effect {
     @Override
     public String toString(@Nullable Event e, boolean debug) {
         return "Apply ItemsAdder resource pack to " + players.toString(e, debug);
-    }
-
-    @Override
-    public boolean init(Expression<?>[] exprs, int matchedPattern, Kleenean isDelayed, SkriptParser.ParseResult parseResult) {
-        players = (Expression<Player>) exprs[0];
-        return true;
     }
 }

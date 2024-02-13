@@ -15,7 +15,7 @@ import org.bukkit.event.Event;
 import javax.annotation.Nullable;
 @Name("Play ItemsAdder Totem Animation")
 @Description({"Play a custom Totem Animation to players."})
-@Examples({"play the custom totem animation you_win to player"})
+@Examples({"play the custom totem animation \"you_win\" to player"})
 public class EffPlayIATotemAnimation extends Effect {
 
     private Expression<Player> players;
@@ -23,6 +23,14 @@ public class EffPlayIATotemAnimation extends Effect {
 
     static {
         Skript.registerEffect(EffSendIAResourcePack.class, "(play|make) [the] (custom|ia|itemsadder) totem [(anim|animation)] %string% to %players%");
+    }
+
+    @SuppressWarnings("unchecked")
+    @Override
+    public boolean init(Expression<?>[] exprs, int matchedPattern, Kleenean isDelayed, SkriptParser.ParseResult parseResult) {
+        totem = (Expression<String>) exprs[0];
+        players = (Expression<Player>) exprs[1];
+        return true;
     }
 
     @Override
@@ -39,11 +47,6 @@ public class EffPlayIATotemAnimation extends Effect {
 
     @Override
     public String toString(@Nullable Event e, boolean debug) {
-        return null;
-    }
-
-    @Override
-    public boolean init(Expression<?>[] exprs, int matchedPattern, Kleenean isDelayed, SkriptParser.ParseResult parseResult) {
-        return false;
+        return "play the custom totem animation " + totem.toString(e, debug) + " to " + players.toString(e, debug);
     }
 }

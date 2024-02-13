@@ -15,7 +15,7 @@ import org.bukkit.event.Event;
 import javax.annotation.Nullable;
 @Name("Is ItemsAdder Entity")
 @Description({"Checks if the entity is an ItemsAdder entity."})
-@Examples({"if jonesy is a custom entity"})
+@Examples({"if \"jonesy\" is a custom entity"})
 public class CondIsCustomEntity extends Condition {
 
     private Expression<Entity> entities;
@@ -24,6 +24,14 @@ public class CondIsCustomEntity extends Condition {
     static {
         Skript.registerCondition(CondIsCustomEntity.class, new String[] {"%entities% (is|are) [(a|an)] (custom|ia|itemsadder) entity"});
     }
+
+    @SuppressWarnings("unchecked")
+    @Override
+    public boolean init(Expression<?>[] exprs, int matchedPattern, Kleenean isDelayed, SkriptParser.ParseResult parseResult) {
+        entities = (Expression<Entity>) exprs[0];
+        return true;
+    }
+
     @Override
     public boolean check(Event e) {
         for (Entity entity : entities.getArray(e)) {
@@ -37,12 +45,5 @@ public class CondIsCustomEntity extends Condition {
     @Override
     public String toString(@Nullable Event e, boolean debug) {
         return entities.toString(e, debug) + " is an ItemsAdder entity";
-    }
-
-    @SuppressWarnings("unchecked")
-    @Override
-    public boolean init(Expression<?>[] exprs, int matchedPattern, Kleenean isDelayed, SkriptParser.ParseResult parseResult) {
-        entities = (Expression<Entity>) exprs[0];
-        return true;
     }
 }

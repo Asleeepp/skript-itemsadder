@@ -15,7 +15,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 @Name("Get ItemsAdder Font Image")
 @Description({"Gets an ItemsAdder font image"})
-@Examples({"set {_t} to font image laughing_emoji"})
+@Examples({"set {_t} to font image \"laughing_emoji\""})
 public class ExprGetFontImage extends SimpleExpression<String> {
     private Expression<String> fontImageName;
 

@@ -18,7 +18,7 @@ import javax.annotation.Nullable;
 
 @Name("ItemsAdder Item")
 @Description({"Gets an ItemsAdder item."})
-@Examples({"give player itemsadder item icon_arrow_chest"})
+@Examples({"give player itemsadder item \"icon_arrow_chest\""})
 public class ExprGetCustomItem extends SimpleExpression<ItemType> {
 
     private Expression<String> itemName;

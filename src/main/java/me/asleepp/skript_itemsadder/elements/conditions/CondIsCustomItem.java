@@ -26,6 +26,13 @@ public class CondIsCustomItem extends Condition {
         Skript.registerCondition(CondIsCustomItem.class, new String[] {"%itemtype% (is|are) [(a|an)] (custom|ia|itemsadder) item"});
     }
 
+    @SuppressWarnings("unchecked")
+    @Override
+    public boolean init(Expression<?>[] exprs, int matchedPattern, Kleenean isDelayed, SkriptParser.ParseResult parseResult) {
+        item = (Expression<ItemType>) exprs[0];
+        return true;
+    }
+
     @Override
     public boolean check(Event e) {
         ItemType itemType = item.getSingle(e);
@@ -43,10 +50,4 @@ public class CondIsCustomItem extends Condition {
         return item.toString(e, debug) + " is a custom item";
     }
 
-    @SuppressWarnings("unchecked")
-    @Override
-    public boolean init(Expression<?>[] exprs, int matchedPattern, Kleenean isDelayed, SkriptParser.ParseResult parseResult) {
-        item = (Expression<ItemType>) exprs[0];
-        return true;
-    }
 }

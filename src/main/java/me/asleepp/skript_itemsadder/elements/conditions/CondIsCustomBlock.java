@@ -18,27 +18,12 @@ import org.bukkit.inventory.ItemStack;
 import javax.annotation.Nullable;
 @Name("Is ItemsAdder Block")
 @Description({"Checks if the block is an ItemsAdder block."})
-@Examples({"if ruby_block is a custom block"})
+@Examples({"if \"ruby_block\" is a custom block"})
 public class CondIsCustomBlock extends Condition {
     private Expression<Block> block;
 
     static {
-        Skript.registerCondition(CondIsCustomBlock.class, "%block% (is|are) ([a|an]) (custom|ia|itemsadder) block");
-    }
-
-    @Override
-    public boolean check(Event e) {
-        Block b = block.getSingle(e);
-        if(b == null)
-            return false;
-        CustomBlock customBlock = CustomBlock.byAlreadyPlaced(b);
-        return customBlock != null;
-    }
-
-
-    @Override
-    public String toString(@Nullable Event e, boolean debug) {
-        return block.toString(e, debug) + " is an ItemsAdder block";
+        Skript.registerCondition(CondIsCustomBlock.class, "%blocks% (is|are) ([a|an]) (custom|ia|itemsadder) block");
     }
 
     @SuppressWarnings("unchecked")
@@ -46,5 +31,27 @@ public class CondIsCustomBlock extends Condition {
     public boolean init(Expression<?>[] exprs, int matchedPattern, Kleenean isDelayed, SkriptParser.ParseResult parseResult) {
         block = (Expression<Block>) exprs[0];
         return true;
+    }
+
+    @Override
+    public boolean check(Event e) {
+        Block[] blocks = block.getArray(e);
+        if (blocks == null) {
+            return false;
+        }
+
+        for (Block b : blocks) {
+            CustomBlock customBlock = CustomBlock.byAlreadyPlaced(b);
+            if (customBlock != null) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+
+    @Override
+    public String toString(@Nullable Event e, boolean debug) {
+        return block.toString(e, debug) + " is an ItemsAdder block";
     }
 }

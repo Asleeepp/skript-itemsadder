@@ -15,18 +15,27 @@ import org.bukkit.event.Event;
 import javax.annotation.Nullable;
 @Name("PlaceCustomBlock")
 @Description({"Places a custom block."})
-@Examples({"set block at player's location to custom itemsadder block ruby_block"})
+@Examples({"set block at player's location to custom itemsadder block \"ruby_block\""})
 public class EffPlaceBlock extends Effect {
     private Expression<Location> locationExpr;
     private Expression<String> customBlockIdExpr;
 
     static {
-        Skript.registerEffect(EffPlaceBlock.class, new String[] {"(set|place) block at %locations% to (custom|ia|itemsadder) block %string%"});
+        Skript.registerEffect(EffPlaceBlock.class, new String[]{"(set|place) block at %locations% to (custom|ia|itemsadder) block %string%"});
+    }
+
+    @Override
+    public boolean init(Expression<?>[] exprs, int matchedPattern, Kleenean isDelayed, SkriptParser.ParseResult parseResult) {
+        locationExpr = (Expression<Location>) exprs[0];
+        if (exprs.length > 1 && exprs[1] != null) {
+            customBlockIdExpr = (Expression<String>) exprs[1];
+        }
+        return true;
     }
 
     @Override
     protected void execute(Event e) {
-        Location[] locations = locationExpr.getAll(e);
+        Location[] locations = locationExpr.getArray(e);
         String customBlockId = customBlockIdExpr.getSingle(e);
 
         if (locations == null || customBlockId == null) {
@@ -46,13 +55,4 @@ public class EffPlaceBlock extends Effect {
     public String toString(@Nullable Event e, boolean debug) {
         return "place custom block at location";
     }
-    @SuppressWarnings("unchecked")
-    public boolean init(Expression<?>[] exprs, int matchedPattern, Kleenean isDelayed, SkriptParser.ParseResult parseResult) {
-        locationExpr = (Expression<Location>) exprs[0];
-        if (exprs.length > 1 && exprs[1] != null) {
-            customBlockIdExpr = (Expression<String>) exprs[1];
-        }
-        return true;
-    }
-
 }

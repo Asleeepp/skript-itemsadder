@@ -15,7 +15,7 @@ import org.bukkit.event.Event;
 import javax.annotation.Nullable;
 @Name("Set Custom Blocks Within")
 @Description({"Sets the blocks within 2 locations to ItemsAdder custom blocks."})
-@Examples({"set all blocks within location(0, 100, 0) and player's location to custom block ruby_block"})
+@Examples({"set all blocks within location(0, 100, 0) and player's location to custom block \"ruby_block\""})
 public class EffSetBlocksBetween extends Effect {
     private Expression<Location> location1Expr;
     private Expression<Location> location2Expr;
@@ -24,7 +24,13 @@ public class EffSetBlocksBetween extends Effect {
     static {
         Skript.registerEffect(EffSetBlocksBetween.class, new String[] {"(set|place) [all] blocks within %location% and %location% to (custom|ia|itemsadder) block %string%"});
     }
-
+    @Override
+    public boolean init(Expression<?>[] exprs, int matchedPattern, Kleenean isDelayed, SkriptParser.ParseResult parseResult) {
+        location1Expr = (Expression<Location>) exprs[0];
+        location2Expr = (Expression<Location>) exprs[1];
+        customBlockIdExpr = (Expression<String>) exprs[2];
+        return true;
+    }
     @Override
     protected void execute(Event e) {
         Location location1 = location1Expr.getSingle(e);
@@ -59,13 +65,6 @@ public class EffSetBlocksBetween extends Effect {
     public String toString(@Nullable Event e, boolean debug) {
         return "place custom blocks between two locations";
     }
-    @SuppressWarnings("unchecked")
-    @Override
-    public boolean init(Expression<?>[] exprs, int matchedPattern, Kleenean isDelayed, SkriptParser.ParseResult parseResult) {
-        location1Expr = (Expression<Location>) exprs[0];
-        location2Expr = (Expression<Location>) exprs[1];
-        customBlockIdExpr = (Expression<String>) exprs[2];
-        return true;
-    }
+
 }
 

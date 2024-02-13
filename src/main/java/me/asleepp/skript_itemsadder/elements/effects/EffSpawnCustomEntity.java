@@ -15,7 +15,7 @@ import org.bukkit.event.Event;
 import javax.annotation.Nullable;
 @Name("Spawn ItemsAdder Entity")
 @Description({"Spawns an ItemsAdder entity."})
-@Examples({"spawn custom entity john_wick at player's location"})
+@Examples({"spawn custom entity \"john_wick\" at player's location"})
 public class EffSpawnCustomEntity extends Effect {
 
     private Expression<String> entityIdExpr;
@@ -23,6 +23,13 @@ public class EffSpawnCustomEntity extends Effect {
 
     static {
         Skript.registerEffect(EffSpawnCustomEntity.class, new String[] {"(spawn|summon) [the] (custom|ia|itemsadder) (entity|mob) %string% at %locations%"});
+    }
+
+    @Override
+    public boolean init(Expression<?>[] exprs, int matchedPattern, Kleenean isDelayed, SkriptParser.ParseResult parseResult) {
+        entityIdExpr = (Expression<String>) exprs[0];
+        locationExpr = (Expression<Location>) exprs[1];
+        return true;
     }
 
     @Override
@@ -48,8 +55,4 @@ public class EffSpawnCustomEntity extends Effect {
         return null;
     }
 
-    @Override
-    public boolean init(Expression<?>[] exprs, int matchedPattern, Kleenean isDelayed, SkriptParser.ParseResult parseResult) {
-        return false;
-    }
 }
