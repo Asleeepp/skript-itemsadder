@@ -1,20 +1,21 @@
-package me.asleepp.skript_itemsadder.elements.events;
+package me.asleepp.SkriptItemsAdder.elements.events;
 
 import ch.njol.skript.Skript;
 import ch.njol.skript.doc.Description;
 import ch.njol.skript.doc.Examples;
 import ch.njol.skript.doc.Name;
+import ch.njol.skript.doc.Since;
 import ch.njol.skript.lang.Literal;
 import ch.njol.skript.lang.SkriptEvent;
 import ch.njol.skript.lang.SkriptParser;
 import dev.lone.itemsadder.api.Events.CustomBlockInteractEvent;
-import org.bukkit.event.Cancellable;
 import org.bukkit.event.Event;
 
 import javax.annotation.Nullable;
 @Name("On Custom Block Interact")
 @Description({"Fires when a ItemsAdder block gets interacted with."})
 @Examples({"on interact with custom block:"})
+@Since("1.0")
 public class EvtCustomBlockInteract extends SkriptEvent {
     private Literal<String> blockName;
 

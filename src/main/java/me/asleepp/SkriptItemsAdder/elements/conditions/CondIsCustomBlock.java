@@ -1,4 +1,4 @@
-package me.asleepp.skript_itemsadder.elements.conditions;
+package me.asleepp.SkriptItemsAdder.elements.conditions;
 
 import ch.njol.skript.Skript;
 import ch.njol.skript.doc.Description;
@@ -9,21 +9,21 @@ import ch.njol.skript.lang.Expression;
 import ch.njol.skript.lang.SkriptParser;
 import ch.njol.util.Kleenean;
 import dev.lone.itemsadder.api.CustomBlock;
-import dev.lone.itemsadder.api.CustomStack;
-import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.event.Event;
-import org.bukkit.inventory.ItemStack;
 
 import javax.annotation.Nullable;
 @Name("Is ItemsAdder Block")
 @Description({"Checks if the block is an ItemsAdder block."})
-@Examples({"if \"ruby_block\" is a custom block"})
+@Examples({
+        "on break:",
+        "\tif event-block is a custom block",
+        "\t\tkill player"})
 public class CondIsCustomBlock extends Condition {
     private Expression<Block> block;
 
     static {
-        Skript.registerCondition(CondIsCustomBlock.class, "%blocks% (is|are) ([a|an]) (custom|ia|itemsadder) block");
+        Skript.registerCondition(CondIsCustomBlock.class, "%blocks% (is [a[n]]|are) (custom|ia|itemsadder) block[s]");
     }
 
     @SuppressWarnings("unchecked")

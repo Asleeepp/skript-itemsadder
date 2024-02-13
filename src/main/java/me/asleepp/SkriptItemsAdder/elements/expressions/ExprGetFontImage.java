@@ -1,9 +1,10 @@
-package me.asleepp.skript_itemsadder.elements.expressions;
+package me.asleepp.SkriptItemsAdder.elements.expressions;
 
 import ch.njol.skript.Skript;
 import ch.njol.skript.doc.Description;
 import ch.njol.skript.doc.Examples;
 import ch.njol.skript.doc.Name;
+import ch.njol.skript.doc.Since;
 import ch.njol.skript.lang.Expression;
 import ch.njol.skript.lang.ExpressionType;
 import ch.njol.skript.lang.SkriptParser;
@@ -16,6 +17,7 @@ import org.jetbrains.annotations.Nullable;
 @Name("Get ItemsAdder Font Image")
 @Description({"Gets an ItemsAdder font image"})
 @Examples({"set {_t} to font image \"laughing_emoji\""})
+@Since("1.0")
 public class ExprGetFontImage extends SimpleExpression<String> {
     private Expression<String> fontImageName;
 

@@ -1,4 +1,4 @@
-package me.asleepp.skript_itemsadder;
+package me.asleepp.SkriptItemsAdder;
 
 import java.io.IOException;
 
@@ -14,14 +14,14 @@ import ch.njol.skript.SkriptAddon;
 import javax.annotation.Nullable;
 
 @SuppressWarnings("ALL")
-public class skript_itemsadder extends JavaPlugin {
+public class SkriptItemsAdder extends JavaPlugin {
 
     private static SkriptAddon addon;
 
-    private static skript_itemsadder instance;
+    private static SkriptItemsAdder instance;
 
     @Nullable
-    public static skript_itemsadder getInstance() {
+    public static SkriptItemsAdder getInstance() {
         return instance;
     }
     @Nullable

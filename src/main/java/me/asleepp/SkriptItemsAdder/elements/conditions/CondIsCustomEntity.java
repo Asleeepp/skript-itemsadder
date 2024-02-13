@@ -1,4 +1,4 @@
-package me.asleepp.skript_itemsadder.elements.conditions;
+package me.asleepp.SkriptItemsAdder.elements.conditions;
 
 import ch.njol.skript.Skript;
 import ch.njol.skript.doc.Description;
@@ -15,14 +15,17 @@ import org.bukkit.event.Event;
 import javax.annotation.Nullable;
 @Name("Is ItemsAdder Entity")
 @Description({"Checks if the entity is an ItemsAdder entity."})
-@Examples({"if \"jonesy\" is a custom entity"})
+@Examples({
+        "on damage:",
+        "\tif event-entity is a custom entity",
+        "\t\tsend \"how could you?\" to player"})
 public class CondIsCustomEntity extends Condition {
 
     private Expression<Entity> entities;
 
 
     static {
-        Skript.registerCondition(CondIsCustomEntity.class, new String[] {"%entities% (is|are) [(a|an)] (custom|ia|itemsadder) entity"});
+        Skript.registerCondition(CondIsCustomEntity.class, new String[] {"%entities% (is [a[n]]|are) (custom|ia|itemsadder) entit(y|ies)"});
     }
 
     @SuppressWarnings("unchecked")

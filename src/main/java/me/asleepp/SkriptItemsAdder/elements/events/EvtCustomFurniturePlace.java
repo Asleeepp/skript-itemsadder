@@ -1,8 +1,9 @@
-package me.asleepp.skript_itemsadder.elements.events;
+package me.asleepp.SkriptItemsAdder.elements.events;
 
 import ch.njol.skript.doc.Description;
 import ch.njol.skript.doc.Examples;
 import ch.njol.skript.doc.Name;
+import ch.njol.skript.doc.Since;
 import ch.njol.skript.lang.Literal;
 import ch.njol.skript.lang.SkriptEvent;
 import ch.njol.skript.Skript;
@@ -15,6 +16,7 @@ import javax.annotation.Nullable;
 @Name("On Custom Furniture Place")
 @Description({"Fires when a ItemsAdder furniture gets placed."})
 @Examples({"on place of custom furniture:"})
+@Since("1.0")
 public class EvtCustomFurniturePlace extends SkriptEvent {
     private Literal<String> furnitureID;
 

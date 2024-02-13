@@ -1,9 +1,10 @@
-package me.asleepp.skript_itemsadder.elements.effects;
+package me.asleepp.SkriptItemsAdder.elements.effects;
 
 import ch.njol.skript.Skript;
 import ch.njol.skript.doc.Description;
 import ch.njol.skript.doc.Examples;
 import ch.njol.skript.doc.Name;
+import ch.njol.skript.doc.Since;
 import ch.njol.skript.lang.Effect;
 import ch.njol.skript.lang.Expression;
 import ch.njol.skript.lang.SkriptParser;
@@ -16,6 +17,7 @@ import javax.annotation.Nullable;
 @Name("Spawn ItemsAdder Entity")
 @Description({"Spawns an ItemsAdder entity."})
 @Examples({"spawn custom entity \"john_wick\" at player's location"})
+@Since("1.0")
 public class EffSpawnCustomEntity extends Effect {
 
     private Expression<String> entityIdExpr;
@@ -35,7 +37,7 @@ public class EffSpawnCustomEntity extends Effect {
     @Override
     protected void execute(Event e) {
         String entityId = entityIdExpr.getSingle(e);
-        Location[] locations = locationExpr.getAll(e);
+        Location[] locations = locationExpr.getArray(e);
 
         if (entityId == null || locations == null) {
             return;

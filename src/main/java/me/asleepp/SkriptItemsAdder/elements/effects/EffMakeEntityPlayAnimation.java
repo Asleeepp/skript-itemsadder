@@ -1,9 +1,10 @@
-package me.asleepp.skript_itemsadder.elements.effects;
+package me.asleepp.SkriptItemsAdder.elements.effects;
 
 import ch.njol.skript.Skript;
 import ch.njol.skript.doc.Description;
 import ch.njol.skript.doc.Examples;
 import ch.njol.skript.doc.Name;
+import ch.njol.skript.doc.Since;
 import ch.njol.skript.lang.Effect;
 import ch.njol.skript.lang.Expression;
 import ch.njol.skript.lang.SkriptParser;
@@ -15,7 +16,11 @@ import org.bukkit.event.Event;
 import javax.annotation.Nullable;
 @Name("Make Entity Play Animation")
 @Description({"Makes an ItemsAdder entity play an animation."})
-@Examples({"make \"jonesy\" play animation \"default_dance\""})
+@Examples({
+        "on right click:",
+        "\tif event-entity is a custom entity",
+        "\t\tmake event-entity play animation \"default_dance\""})
+@Since("1.0")
 public class EffMakeEntityPlayAnimation extends Effect {
 
     private Expression<Entity> entityExpr;

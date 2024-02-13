@@ -1,4 +1,4 @@
-package me.asleepp.skript_itemsadder.elements.effects;
+package me.asleepp.SkriptItemsAdder.elements.effects;
 
 import ch.njol.skript.Skript;
 import ch.njol.skript.doc.Description;
@@ -63,8 +63,9 @@ public class EffSetBlocksBetween extends Effect {
 
     @Override
     public String toString(@Nullable Event e, boolean debug) {
-        return "place custom blocks between two locations";
+        return "place custom block " + customBlockIdExpr.toString(e, debug) + " between locations " + location1Expr.toString(e, debug) + " and " + location2Expr.toString(e, debug);
     }
+
 
 }
 

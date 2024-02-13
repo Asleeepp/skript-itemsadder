@@ -1,9 +1,10 @@
-package me.asleepp.skript_itemsadder.elements.effects;
+package me.asleepp.SkriptItemsAdder.elements.effects;
 
 import ch.njol.skript.Skript;
 import ch.njol.skript.doc.Description;
 import ch.njol.skript.doc.Examples;
 import ch.njol.skript.doc.Name;
+import ch.njol.skript.doc.Since;
 import ch.njol.skript.lang.Effect;
 import ch.njol.skript.lang.Expression;
 import ch.njol.skript.lang.SkriptParser;
@@ -16,6 +17,7 @@ import javax.annotation.Nullable;
 @Name("PlaceCustomBlock")
 @Description({"Places a custom block."})
 @Examples({"set block at player's location to custom itemsadder block \"ruby_block\""})
+@Since("1.0")
 public class EffPlaceBlock extends Effect {
     private Expression<Location> locationExpr;
     private Expression<String> customBlockIdExpr;
@@ -53,6 +55,6 @@ public class EffPlaceBlock extends Effect {
 
     @Override
     public String toString(@Nullable Event e, boolean debug) {
-        return "place custom block at location";
+        return "place custom block " + customBlockIdExpr.toString(e, debug) + " at " + locationExpr.toString(e, debug);
     }
 }

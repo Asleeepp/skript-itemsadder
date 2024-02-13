@@ -1,4 +1,4 @@
-package me.asleepp.skript_itemsadder.elements.conditions;
+package me.asleepp.SkriptItemsAdder.elements.conditions;
 
 import ch.njol.skript.Skript;
 import ch.njol.skript.aliases.ItemType;
@@ -23,7 +23,7 @@ public class CondIsCustomItem extends Condition {
     private Expression<ItemType> item;
 
     static{
-        Skript.registerCondition(CondIsCustomItem.class, new String[] {"%itemtype% (is|are) [(a|an)] (custom|ia|itemsadder) item"});
+        Skript.registerCondition(CondIsCustomItem.class, new String[] {"%itemtypes% (is [a[n]]|are) (custom|ia|itemsadder) item[s]"});
     }
 
     @SuppressWarnings("unchecked")
@@ -35,15 +35,24 @@ public class CondIsCustomItem extends Condition {
 
     @Override
     public boolean check(Event e) {
-        ItemType itemType = item.getSingle(e);
-        if(itemType == null)
+        ItemType[] items = item.getArray(e);
+        if (items == null) {
             return false;
-        ItemStack itemStack = itemType.getRandom();
-        if(itemStack == null)
-            return false;
-        CustomStack customStack = CustomStack.byItemStack(itemStack);
-        return customStack != null;
+        }
+
+        for (ItemType itemType : items) {
+            ItemStack itemStack = itemType.getRandom();
+            if (itemStack == null) {
+                return false;
+            }
+            CustomStack customStack = CustomStack.byItemStack(itemStack);
+            if (customStack == null) {
+                return false;
+            }
+        }
+        return true;
     }
+
 
     @Override
     public String toString(@Nullable Event e, boolean debug) {

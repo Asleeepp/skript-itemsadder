@@ -1,10 +1,11 @@
-package me.asleepp.skript_itemsadder.elements.expressions;
+package me.asleepp.SkriptItemsAdder.elements.expressions;
 
 import ch.njol.skript.Skript;
 import ch.njol.skript.aliases.ItemType;
 import ch.njol.skript.doc.Description;
 import ch.njol.skript.doc.Examples;
 import ch.njol.skript.doc.Name;
+import ch.njol.skript.doc.Since;
 import ch.njol.skript.lang.Expression;
 import ch.njol.skript.lang.ExpressionType;
 import ch.njol.skript.lang.SkriptParser;
@@ -19,6 +20,7 @@ import javax.annotation.Nullable;
 @Name("ItemsAdder Item")
 @Description({"Gets an ItemsAdder item."})
 @Examples({"give player itemsadder item \"icon_arrow_chest\""})
+@Since("1.0")
 public class ExprGetCustomItem extends SimpleExpression<ItemType> {
 
     private Expression<String> itemName;

@@ -1,9 +1,10 @@
-package me.asleepp.skript_itemsadder.elements.effects;
+package me.asleepp.SkriptItemsAdder.elements.effects;
 
 import ch.njol.skript.Skript;
 import ch.njol.skript.doc.Description;
 import ch.njol.skript.doc.Examples;
 import ch.njol.skript.doc.Name;
+import ch.njol.skript.doc.Since;
 import ch.njol.skript.lang.Effect;
 import ch.njol.skript.lang.Expression;
 import ch.njol.skript.lang.SkriptParser;
@@ -16,13 +17,14 @@ import javax.annotation.Nullable;
 @Name("Play ItemsAdder Totem Animation")
 @Description({"Play a custom Totem Animation to players."})
 @Examples({"play the custom totem animation \"you_win\" to player"})
+@Since("1.0")
 public class EffPlayIATotemAnimation extends Effect {
 
     private Expression<Player> players;
     private Expression<String> totem;
 
     static {
-        Skript.registerEffect(EffSendIAResourcePack.class, "(play|make) [the] (custom|ia|itemsadder) totem [(anim|animation)] %string% to %players%");
+        Skript.registerEffect(EffPlayIATotemAnimation.class, "(play|make) [the] (custom|ia|itemsadder) totem [(anim|animation)] %string% to %players%");
     }
 
     @SuppressWarnings("unchecked")
@@ -35,7 +37,7 @@ public class EffPlayIATotemAnimation extends Effect {
 
     @Override
     protected void execute(Event e) {
-        Player[] ps = players.getAll(e);
+        Player[] ps = players.getArray(e);
         String totemName = totem.getSingle(e);
 
         if (ps != null && totemName != null) {
