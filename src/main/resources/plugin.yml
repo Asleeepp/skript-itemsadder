@@ -1,0 +1,4 @@
+name: skript-itemsadder
+version: '${version}'
+main: me.asleepp.skriptitemsadder.Skript_itemsadder
+api-version: '1.20'
