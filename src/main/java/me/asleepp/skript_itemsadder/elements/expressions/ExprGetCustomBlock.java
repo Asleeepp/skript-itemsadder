@@ -1,6 +1,9 @@
 package me.asleepp.skript_itemsadder.elements.expressions;
 
 import ch.njol.skript.Skript;
+import ch.njol.skript.doc.Description;
+import ch.njol.skript.doc.Examples;
+import ch.njol.skript.doc.Name;
 import ch.njol.skript.lang.Expression;
 import ch.njol.skript.lang.ExpressionType;
 import ch.njol.skript.lang.SkriptParser;
@@ -10,7 +13,9 @@ import dev.lone.itemsadder.api.CustomBlock;
 import org.bukkit.event.Event;
 
 import javax.annotation.Nullable;
-
+@Name("Get ItemsAdder Block")
+@Description({"Gets an ItemsAdder block"})
+@Examples({"set {_t} to custom block ruby_block"})
 public class ExprGetCustomBlock extends SimpleExpression<CustomBlock> {
 
     private Expression<String> blockName;

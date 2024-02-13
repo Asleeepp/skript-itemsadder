@@ -1,6 +1,9 @@
 package me.asleepp.skript_itemsadder.elements.conditions;
 
 import ch.njol.skript.Skript;
+import ch.njol.skript.doc.Description;
+import ch.njol.skript.doc.Examples;
+import ch.njol.skript.doc.Name;
 import ch.njol.skript.lang.Condition;
 import ch.njol.skript.lang.Expression;
 import ch.njol.skript.lang.SkriptParser;
@@ -13,7 +16,9 @@ import org.bukkit.event.Event;
 import org.bukkit.inventory.ItemStack;
 
 import javax.annotation.Nullable;
-
+@Name("Is ItemsAdder Block")
+@Description({"Checks if the block is an ItemsAdder block."})
+@Examples({"if ruby_block is a custom block"})
 public class CondIsCustomBlock extends Condition {
     private Expression<Block> block;
 

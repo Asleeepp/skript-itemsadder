@@ -1,6 +1,9 @@
 package me.asleepp.skript_itemsadder.elements.effects;
 
 import ch.njol.skript.Skript;
+import ch.njol.skript.doc.Description;
+import ch.njol.skript.doc.Examples;
+import ch.njol.skript.doc.Name;
 import ch.njol.skript.lang.Effect;
 import ch.njol.skript.lang.Expression;
 import ch.njol.skript.lang.SkriptParser;
@@ -10,7 +13,9 @@ import org.bukkit.Location;
 import org.bukkit.event.Event;
 
 import javax.annotation.Nullable;
-
+@Name("Set Custom Blocks Within")
+@Description({"Sets the blocks within 2 locations to ItemsAdder custom blocks."})
+@Examples({"set all blocks within location(0, 100, 0) and player's location to custom block ruby_block"})
 public class EffSetBlocksBetween extends Effect {
     private Expression<Location> location1Expr;
     private Expression<Location> location2Expr;

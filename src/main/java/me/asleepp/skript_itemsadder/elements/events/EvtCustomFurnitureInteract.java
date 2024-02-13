@@ -1,6 +1,9 @@
 package me.asleepp.skript_itemsadder.elements.events;
 
 import ch.njol.skript.Skript;
+import ch.njol.skript.doc.Description;
+import ch.njol.skript.doc.Examples;
+import ch.njol.skript.doc.Name;
 import ch.njol.skript.lang.Literal;
 import ch.njol.skript.lang.SkriptEvent;
 import ch.njol.skript.lang.SkriptParser;
@@ -8,12 +11,14 @@ import dev.lone.itemsadder.api.Events.FurnitureInteractEvent;
 import org.bukkit.event.Event;
 
 import javax.annotation.Nullable;
-
+@Name("On Custom Furniture Interact")
+@Description({"Fires when a ItemsAdder furniture gets interacted with."})
+@Examples({"on interact with custom furniture:"})
 public class EvtCustomFurnitureInteract extends SkriptEvent {
     private Literal<String> furnitureID;
 
     static {
-        Skript.registerEvent("Custom Furniture Interact", EvtCustomFurnitureInteract.class, FurnitureInteractEvent.class, "(custom|ia|itemsadder) furniture interact [with %string%]");
+        Skript.registerEvent("Custom Furniture Interact", EvtCustomFurnitureInteract.class, FurnitureInteractEvent.class, "interact with (custom|ia|itemsadder) furniture [%string%]");
     }
 
     @SuppressWarnings("unchecked")

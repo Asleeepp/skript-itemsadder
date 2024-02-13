@@ -1,5 +1,8 @@
 package me.asleepp.skript_itemsadder.elements.expressions;
 
+import ch.njol.skript.doc.Description;
+import ch.njol.skript.doc.Examples;
+import ch.njol.skript.doc.Name;
 import ch.njol.skript.lang.ExpressionType;
 import ch.njol.skript.Skript;
 import ch.njol.skript.lang.Expression;
@@ -10,11 +13,13 @@ import dev.lone.itemsadder.api.Events.ResourcePackSendEvent;
 import org.bukkit.event.Event;
 
 import javax.annotation.Nullable;
-
+@Name("Get URL of Resource Pack")
+@Description({"Gets the URL of a resource pack."})
+@Examples({"set {_t} to resource pack url"})
 public class ExprGetURL extends SimpleExpression<String> {
 
     static {
-        Skript.registerExpression(ExprGetURL.class, String.class, ExpressionType.SIMPLE, "[the] [(ia|itemsadder)] (texture|resource) pack url");
+        Skript.registerExpression(ExprGetURL.class, String.class, ExpressionType.SIMPLE, "[the] [(ia|itemsadder)] (texture|resource) pack (url|URl)");
     }
 
     @Override

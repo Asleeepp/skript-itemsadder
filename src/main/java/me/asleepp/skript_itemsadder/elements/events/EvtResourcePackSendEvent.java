@@ -1,6 +1,9 @@
 package me.asleepp.skript_itemsadder.elements.events;
 
 import ch.njol.skript.Skript;
+import ch.njol.skript.doc.Description;
+import ch.njol.skript.doc.Examples;
+import ch.njol.skript.doc.Name;
 import ch.njol.skript.lang.Literal;
 import ch.njol.skript.lang.SkriptEvent;
 import ch.njol.skript.lang.SkriptParser;
@@ -8,7 +11,9 @@ import dev.lone.itemsadder.api.Events.ResourcePackSendEvent;
 import org.bukkit.event.Event;
 
 import javax.annotation.Nullable;
-
+@Name("On Resource Pack Send")
+@Description({"Fires when a Resource pack gets sent to the player."})
+@Examples({"on resource pack send:", "on ia resource pack send:"})
 public class EvtResourcePackSendEvent extends SkriptEvent {
 
     private boolean isItemsAdderPack;

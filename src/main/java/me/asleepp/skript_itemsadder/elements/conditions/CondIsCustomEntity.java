@@ -1,6 +1,9 @@
 package me.asleepp.skript_itemsadder.elements.conditions;
 
 import ch.njol.skript.Skript;
+import ch.njol.skript.doc.Description;
+import ch.njol.skript.doc.Examples;
+import ch.njol.skript.doc.Name;
 import ch.njol.skript.lang.Condition;
 import ch.njol.skript.lang.Expression;
 import ch.njol.skript.lang.SkriptParser;
@@ -10,7 +13,9 @@ import org.bukkit.entity.Entity;
 import org.bukkit.event.Event;
 
 import javax.annotation.Nullable;
-
+@Name("Is ItemsAdder Entity")
+@Description({"Checks if the entity is an ItemsAdder entity."})
+@Examples({"if jonesy is a custom entity"})
 public class CondIsCustomEntity extends Condition {
 
     private Expression<Entity> entities;

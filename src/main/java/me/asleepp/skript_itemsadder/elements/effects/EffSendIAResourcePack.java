@@ -1,6 +1,9 @@
 package me.asleepp.skript_itemsadder.elements.effects;
 
 import ch.njol.skript.Skript;
+import ch.njol.skript.doc.Description;
+import ch.njol.skript.doc.Examples;
+import ch.njol.skript.doc.Name;
 import ch.njol.skript.lang.Effect;
 import ch.njol.skript.lang.Expression;
 import ch.njol.skript.lang.SkriptParser;
@@ -10,7 +13,9 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 
 import javax.annotation.Nullable;
-
+@Name("Send ItemsAdder Resource Pack")
+@Description({"Sends the most recently generated ItemsAdder resource pack to players."})
+@Examples({"send current itemsadder resource pack to all players"})
 public class EffSendIAResourcePack extends Effect {
 
     private Expression<Player> players;

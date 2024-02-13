@@ -2,6 +2,9 @@ package me.asleepp.skript_itemsadder.elements.conditions;
 
 import ch.njol.skript.Skript;
 import ch.njol.skript.aliases.ItemType;
+import ch.njol.skript.doc.Description;
+import ch.njol.skript.doc.Examples;
+import ch.njol.skript.doc.Name;
 import ch.njol.skript.lang.Condition;
 import ch.njol.skript.lang.Expression;
 import ch.njol.skript.lang.SkriptParser;
@@ -12,7 +15,9 @@ import dev.lone.itemsadder.api.CustomStack;
 
 import javax.annotation.Nullable;
 
-
+@Name("Is ItemsAdder Item")
+@Description({"Checks if the item is an ItemsAdder item."})
+@Examples({"if player's tool is a custom item"})
 public class CondIsCustomItem extends Condition {
 
     private Expression<ItemType> item;

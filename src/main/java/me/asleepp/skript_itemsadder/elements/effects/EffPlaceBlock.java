@@ -1,6 +1,9 @@
 package me.asleepp.skript_itemsadder.elements.effects;
 
 import ch.njol.skript.Skript;
+import ch.njol.skript.doc.Description;
+import ch.njol.skript.doc.Examples;
+import ch.njol.skript.doc.Name;
 import ch.njol.skript.lang.Effect;
 import ch.njol.skript.lang.Expression;
 import ch.njol.skript.lang.SkriptParser;
@@ -10,7 +13,9 @@ import org.bukkit.Location;
 import org.bukkit.event.Event;
 
 import javax.annotation.Nullable;
-
+@Name("PlaceCustomBlock")
+@Description({"Places a custom block."})
+@Examples({"set block at player's location to custom itemsadder block ruby_block"})
 public class EffPlaceBlock extends Effect {
     private Expression<Location> locationExpr;
     private Expression<String> customBlockIdExpr;

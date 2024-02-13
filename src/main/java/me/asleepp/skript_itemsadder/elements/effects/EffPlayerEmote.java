@@ -1,6 +1,9 @@
 package me.asleepp.skript_itemsadder.elements.effects;
 
 import ch.njol.skript.Skript;
+import ch.njol.skript.doc.Description;
+import ch.njol.skript.doc.Examples;
+import ch.njol.skript.doc.Name;
 import ch.njol.skript.lang.Effect;
 import ch.njol.skript.lang.Expression;
 import ch.njol.skript.lang.SkriptParser;
@@ -10,7 +13,9 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 
 import javax.annotation.Nullable;
-
+@Name("Make Player Emote/Stop Emoting")
+@Description({"Force player to emote/stop emoting"})
+@Examples({"force all players to perform emote fortinayt"})
 public class EffPlayerEmote extends Effect {
     private Expression<Player> players;
     private Expression<String> emote;

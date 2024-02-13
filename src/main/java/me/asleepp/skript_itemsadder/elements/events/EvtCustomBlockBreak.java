@@ -1,6 +1,9 @@
 package me.asleepp.skript_itemsadder.elements.events;
 
 import ch.njol.skript.Skript;
+import ch.njol.skript.doc.Description;
+import ch.njol.skript.doc.Examples;
+import ch.njol.skript.doc.Name;
 import ch.njol.skript.lang.Literal;
 import ch.njol.skript.lang.SkriptEvent;
 import ch.njol.skript.lang.SkriptParser;
@@ -9,7 +12,9 @@ import org.bukkit.block.Block;
 import org.bukkit.event.Event;
 
 import javax.annotation.Nullable;
-
+@Name("On Custom Block Break")
+@Description({"Fires when a ItemsAdder block gets broken."})
+@Examples({"on break of custom block:"})
 public class EvtCustomBlockBreak extends SkriptEvent {
 
     private Literal<String> blockName;
