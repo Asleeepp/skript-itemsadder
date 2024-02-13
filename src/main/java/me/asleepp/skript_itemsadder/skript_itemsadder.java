@@ -1,51 +1,67 @@
-package me.example.addontutorial;
+package me.asleepp.skript_itemsadder;
 
 import java.io.IOException;
 
-import org.bstats.bukkit.Metrics;
-import org.bstats.charts.SimplePie;
+
+import ch.njol.skript.util.Version;
+import org.bukkit.plugin.Plugin;
+import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import ch.njol.skript.Skript;
 import ch.njol.skript.SkriptAddon;
 
-public class AddonTutorial extends JavaPlugin {
+import javax.annotation.Nullable;
 
-    private static AddonTutorial instance;
-    private SkriptAddon addon;
+@SuppressWarnings("ALL")
+public class skript_itemsadder extends JavaPlugin {
 
-    public void onEnable() {
-//		if (!Skript.isRunningMinecraft(1, 13)) {
-//			getPluginLoader().disablePlugin(this);
-//			getLogger().info("AddonTutorial only works on 1.13+");
-//			return;
-//		}
-        instance = this;
-        try {
-            addon = Skript.registerAddon(this)
-                    .loadClasses("me.example.addontutorial", "elements")
-                    .setLanguageFileDirectory("lang");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+    private static SkriptAddon addon;
 
-        // Saves the raw contents of the default config.yml file to the locationretrievable by getConfig().
-        saveDefaultConfig();
-        if (!getDescription().getVersion().equalsIgnoreCase(getConfig().getString("version")))
-            getLogger().info("There is a new configuration version! Please save your data and delete your config.yml to allow it to regenerate.");
+    private static skript_itemsadder instance;
 
-        // Replace 1234 with your bStats plugin ID.
-//		Metrics metrics = new Metrics(this, 1234);
-//		metrics.addCustomChart(new SimplePie("example", () -> "some string"));
-        getLogger().info("AddonTutorial has been enabled!");
-    }
-
-    public static AddonTutorial getInstance() {
+    @Nullable
+    public static skript_itemsadder getInstance() {
         return instance;
     }
-
-    public SkriptAddon getAddonInstance() {
+    @Nullable
+    public static SkriptAddon getAddonInstance() {
         return addon;
     }
+
+
+    public void onEnable() {
+        // Let's get this show on the road.
+        final PluginManager manager = this.getServer().getPluginManager();
+        final Plugin skript = manager.getPlugin("Skript");
+        if (skript == null || !skript.isEnabled()) {
+            getLogger().severe("Could not find Skript! Disabling...");
+            manager.disablePlugin(this);
+            return;
+        } else if (Skript.getVersion().compareTo(new Version(2, 7, 0)) < 0) {
+            getLogger().warning("You are running an unsupported version of Skript. Disabling...");
+            manager.disablePlugin(this);
+            return;
+        }
+        final Plugin itemsadder = manager.getPlugin("ItemsAdder");
+        if (itemsadder == null || !itemsadder.isEnabled()) {
+            getLogger().severe("Could not find ItemsAdder! Disabling...");
+            manager.disablePlugin(this);
+            return;
+        }
+        instance = this;
+        addon = Skript.registerAddon(this);
+        addon.setLanguageFileDirectory("lang");
+        try {
+            addon.loadClasses("me.asleepp.skript_itemsadder");
+        } catch (IOException error) {
+            error.printStackTrace();
+            manager.disablePlugin(this);
+            return;
+        }
+
+
+    }
+
 
 }

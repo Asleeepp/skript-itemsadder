@@ -1,4 +1,4 @@
-package me.asleepp.skript_itemsadder.elements;
+package me.asleepp.skript_itemsadder.elements.expressions;
 
 import ch.njol.skript.Skript;
 import ch.njol.skript.lang.Expression;

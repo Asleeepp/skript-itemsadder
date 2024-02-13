@@ -1,4 +1,4 @@
-package me.asleepp.skript_itemsadder.elements;
+package me.asleepp.skript_itemsadder.elements.expressions;
 
 import ch.njol.skript.Skript;
 import ch.njol.skript.aliases.ItemType;
@@ -13,6 +13,8 @@ import ch.njol.util.Kleenean;
 import dev.lone.itemsadder.api.CustomStack;
 import org.bukkit.event.Event;
 import org.bukkit.inventory.ItemStack;
+
+import javax.annotation.Nullable;
 
 @Name("ItemsAdder Item")
 @Description({"Gets an ItemsAdder item."})
@@ -49,7 +51,7 @@ public class ExprGetCustomItem extends SimpleExpression<ItemType> {
     }
 
     @Override
-    public String toString(Event e, boolean debug) {
+    public String toString(@Nullable Event e, boolean debug) {
         return "ItemsAdder item " + itemName.toString(e, debug);
     }
 

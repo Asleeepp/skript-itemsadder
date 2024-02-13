@@ -1,4 +1,7 @@
 name: skript-itemsadder
-version: '${version}'
-main: me.asleepp.skriptitemsadder.Skript_itemsadder
-api-version: '1.20'
+authors: [Asleepp]
+description: A Skript Addon that adds useful syntax to be used in conjunction with ItemsAdder
+api-version: 1.13
+version: 1.0
+main: me.asleepp.skript_itemsadder.skript_itemsadder
+depend: [Skript, ItemsAdder]
