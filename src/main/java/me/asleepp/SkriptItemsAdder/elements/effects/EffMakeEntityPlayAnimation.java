@@ -18,7 +18,7 @@ import javax.annotation.Nullable;
 @Description({"Makes an ItemsAdder entity play an animation."})
 @Examples({
         "on right click:",
-        "\tif event-entity is a custom entity",
+        "\tif clicked entity is a custom entity",
         "\t\tmake event-entity play animation \"default_dance\""})
 @Since("1.0")
 public class EffMakeEntityPlayAnimation extends Effect {

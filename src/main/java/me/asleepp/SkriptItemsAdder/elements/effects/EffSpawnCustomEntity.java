@@ -24,7 +24,7 @@ public class EffSpawnCustomEntity extends Effect {
     private Expression<Location> locationExpr;
 
     static {
-        Skript.registerEffect(EffSpawnCustomEntity.class, new String[] {"(spawn|summon) [the] (custom|ia|itemsadder) (entity|mob) %string% at %locations%"});
+        Skript.registerEffect(EffSpawnCustomEntity.class, new String[]{"(spawn|summon) [the] (custom|ia|itemsadder) (entity|mob) %string% at %locations%"});
     }
 
     @Override
@@ -54,7 +54,6 @@ public class EffSpawnCustomEntity extends Effect {
 
     @Override
     public String toString(@Nullable Event e, boolean debug) {
-        return null;
+        return "spawn custom entity " + entityIdExpr.toString(e, debug) + " at " + locationExpr.toString(e, debug);
     }
-
 }
