@@ -22,7 +22,7 @@ import javax.annotation.Nullable;
 public class ExprGetHash extends SimpleExpression<String> {
 
     static {
-        Skript.registerExpression(ExprGetHash.class, String.class, ExpressionType.SIMPLE, "[the] [(ia|itemsadder)] (texture|resource) pack hash");
+        Skript.registerExpression(ExprGetHash.class, String.class, ExpressionType.SIMPLE, "[the] [ia|itemsadder] (texture|resource) pack hash");
     }
 
     @Override

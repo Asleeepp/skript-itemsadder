@@ -25,7 +25,7 @@ public class EffPlayerEmote extends Effect {
 
     static {
         Skript.registerEffect(EffPlayerEmote.class,
-                "(make|force) %players% [perform] [(custom|ia|itemsadder)] (emote|dance|animation) %string%",
+                "(make|force) %players% [perform] [custom|ia|itemsadder] (emote|dance|animation) %string%",
                 "(make|force) %players% [to] stop emoting");
     }
     @Override

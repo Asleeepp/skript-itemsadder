@@ -21,7 +21,7 @@ import javax.annotation.Nullable;
 public class ExprGetURL extends SimpleExpression<String> {
 
     static {
-        Skript.registerExpression(ExprGetURL.class, String.class, ExpressionType.SIMPLE, "[the] [(ia|itemsadder)] (texture|resource) pack (url|URl)");
+        Skript.registerExpression(ExprGetURL.class, String.class, ExpressionType.SIMPLE, "[the] [ia|itemsadder] (texture|resource) pack (url|URl)");
     }
 
     @Override

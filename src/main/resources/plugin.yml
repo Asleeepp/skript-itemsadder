@@ -3,5 +3,5 @@ authors: [Asleepp]
 description: A Skript Addon that adds useful syntax to be used in conjunction with ItemsAdder
 api-version: 1.13
 version: 1.0
-main: me.asleepp.skript_itemsadder.SkriptItemsadder
+main: me.asleepp.SkriptItemsAdder.SkriptItemsAdder
 depend: [Skript, ItemsAdder]

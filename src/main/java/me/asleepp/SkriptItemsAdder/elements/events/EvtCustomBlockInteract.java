@@ -8,10 +8,14 @@ import ch.njol.skript.doc.Since;
 import ch.njol.skript.lang.Literal;
 import ch.njol.skript.lang.SkriptEvent;
 import ch.njol.skript.lang.SkriptParser;
+import ch.njol.skript.registrations.EventValues;
+import ch.njol.skript.util.Getter;
 import dev.lone.itemsadder.api.Events.CustomBlockInteractEvent;
+import org.bukkit.block.Block;
 import org.bukkit.event.Event;
 
 import javax.annotation.Nullable;
+
 @Name("On Custom Block Interact")
 @Description({"Fires when a ItemsAdder block gets interacted with."})
 @Examples({"on interact with custom block:"})

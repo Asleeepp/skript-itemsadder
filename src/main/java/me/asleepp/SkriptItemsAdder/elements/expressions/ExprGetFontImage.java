@@ -22,7 +22,7 @@ public class ExprGetFontImage extends SimpleExpression<String> {
     private Expression<String> fontImageName;
 
     static {
-        Skript.registerExpression(ExprGetFontImage.class, String.class, ExpressionType.SIMPLE, "[(font|custom|ia|itemsadder)] image %string%");
+        Skript.registerExpression(ExprGetFontImage.class, String.class, ExpressionType.SIMPLE, "[font|custom|ia|itemsadder] image %string%");
     }
 
     @NotNull
