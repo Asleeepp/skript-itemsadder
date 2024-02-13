@@ -49,7 +49,7 @@ public class SkriptItemsAdder extends JavaPlugin {
             manager.disablePlugin(this);
             return;
         }
-        int pluginId = 20971; // <-- Replace with the id of your plugin!
+        int pluginId = 20971;
         Metrics metrics = new Metrics(this, pluginId);
         instance = this;
         addon = Skript.registerAddon(this);
