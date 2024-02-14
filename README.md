@@ -6,9 +6,9 @@ skript-itemsadder more then septuples the amount of features then that Skript AP
 
 Currently includes:
 
-3 conditions
-7 Effects
-8 Events
+3 conditions,
+7 Effects,
+8 Events and
 5 Expressions.
 
 Please make an issue in the Issues tracker if you encounter any issue, or want something to be added!
