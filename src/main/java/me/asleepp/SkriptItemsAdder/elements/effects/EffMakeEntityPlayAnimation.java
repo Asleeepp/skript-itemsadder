@@ -19,7 +19,7 @@ import javax.annotation.Nullable;
 @Examples({
         "on right click:",
         "\tif clicked entity is a custom entity",
-        "\t\tmake event-entity play animation \"default_dance\""})
+        "\t\tmake clicked entity play animation \"default_dance\""})
 @Since("1.0")
 public class EffMakeEntityPlayAnimation extends Effect {
 
