@@ -1,6 +1,10 @@
 package me.asleepp.SkriptItemsAdder.elements.effects;
 
 import ch.njol.skript.Skript;
+import ch.njol.skript.doc.Description;
+import ch.njol.skript.doc.Examples;
+import ch.njol.skript.doc.Name;
+import ch.njol.skript.doc.Since;
 import ch.njol.skript.lang.Effect;
 import ch.njol.skript.lang.Expression;
 import ch.njol.skript.lang.SkriptParser;
@@ -11,12 +15,17 @@ import org.bukkit.event.Event;
 
 import javax.annotation.Nullable;
 
+
+@Name("Play Break Effect")
+@Description({"Play the breaking effect on a custom block."})
+@Examples({"play the break effect on custom block \"chiseled_diamond_block\" "})
+@Since("1.2")
 public class EffPlayBreakEffect extends Effect {
 
     private Expression<String> customBlockId;
 
     static {
-        Skript.registerEffect(EffPlayBreakEffect.class, new String[] {"(play|make) [the] break effect on (custom|ia|itemsadder) block %string%"});
+        Skript.registerEffect(EffPlayBreakEffect.class, new String[] {"(play|make) [the] break[ing] effect on (custom|ia|itemsadder) block %string%"});
     }
 
     @Override
