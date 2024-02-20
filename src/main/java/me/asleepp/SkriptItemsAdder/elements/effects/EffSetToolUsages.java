@@ -1,6 +1,10 @@
 package me.asleepp.SkriptItemsAdder.elements.effects;
 
 import ch.njol.skript.Skript;
+import ch.njol.skript.doc.Description;
+import ch.njol.skript.doc.Examples;
+import ch.njol.skript.doc.Name;
+import ch.njol.skript.doc.Since;
 import ch.njol.skript.lang.Effect;
 import ch.njol.skript.lang.Expression;
 import ch.njol.skript.lang.SkriptParser;
@@ -9,8 +13,10 @@ import dev.lone.itemsadder.api.CustomStack;
 import org.bukkit.event.Event;
 import org.bukkit.inventory.ItemStack;
 
-import javax.annotation.Nullable;
-
+@Name("Set Usages Of Tool")
+@Description({"Set the usages of your tool"})
+@Examples({"set usages of player's tool to 2"})
+@Since("1.3")
 public class EffSetToolUsages extends Effect {
     private Expression<ItemStack> tool;
     private Expression<Integer> usages;
