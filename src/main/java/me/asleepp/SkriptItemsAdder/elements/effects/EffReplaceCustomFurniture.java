@@ -18,14 +18,14 @@ import javax.annotation.Nullable;
 @Name("Replace Custom Furniture")
 @Description({"Replace a custom furniture at a location."})
 @Examples({"replace custom furniture \"comfy_chair\" at player's location"})
-@Since("1.3")
+@Since("1.4")
 public class EffReplaceCustomFurniture extends Effect {
 
     private Expression<String> furnitureId;
     private Expression<Location> location;
 
     static {
-        Skript.registerEffect(EffReplaceCustomFurniture.class, "(replace) (custom|ia|itemsadder) furniture %string% at %location%");
+        Skript.registerEffect(EffReplaceCustomFurniture.class, "replace (custom|ia|itemsadder) furniture %string% at %location%");
     }
 
     @Override
@@ -34,22 +34,18 @@ public class EffReplaceCustomFurniture extends Effect {
         Location loc = location.getSingle(e);
 
         if (id != null && loc != null) {
-            // Get the existing furniture at the location
             CustomFurniture existingFurniture = CustomFurniture.byAlreadySpawned(loc.getBlock());
 
-            // If there is existing furniture, remove it
             if (existingFurniture != null) {
                 existingFurniture.remove(false);
             }
-
-            // Spawn the new furniture
             CustomFurniture.spawn(id, loc.getBlock());
         }
     }
 
     @Override
     public String toString(@Nullable Event e, boolean debug) {
-        return "(replace) (custom|ia|itemsadder) furniture " + furnitureId.toString(e, debug) + " at " + location.toString(e, debug);
+        return "replace (custom|ia|itemsadder) furniture " + furnitureId.toString(e, debug) + " at " + location.toString(e, debug);
     }
 
     @Override
