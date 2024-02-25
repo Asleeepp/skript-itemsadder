@@ -10,8 +10,9 @@ import ch.njol.skript.lang.SkriptEvent;
 import ch.njol.skript.lang.SkriptParser;
 import ch.njol.skript.registrations.EventValues;
 import ch.njol.skript.util.Getter;
+import dev.lone.itemsadder.api.CustomBlock;
+import dev.lone.itemsadder.api.Events.CustomBlockBreakEvent;
 import dev.lone.itemsadder.api.Events.CustomBlockInteractEvent;
-import org.bukkit.block.Block;
 import org.bukkit.event.Event;
 
 import javax.annotation.Nullable;
@@ -25,6 +26,12 @@ public class EvtCustomBlockInteract extends SkriptEvent {
 
     static {
         Skript.registerEvent("Custom Block Interact", EvtCustomBlockInteract.class, CustomBlockInteractEvent.class, "interact with (custom|ia|itemsadder) block [%string%]");
+        EventValues.registerEventValue(CustomBlockBreakEvent.class, CustomBlock.class, new Getter<CustomBlock, CustomBlockBreakEvent>() {
+            @Override
+            public CustomBlock get(CustomBlockBreakEvent event) {
+                return CustomBlock.byAlreadyPlaced(event.getBlock());
+            }
+        }, 0);
     }
 
     @SuppressWarnings("unchecked")

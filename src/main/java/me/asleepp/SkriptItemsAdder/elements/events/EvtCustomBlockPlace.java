@@ -10,6 +10,8 @@ import ch.njol.skript.lang.SkriptEvent;
 import ch.njol.skript.lang.SkriptParser;
 import ch.njol.skript.registrations.EventValues;
 import ch.njol.skript.util.Getter;
+import dev.lone.itemsadder.api.CustomBlock;
+import dev.lone.itemsadder.api.Events.CustomBlockBreakEvent;
 import dev.lone.itemsadder.api.Events.CustomBlockPlaceEvent;
 import org.bukkit.block.Block;
 import org.bukkit.event.Event;
@@ -27,6 +29,12 @@ public class EvtCustomBlockPlace extends SkriptEvent {
 
     static {
         Skript.registerEvent("Custom Block Place", EvtCustomBlockPlace.class, CustomBlockPlaceEvent.class, "place [of] (custom|ia|itemsadder) block [%string%]");
+        EventValues.registerEventValue(CustomBlockBreakEvent.class, CustomBlock.class, new Getter<CustomBlock, CustomBlockBreakEvent>() {
+            @Override
+            public CustomBlock get(CustomBlockBreakEvent event) {
+                return CustomBlock.byAlreadyPlaced(event.getBlock());
+            }
+        }, 0);
     }
 
     @SuppressWarnings("unchecked")
@@ -35,6 +43,7 @@ public class EvtCustomBlockPlace extends SkriptEvent {
         blockName = (Literal<String>) args[0];
         return true;
     }
+
 
     @Override
     public boolean check(Event event) {
@@ -50,13 +59,20 @@ public class EvtCustomBlockPlace extends SkriptEvent {
         // check block
         if (blockName != null) {
             String specifiedBlockName = blockName.getSingle(event);
-            if (specifiedBlockName == null || !specifiedBlockName.equals(customEvent.getNamespacedID())) {
+            Block block = customEvent.getBlock();
+            if (block == null) {
+                return false;
+            }
+            String actualBlockName = customEvent.getNamespacedID();
+            if (actualBlockName == null || actualBlockName.isEmpty() || !actualBlockName.equals(specifiedBlockName)) {
                 return false;
             }
         }
-
         return true;
     }
+
+
+
 
     @Override
     public String toString(@Nullable Event e, boolean debug) {

@@ -16,7 +16,7 @@ import org.bukkit.Location;
 import javax.annotation.Nullable;
 
 @Name("Replace Custom Furniture")
-@Description({"Replace a custom furniture at a location."})
+@Description({"If there is furniture at a location, this effect will remove it and place the one you specify."})
 @Examples({"replace custom furniture \"comfy_chair\" at player's location"})
 @Since("1.4")
 public class EffReplaceCustomFurniture extends Effect {

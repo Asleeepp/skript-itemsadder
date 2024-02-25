@@ -33,7 +33,7 @@ public class EffPlayBreakSound extends Effect {
     @Override
     protected void execute(Event e) {
         String customBlockId = this.customBlockId.getSingle(e);
-        Player[] players = this.players.getArray(e);
+        Player[] players = this.players.getAll(e);
 
         if (customBlockId != null) {
             CustomBlock customBlock = CustomBlock.getInstance(customBlockId);
@@ -41,14 +41,13 @@ public class EffPlayBreakSound extends Effect {
                 Block bukkitBlock = customBlock.getBlock();
                 if (bukkitBlock != null) {
                     for (Player player : players) {
-                        if (player.getLocation().distance(bukkitBlock.getLocation()) <= 5) { // probably not 5 blocks but whatever
-                            CustomBlock.playBreakSound(bukkitBlock);
+                        CustomBlock.playBreakSound(bukkitBlock);
                         }
                     }
                 }
             }
         }
-    }
+
 
     @Override
     public String toString(@Nullable Event e, boolean debug) {

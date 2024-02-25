@@ -10,6 +10,7 @@ import ch.njol.skript.lang.SkriptEvent;
 import ch.njol.skript.lang.SkriptParser;
 import ch.njol.skript.registrations.EventValues;
 import ch.njol.skript.util.Getter;
+import dev.lone.itemsadder.api.CustomBlock;
 import dev.lone.itemsadder.api.Events.CustomBlockBreakEvent;
 import org.bukkit.block.Block;
 import org.bukkit.event.Event;
@@ -26,6 +27,12 @@ public class EvtCustomBlockBreak extends SkriptEvent {
 
     static {
         Skript.registerEvent("Custom Block Break", EvtCustomBlockBreak.class, CustomBlockBreakEvent.class, "break of (custom|ia|itemsadder) block [%string%]");
+        EventValues.registerEventValue(CustomBlockBreakEvent.class, CustomBlock.class, new Getter<CustomBlock, CustomBlockBreakEvent>() {
+            @Override
+            public CustomBlock get(CustomBlockBreakEvent event) {
+                return CustomBlock.byAlreadyPlaced(event.getBlock());
+            }
+        }, 0);
     }
 
     @SuppressWarnings("unchecked")
@@ -41,19 +48,19 @@ public class EvtCustomBlockBreak extends SkriptEvent {
             return false;
         }
 
-        CustomBlockBreakEvent customBlockBreakEvent = (CustomBlockBreakEvent) event;
-        if (customBlockBreakEvent.isCancelled()) {
+        CustomBlockBreakEvent customEvent = (CustomBlockBreakEvent) event;
+        if (customEvent.isCancelled()) {
             return false;
         }
 
         // check block
         if (blockName != null) {
             String specifiedBlockName = blockName.getSingle(event);
-            Block block = customBlockBreakEvent.getBlock();
+            Block block = customEvent.getBlock();
             if (block == null) {
                 return false;
             }
-            String actualBlockName = customBlockBreakEvent.getNamespacedID();
+            String actualBlockName = customEvent.getNamespacedID();
             if (actualBlockName == null || actualBlockName.isEmpty() || !actualBlockName.equals(specifiedBlockName)) {
                 return false;
             }
@@ -61,6 +68,7 @@ public class EvtCustomBlockBreak extends SkriptEvent {
 
         return true;
     }
+
 
     @Override
     public String toString(@Nullable Event e, boolean debug) {
