@@ -15,7 +15,7 @@ import org.bukkit.Location;
 
 import javax.annotation.Nullable;
 @Name("Replace Custom Block")
-@Description({"If there is a block at a location, this effect will remove it and place the one you specify."})
+@Description({"If there is a custom block at a location, this effect will remove it and place the one you specify."})
 @Examples({"replace custom block \"diamond_tiles\" at player's location"})
 @Since("1.4")
 public class EffReplaceBlock extends Effect {
