@@ -17,19 +17,21 @@ import javax.annotation.Nullable;
 
 @Name("Is ItemsAdder Item")
 @Description({"Checks if the item is an ItemsAdder item."})
-@Examples({"if player's tool is a custom item"})
+@Examples({"if player's tool is a custom item", "if player's tool is a custom item \"icon_arrow_chest\""})
 public class CondIsCustomItem extends Condition {
 
     private Expression<ItemType> item;
+    private Expression<String> itemId;
 
     static{
-        Skript.registerCondition(CondIsCustomItem.class, new String[] {"%itemtypes% (is [a[n]]|are) (custom|ia|itemsadder) item[s]"});
+        Skript.registerCondition(CondIsCustomItem.class, new String[] {"%itemtypes% (is [a[n]]|are) (custom|ia|itemsadder) item[s] [[with id] %-string%]]"});
     }
 
     @SuppressWarnings("unchecked")
     @Override
     public boolean init(Expression<?>[] exprs, int matchedPattern, Kleenean isDelayed, SkriptParser.ParseResult parseResult) {
         item = (Expression<ItemType>) exprs[0];
+        itemId = (Expression<String>) exprs[1];
         return true;
     }
 
@@ -49,6 +51,12 @@ public class CondIsCustomItem extends Condition {
             if (customStack == null) {
                 return false;
             }
+            if (itemId != null) {
+                String id = itemId.getSingle(e);
+                if (id == null || !customStack.getId().equals(id)) {
+                    return false;
+                }
+            }
         }
         return true;
     }
@@ -56,7 +64,7 @@ public class CondIsCustomItem extends Condition {
 
     @Override
     public String toString(@Nullable Event e, boolean debug) {
-        return item.toString(e, debug) + " is a custom item";
+        return item.toString(e, debug) + " is a custom item" + (itemId != null ? " with id " + itemId.toString(e, debug) : "");
     }
 
 }
