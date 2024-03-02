@@ -32,14 +32,11 @@ public class EffReplaceCustomFurniture extends Effect {
     protected void execute(Event e) {
         String id = furnitureId.getSingle(e);
         Location loc = location.getSingle(e);
-
         if (id != null && loc != null) {
             CustomFurniture existingFurniture = CustomFurniture.byAlreadySpawned(loc.getBlock());
-
             if (existingFurniture != null) {
-                existingFurniture.remove(false);
+                existingFurniture.replaceFurniture(id);
             }
-            CustomFurniture.spawn(id, loc.getBlock());
         }
     }
 
