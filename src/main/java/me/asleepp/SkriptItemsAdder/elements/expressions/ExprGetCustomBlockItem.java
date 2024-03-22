@@ -51,6 +51,11 @@ public class ExprGetCustomBlockItem extends SimpleExpression<ItemStack> {
 
     @Override
     public boolean init(Expression<?>[] exprs, int matchedPattern, Kleenean isDelayed, SkriptParser.ParseResult parseResult) {
+        if (!getParser().isCurrentEvent(CustomBlockInteractEvent.class)) {
+            Skript.error("You can't use 'the item linked/associated with the block' outside of a custom block interact event!");
+            return false;
+        }
         return true;
     }
+
 }

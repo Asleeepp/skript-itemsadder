@@ -42,7 +42,12 @@ public class CondGetBlockClicked extends Condition {
 
     @Override
     public boolean init(Expression<?>[] exprs, int matchedPattern, Kleenean isDelayed, SkriptParser.ParseResult parseResult) {
+        if (!getParser().isCurrentEvent(CustomBlockInteractEvent.class)) {
+            Skript.error("You can't use 'the block clicked is ...' outside of a custom block interact event!");
+            return false;
+        }
         block = (Expression<String>) exprs[0];
         return true;
     }
+
 }

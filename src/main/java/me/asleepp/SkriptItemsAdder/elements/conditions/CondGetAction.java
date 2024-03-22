@@ -28,6 +28,9 @@ public class CondGetAction extends Condition {
 
     @Override
     public boolean check(Event e) {
+        if (!(e instanceof CustomBlockInteractEvent)) {
+            return false;
+        }
         CustomBlockInteractEvent event = (CustomBlockInteractEvent) e;
         if (isLeft) {
             return event.getAction() == Action.LEFT_CLICK_BLOCK;
@@ -36,6 +39,7 @@ public class CondGetAction extends Condition {
         }
     }
 
+
     @Override
     public String toString(@Nullable Event e, boolean debug) {
         return "interact action is " + (isLeft ? "left" : "right") + " click";
@@ -43,7 +47,12 @@ public class CondGetAction extends Condition {
 
     @Override
     public boolean init(Expression<?>[] exprs, int matchedPattern, Kleenean isDelayed, SkriptParser.ParseResult parseResult) {
+        if (!getParser().isCurrentEvent(CustomBlockInteractEvent.class)) {
+            Skript.error("You can't use 'interact action is (:right|:left) click' outside of a custom block interact event!");
+            return false;
+        }
         isLeft = parseResult.hasTag("left");
         return true;
     }
+
 }

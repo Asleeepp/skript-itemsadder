@@ -28,9 +28,13 @@ public class CondGetBlockFace extends Condition {
 
     @Override
     public boolean check(Event e) {
+        if (!(e instanceof CustomBlockInteractEvent)) {
+            return false;
+        }
         CustomBlockInteractEvent event = (CustomBlockInteractEvent) e;
         return event.getBlockFace() == face;
     }
+
 
     @Override
     public String toString(@Nullable Event e, boolean debug) {
@@ -39,6 +43,10 @@ public class CondGetBlockFace extends Condition {
 
     @Override
     public boolean init(Expression<?>[] exprs, int matchedPattern, Kleenean isDelayed, SkriptParser.ParseResult parseResult) {
+        if (!getParser().isCurrentEvent(CustomBlockInteractEvent.class)) {
+            Skript.error("You can't use 'clicked block face is (:down|:north|:south|:east|:west|:up)' outside of a custom block interact event!");
+            return false;
+        }
         if (parseResult.hasTag("north")) {
             face = BlockFace.NORTH;
         } else if (parseResult.hasTag("south")) {
