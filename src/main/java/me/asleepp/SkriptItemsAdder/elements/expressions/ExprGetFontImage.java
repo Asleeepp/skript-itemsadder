@@ -12,23 +12,26 @@ import ch.njol.skript.lang.util.SimpleExpression;
 import ch.njol.util.Kleenean;
 import dev.lone.itemsadder.api.FontImages.FontImageWrapper;
 import org.bukkit.event.Event;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+
 @Name("Get ItemsAdder Font Image")
 @Description({"Gets an ItemsAdder font image"})
 @Examples({"set {_t} to font image \"laughing_emoji\""})
 @Since("1.0")
-public class ExprGetFontImage extends SimpleExpression<String> {
-    private Expression<String> fontImageName;
+public class ExprGetFontImage extends SimpleExpression<FontImageWrapper> {
+
+    private Expression<String> namespaceAndId;
 
     static {
-        Skript.registerExpression(ExprGetFontImage.class, String.class, ExpressionType.SIMPLE, "[font|custom|ia|itemsadder] image %string%");
+        Skript.registerExpression(ExprGetFontImage.class, FontImageWrapper.class, ExpressionType.SIMPLE,
+                "[font|custom|ia|itemsadder] image [[with] id] %string%");
     }
 
-    @NotNull
     @Override
-    public Class<? extends String> getReturnType() {
-        return String.class;
+    protected @Nullable FontImageWrapper[] get(Event e) {
+        String namespaceAndId = this.namespaceAndId.getSingle(e);
+        FontImageWrapper fontImage = new FontImageWrapper(namespaceAndId);
+        return new FontImageWrapper[]{fontImage};
     }
 
     @Override
@@ -37,29 +40,20 @@ public class ExprGetFontImage extends SimpleExpression<String> {
     }
 
     @Override
-    public boolean init(Expression<?>[] exprs, int matchedPattern, Kleenean isDelayed, SkriptParser.ParseResult parseResult) {
-        fontImageName = (Expression<String>) exprs[0];
-        return true;
+    public Class<? extends FontImageWrapper> getReturnType() {
+        return FontImageWrapper.class;
     }
 
-
-    @NotNull
     @Override
     public String toString(@Nullable Event e, boolean debug) {
-        return "fontimage " + fontImageName.toString(e, debug);
+        return "font image with id " + namespaceAndId.toString(e, debug);
     }
 
-    @Nullable
     @Override
-    protected String[] get(@NotNull Event e) {
-        if (fontImageName == null || fontImageName.getSingle(e) == null) {
-            return null;
-        }
-        String str = fontImageName.getSingle(e);
-        FontImageWrapper fontImageWrapper = new FontImageWrapper(str);
-        if (!fontImageWrapper.exists())
-            return null;
-        return new String[]{fontImageWrapper.getString()};
+    public boolean init(Expression<?>[] exprs, int matchedPattern, Kleenean isDelayed, SkriptParser.ParseResult parseResult) {
+        this.namespaceAndId = (Expression<String>) exprs[0];
+        return true;
     }
 }
+
 
