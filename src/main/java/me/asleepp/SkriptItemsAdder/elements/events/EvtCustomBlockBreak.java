@@ -12,7 +12,7 @@ import ch.njol.skript.registrations.EventValues;
 import ch.njol.skript.util.Getter;
 import dev.lone.itemsadder.api.CustomBlock;
 import dev.lone.itemsadder.api.Events.CustomBlockBreakEvent;
-import dev.lone.itemsadder.api.Events.CustomBlockPlaceEvent;
+import dev.lone.itemsadder.api.Events.CustomBlockBreakEvent;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.event.Event;
@@ -35,9 +35,9 @@ public class EvtCustomBlockBreak extends SkriptEvent {
                 return CustomBlock.byAlreadyPlaced(event.getBlock());
             }
         }, 0);
-        EventValues.registerEventValue(CustomBlockPlaceEvent.class, Location.class, new Getter<Location, CustomBlockPlaceEvent>() {
+        EventValues.registerEventValue(CustomBlockBreakEvent.class, Location.class, new Getter<Location, CustomBlockBreakEvent>() {
             @Override
-            public Location get(CustomBlockPlaceEvent event) {
+            public Location get(CustomBlockBreakEvent event) {
                 return event.getBlock().getLocation();
             }
         }, 0);
