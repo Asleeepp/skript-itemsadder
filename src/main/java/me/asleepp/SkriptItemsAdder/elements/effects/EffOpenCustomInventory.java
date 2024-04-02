@@ -8,37 +8,41 @@ import ch.njol.util.Kleenean;
 import dev.lone.itemsadder.api.FontImages.TexturedInventoryWrapper;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
+import ch.njol.skript.variables.Variables;
 
 import javax.annotation.Nullable;
 
 public class EffOpenCustomInventory extends Effect {
 
     private Expression<Player> players;
-    private Expression<TexturedInventoryWrapper> inventory;
+    private Expression<String> inventoryId;
 
     static {
-        Skript.registerEffect(EffOpenCustomInventory.class, "open [the] (custom|ia|itemsadder) [inventory] %texturedinventorywrapper% to %players%");
+        Skript.registerEffect(EffOpenCustomInventory.class, "open [the] (custom|ia|itemsadder) [inventory] %string% to %players%");
     }
 
     @Override
     protected void execute(Event e) {
         Player[] ps = players.getArray(e);
-        TexturedInventoryWrapper inventory = this.inventory.getSingle(e);
-        if (players != null && inventory != null) {
-            for (Player p : ps) {
-                inventory.showInventory(p);
+        String inventoryId = this.inventoryId.getSingle(e);
+        if (ps != null && inventoryId != null) {
+            TexturedInventoryWrapper inventory = (TexturedInventoryWrapper) Variables.getVariable(inventoryId, e, true);
+            if (inventory != null) {
+                for (Player p : ps) {
+                    inventory.showInventory(p);
+                }
             }
         }
     }
 
     @Override
     public String toString(@Nullable Event e, boolean debug) {
-        return "open " + inventory.toString(e, debug) + " to " + players.toString(e, debug);
+        return "open " + inventoryId.toString(e, debug) + " to " + players.toString(e, debug);
     }
 
     @Override
     public boolean init(Expression<?>[] exprs, int matchedPattern, Kleenean isDelayed, SkriptParser.ParseResult parseResult) {
-        inventory = (Expression<TexturedInventoryWrapper>) exprs[0];
+        inventoryId = (Expression<String>) exprs[0];
         players = (Expression<Player>) exprs[1];
         return true;
     }
