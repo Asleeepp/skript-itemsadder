@@ -9,15 +9,20 @@ import dev.lone.itemsadder.api.CustomBlock;
 import dev.lone.itemsadder.api.FontImages.FontImageWrapper;
 import dev.lone.itemsadder.api.FontImages.TexturedInventoryWrapper;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class Types {
+
+    public static Map<String, TexturedInventoryWrapper> inventoryMap = new HashMap<>();
 
     static {
         Classes.registerClass(new ClassInfo<>(CustomBlock.class, "customblock")
                 .user("customblock")
                 .name("Custom Block")
-                .description("Represents a Custom Block from ItemsAdder")
+                .description("Represents a Custom/ItemsAdder Block")
                 .defaultExpression(new EventValueExpression<>(CustomBlock.class))
-                .since("1.4.2")
+                .since("1.5")
                 .parser(new Parser<CustomBlock>() {
 
                     @Override
@@ -40,34 +45,33 @@ public class Types {
                         return true;
                     }
                 }));
-        Classes.registerClass(new ClassInfo<>(FontImageWrapper.class, "fontimagewrapper")
-                .user("font ?image ?wrappers?")
-                .name("Font Image Wrapper")
-                .defaultExpression(new EventValueExpression<>(FontImageWrapper.class))
-                .description("Represents a font image wrapper from the ItemsAdder API.")
+
+        Classes.registerClass(new ClassInfo<>(TexturedInventoryWrapper.class, "texturedinventorywrapper")
+                .user("texturedinventorywrappers?")
+                .name("Textured Inventory Wrapper")
+                .description("Represents a TexturedInventoryWrapper.")
                 .since("1.0")
-                .parser(new Parser<FontImageWrapper>() {
+                .parser(new Parser<TexturedInventoryWrapper>() {
 
                     @Override
-                    public String toString(FontImageWrapper fontImageWrapper, int flags) {
-                        return fontImageWrapper.getNamespacedID();
+                    public TexturedInventoryWrapper parse(String s, ParseContext context) {
+                        return inventoryMap.get(s);
                     }
 
                     @Override
-                    public FontImageWrapper parse(String s, ParseContext context) {
-                        return new FontImageWrapper(s);
+                    public String toString(TexturedInventoryWrapper texturedInventoryWrapper, int flags) {
+                        for (Map.Entry<String, TexturedInventoryWrapper> entry : inventoryMap.entrySet()) {
+                            if (entry.getValue().equals(texturedInventoryWrapper)) {
+                                return entry.getKey();
+                            }
+                        }
+                        return "";
                     }
 
                     @Override
-                    public boolean canParse(ParseContext context) {
-                        return true;
+                    public String toVariableNameString(TexturedInventoryWrapper texturedInventoryWrapper) {
+                        return toString(texturedInventoryWrapper, 0);
                     }
-
-                    @Override
-                    public String toVariableNameString(FontImageWrapper fontImageWrapper) {
-                        return toString(fontImageWrapper, 0);
-                    }
-
 
                     public String getVariableNamePattern() {
                         return ".+";

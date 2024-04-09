@@ -15,34 +15,31 @@ import javax.annotation.Nullable;
 public class EffOpenCustomInventory extends Effect {
 
     private Expression<Player> players;
-    private Expression<String> inventoryId;
+    private Expression<TexturedInventoryWrapper> inventory;
 
     static {
-        Skript.registerEffect(EffOpenCustomInventory.class, "open [the] (custom|ia|itemsadder) [inventory] %string% to %players%");
+        Skript.registerEffect(EffOpenCustomInventory.class, "open [the] (custom|ia|itemsadder) [inventory] %texturedinventorywrapper% to %players%");
     }
 
     @Override
     protected void execute(Event e) {
         Player[] ps = players.getArray(e);
-        String inventoryId = this.inventoryId.getSingle(e);
-        if (ps != null && inventoryId != null) {
-            TexturedInventoryWrapper inventory = (TexturedInventoryWrapper) Variables.getVariable(inventoryId, e, true);
-            if (inventory != null) {
+        TexturedInventoryWrapper inventory = this.inventory.getSingle(e);
+        if (ps != null && inventory != null) {
                 for (Player p : ps) {
                     inventory.showInventory(p);
                 }
             }
         }
-    }
 
     @Override
     public String toString(@Nullable Event e, boolean debug) {
-        return "open " + inventoryId.toString(e, debug) + " to " + players.toString(e, debug);
+        return "open " + inventory.toString(e, debug) + " to " + players.toString(e, debug);
     }
 
     @Override
     public boolean init(Expression<?>[] exprs, int matchedPattern, Kleenean isDelayed, SkriptParser.ParseResult parseResult) {
-        inventoryId = (Expression<String>) exprs[0];
+        inventory = (Expression<TexturedInventoryWrapper>) exprs[0];
         players = (Expression<Player>) exprs[1];
         return true;
     }

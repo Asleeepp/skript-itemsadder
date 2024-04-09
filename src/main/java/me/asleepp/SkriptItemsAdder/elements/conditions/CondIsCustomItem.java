@@ -19,7 +19,7 @@ import javax.annotation.Nullable;
 @Name("Is ItemsAdder Item")
 @Description({"Checks if the item is an ItemsAdder item."})
 @Examples({"if player's tool is a custom item", "if player's tool is a custom item \"icon_arrow_chest\""})
-@Since("1.0, 1.5 (Is")
+@Since("1.0, 1.5 (Negative comparison)")
 public class CondIsCustomItem extends Condition {
 
     private Expression<ItemType> item;
