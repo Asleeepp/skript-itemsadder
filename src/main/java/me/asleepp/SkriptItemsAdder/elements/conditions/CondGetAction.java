@@ -4,6 +4,7 @@ import ch.njol.skript.Skript;
 import ch.njol.skript.doc.Description;
 import ch.njol.skript.doc.Examples;
 import ch.njol.skript.doc.Name;
+import ch.njol.skript.doc.RequiredPlugins;
 import ch.njol.skript.doc.Since;
 import ch.njol.skript.lang.Condition;
 import ch.njol.skript.lang.Expression;
@@ -16,8 +17,12 @@ import org.bukkit.event.block.Action;
 import javax.annotation.Nullable;
 @Name("Is Action")
 @Description({"This condition checks if the player has interacted with a custom block with either a left or a right click."})
-@Examples({"on interact with custom block: /tif interact action is right click: /t/tkill event-player "})
+@Examples({
+    "on interact with custom block:",
+        "\tif interact action is right click:",
+            "\t\tkill event-player"})
 @Since("1.4")
+@RequiredPlugins("ItemsAdder")
 public class CondGetAction extends Condition {
 
     static {

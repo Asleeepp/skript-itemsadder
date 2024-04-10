@@ -4,6 +4,7 @@ import ch.njol.skript.Skript;
 import ch.njol.skript.doc.Description;
 import ch.njol.skript.doc.Examples;
 import ch.njol.skript.doc.Name;
+import ch.njol.skript.doc.RequiredPlugins;
 import ch.njol.skript.doc.Since;
 import ch.njol.skript.lang.Literal;
 import ch.njol.skript.lang.SkriptEvent;
@@ -11,8 +12,8 @@ import ch.njol.skript.lang.SkriptParser;
 import ch.njol.skript.registrations.EventValues;
 import ch.njol.skript.util.Getter;
 import dev.lone.itemsadder.api.CustomBlock;
-import dev.lone.itemsadder.api.Events.CustomBlockBreakEvent;
 import dev.lone.itemsadder.api.Events.CustomBlockPlaceEvent;
+import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.event.Event;
 
@@ -22,6 +23,7 @@ import javax.annotation.Nullable;
 @Description({"Fires when a ItemsAdder block gets placed."})
 @Examples({"on place of custom block:"})
 @Since("1.0")
+@RequiredPlugins("ItemsAdder")
 public class EvtCustomBlockPlace extends SkriptEvent {
 
     private Literal<String> blockName;
@@ -29,10 +31,16 @@ public class EvtCustomBlockPlace extends SkriptEvent {
 
     static {
         Skript.registerEvent("Custom Block Place", EvtCustomBlockPlace.class, CustomBlockPlaceEvent.class, "place [of] (custom|ia|itemsadder) block [%string%]");
-        EventValues.registerEventValue(CustomBlockBreakEvent.class, CustomBlock.class, new Getter<CustomBlock, CustomBlockBreakEvent>() {
+        EventValues.registerEventValue(CustomBlockPlaceEvent.class, CustomBlock.class, new Getter<CustomBlock, CustomBlockPlaceEvent>() {
             @Override
-            public CustomBlock get(CustomBlockBreakEvent event) {
+            public CustomBlock get(CustomBlockPlaceEvent event) {
                 return CustomBlock.byAlreadyPlaced(event.getBlock());
+            }
+        }, 0);
+        EventValues.registerEventValue(CustomBlockPlaceEvent.class, Location.class, new Getter<Location, CustomBlockPlaceEvent>() {
+            @Override
+            public Location get(CustomBlockPlaceEvent event) {
+                return event.getBlock().getLocation();
             }
         }, 0);
     }

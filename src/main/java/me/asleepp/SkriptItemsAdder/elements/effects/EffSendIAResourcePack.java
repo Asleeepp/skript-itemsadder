@@ -4,6 +4,7 @@ import ch.njol.skript.Skript;
 import ch.njol.skript.doc.Description;
 import ch.njol.skript.doc.Examples;
 import ch.njol.skript.doc.Name;
+import ch.njol.skript.doc.RequiredPlugins;
 import ch.njol.skript.doc.Since;
 import ch.njol.skript.lang.Effect;
 import ch.njol.skript.lang.Expression;
@@ -18,6 +19,7 @@ import javax.annotation.Nullable;
 @Description({"Sends the most recently generated ItemsAdder resource pack to players."})
 @Examples({"send current itemsadder resource pack to all players"})
 @Since("1.0")
+@RequiredPlugins("ItemsAdder")
 public class EffSendIAResourcePack extends Effect {
 
     private Expression<Player> players;

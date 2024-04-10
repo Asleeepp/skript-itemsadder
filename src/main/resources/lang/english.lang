@@ -1,1 +1,5 @@
 version: @version@
+
+types:
+    customblock: customblock
+    texturedinventorywrapper: texturedinventorywrapper

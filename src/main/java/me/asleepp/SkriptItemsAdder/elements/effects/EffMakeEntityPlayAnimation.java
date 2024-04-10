@@ -4,6 +4,7 @@ import ch.njol.skript.Skript;
 import ch.njol.skript.doc.Description;
 import ch.njol.skript.doc.Examples;
 import ch.njol.skript.doc.Name;
+import ch.njol.skript.doc.RequiredPlugins;
 import ch.njol.skript.doc.Since;
 import ch.njol.skript.lang.Effect;
 import ch.njol.skript.lang.Expression;
@@ -17,10 +18,11 @@ import javax.annotation.Nullable;
 @Name("Make Entity Play Animation")
 @Description({"Makes an ItemsAdder entity play an animation."})
 @Examples({
-        "on right click:",
+    "on right click:",
         "\tif clicked entity is a custom entity",
-        "\t\tmake clicked entity play animation \"default_dance\""})
+            "\t\tmake clicked entity play animation \"fortnite:default_dance\""})
 @Since("1.0")
+@RequiredPlugins("ItemsAdder")
 public class EffMakeEntityPlayAnimation extends Effect {
 
     private Expression<Entity> entityExpr;

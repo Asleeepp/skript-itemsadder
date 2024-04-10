@@ -4,6 +4,7 @@ import ch.njol.skript.Skript;
 import ch.njol.skript.doc.Description;
 import ch.njol.skript.doc.Examples;
 import ch.njol.skript.doc.Name;
+import ch.njol.skript.doc.RequiredPlugins;
 import ch.njol.skript.doc.Since;
 import ch.njol.skript.lang.Effect;
 import ch.njol.skript.lang.Expression;
@@ -18,6 +19,7 @@ import javax.annotation.Nullable;
 @Description({"If there is a custom block at a location, this effect will remove it and place the one you specify."})
 @Examples({"replace custom block \"diamond_tiles\" at player's location"})
 @Since("1.4")
+@RequiredPlugins("ItemsAdder")
 public class EffReplaceBlock extends Effect {
 
     private Expression<String> blockId;

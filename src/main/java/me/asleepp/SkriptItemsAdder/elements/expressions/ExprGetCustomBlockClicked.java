@@ -4,6 +4,7 @@ import ch.njol.skript.classes.Changer;
 import ch.njol.skript.doc.Description;
 import ch.njol.skript.doc.Examples;
 import ch.njol.skript.doc.Name;
+import ch.njol.skript.doc.RequiredPlugins;
 import ch.njol.skript.doc.Since;
 import ch.njol.skript.expressions.base.SimplePropertyExpression;
 import ch.njol.skript.lang.ExpressionType;
@@ -13,8 +14,11 @@ import org.bukkit.block.Block;
 import org.bukkit.event.Event;
 @Name("Get Block Clicked")
 @Description({"Gets the block clicked."})
-@Examples({"on interact with custom block: /tset {_t} to clicked custom block "})
+@Examples({
+    "on interact with custom block:",
+        "\tset {_t} to clicked custom block"})
 @Since("1.4")
+@RequiredPlugins("ItemsAdder")
 public class ExprGetCustomBlockClicked extends SimplePropertyExpression<CustomBlockInteractEvent, Block> {
 
     static {

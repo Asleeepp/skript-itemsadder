@@ -4,6 +4,7 @@ import ch.njol.skript.Skript;
 import ch.njol.skript.doc.Description;
 import ch.njol.skript.doc.Examples;
 import ch.njol.skript.doc.Name;
+import ch.njol.skript.doc.RequiredPlugins;
 import ch.njol.skript.doc.Since;
 import ch.njol.skript.lang.Expression;
 import ch.njol.skript.lang.ExpressionType;
@@ -17,8 +18,11 @@ import org.bukkit.inventory.ItemStack;
 import javax.annotation.Nullable;
 @Name("Get Custom Block Item")
 @Description({"Gets the item associated with the custom block."})
-@Examples({"on interact with custom block: set {_t} to the item linked with the block"})
+@Examples({
+    "on interact with custom block:",
+        "\tset {_t} to the item linked with the block"})
 @Since("1.4")
+@RequiredPlugins("ItemsAdder")
 public class ExprGetCustomBlockItem extends SimpleExpression<ItemStack> {
 
     static {

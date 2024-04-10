@@ -4,14 +4,13 @@ import ch.njol.skript.Skript;
 import ch.njol.skript.doc.Description;
 import ch.njol.skript.doc.Examples;
 import ch.njol.skript.doc.Name;
+import ch.njol.skript.doc.RequiredPlugins;
 import ch.njol.skript.doc.Since;
 import ch.njol.skript.lang.Literal;
 import ch.njol.skript.lang.SkriptEvent;
 import ch.njol.skript.lang.SkriptParser;
 import ch.njol.skript.registrations.EventValues;
 import ch.njol.skript.util.Getter;
-import dev.lone.itemsadder.api.CustomBlock;
-import dev.lone.itemsadder.api.Events.CustomBlockBreakEvent;
 import dev.lone.itemsadder.api.Events.CustomBlockInteractEvent;
 import org.bukkit.block.Block;
 import org.bukkit.event.Event;
@@ -22,6 +21,7 @@ import javax.annotation.Nullable;
 @Description({"Fires when a ItemsAdder block gets interacted with."})
 @Examples({"on interact with custom block:"})
 @Since("1.0")
+@RequiredPlugins("ItemsAdder")
 public class EvtCustomBlockInteract extends SkriptEvent {
     private Literal<String> blockName;
 

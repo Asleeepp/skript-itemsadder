@@ -4,6 +4,7 @@ import ch.njol.skript.Skript;
 import ch.njol.skript.doc.Description;
 import ch.njol.skript.doc.Examples;
 import ch.njol.skript.doc.Name;
+import ch.njol.skript.doc.RequiredPlugins;
 import ch.njol.skript.doc.Since;
 import ch.njol.skript.lang.Effect;
 import ch.njol.skript.lang.Expression;
@@ -16,8 +17,9 @@ import org.bukkit.event.Event;
 import javax.annotation.Nullable;
 @Name("Make Player Emote/Stop Emoting")
 @Description({"Force player to emote/stop emoting"})
-@Examples({"force all players to perform emote \"fortinayt\""})
-@Since("1.0")
+@Examples({"force all players to perform emote \"fortnite:default_dance\""})
+@Since("1.0, 1.5 (slight syntax update)")
+@RequiredPlugins("ItemsAdder")
 public class EffPlayerEmote extends Effect {
     private Expression<Player> players;
     private Expression<String> emote;
@@ -26,7 +28,7 @@ public class EffPlayerEmote extends Effect {
     static {
         Skript.registerEffect(EffPlayerEmote.class,
                 "(make|force) %players% [perform] [custom|ia|itemsadder] (emote|dance|animation) %string%",
-                "(make|force) %players% [to] stop emoting");
+                "(make|force) %players% [to] stop [current] emot[e|ing]");
     }
     @Override
     public boolean init(Expression<?>[] exprs, int matchedPattern, Kleenean isDelayed, SkriptParser.ParseResult parseResult) {

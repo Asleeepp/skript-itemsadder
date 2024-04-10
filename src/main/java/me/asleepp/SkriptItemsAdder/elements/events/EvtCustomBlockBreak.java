@@ -4,6 +4,7 @@ import ch.njol.skript.Skript;
 import ch.njol.skript.doc.Description;
 import ch.njol.skript.doc.Examples;
 import ch.njol.skript.doc.Name;
+import ch.njol.skript.doc.RequiredPlugins;
 import ch.njol.skript.doc.Since;
 import ch.njol.skript.lang.Literal;
 import ch.njol.skript.lang.SkriptEvent;
@@ -12,6 +13,7 @@ import ch.njol.skript.registrations.EventValues;
 import ch.njol.skript.util.Getter;
 import dev.lone.itemsadder.api.CustomBlock;
 import dev.lone.itemsadder.api.Events.CustomBlockBreakEvent;
+import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.event.Event;
 
@@ -21,6 +23,7 @@ import javax.annotation.Nullable;
 @Description({"Fires when a ItemsAdder block gets broken."})
 @Examples({"on break of custom block:"})
 @Since("1.0")
+@RequiredPlugins("ItemsAdder")
 public class EvtCustomBlockBreak extends SkriptEvent {
 
     private Literal<String> blockName;
@@ -31,6 +34,12 @@ public class EvtCustomBlockBreak extends SkriptEvent {
             @Override
             public CustomBlock get(CustomBlockBreakEvent event) {
                 return CustomBlock.byAlreadyPlaced(event.getBlock());
+            }
+        }, 0);
+        EventValues.registerEventValue(CustomBlockBreakEvent.class, Location.class, new Getter<Location, CustomBlockBreakEvent>() {
+            @Override
+            public Location get(CustomBlockBreakEvent event) {
+                return event.getBlock().getLocation();
             }
         }, 0);
     }
