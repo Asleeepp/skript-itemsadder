@@ -19,8 +19,8 @@ import javax.annotation.Nullable;
 @Description({"This condition checks what face of a block the player has interacted with."})
 @Examples({
     "on interact with custom block:",
-        "/tif clicked block face is south:",
-            "/t/tsend \"Why are you doing that?\""})
+        "\tif clicked block face is south:",
+            "\t\tsend \"Why are you doing that?\""})
 @Since("1.4")
 @RequiredPlugins("ItemsAdder")
 public class CondGetBlockFace extends Condition {

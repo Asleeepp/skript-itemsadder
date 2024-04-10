@@ -38,11 +38,11 @@ import java.util.UUID;
 })
 @Examples({
     "create a new custom inventory:",
-        "title: \"Shop\"",
-        "rows: 5",
-        "texture: \"inventory:shop\" and \"inventory:shop_extras\"",
-        "title offset: 150",
-        "texture offset: 0",
+        "\ttitle: \"Shop\"",
+        "\trows: 5",
+        "\ttexture: \"inventory:shop\" and \"inventory:shop_extras\"",
+        "\ttitle offset: 150",
+        "\ttexture offset: 0",
     "set {_shop} to last created ia gui",
     "show custom {_gui} to all players"})
 @Since("1.5")

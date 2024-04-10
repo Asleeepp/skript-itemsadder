@@ -18,8 +18,8 @@ import javax.annotation.Nullable;
 @Description({"This condition checks what block the player clicked."})
 @Examples({
     "on interact with custom block:",
-        "/tif clicked block is \"diamond_tiles\"",
-            "/t/tsend \"That's quite valuable.\" "})
+        "\tif clicked block is \"diamond_tiles\"",
+            "\t\tsend \"That's quite valuable.\" "})
 @Since("1.4")
 @RequiredPlugins("ItemsAdder")
 public class CondGetBlockClicked extends Condition {
