@@ -5,6 +5,7 @@ import ch.njol.skript.aliases.ItemType;
 import ch.njol.skript.doc.Description;
 import ch.njol.skript.doc.Examples;
 import ch.njol.skript.doc.Name;
+import ch.njol.skript.doc.RequiredPlugins;
 import ch.njol.skript.doc.Since;
 import ch.njol.skript.lang.Condition;
 import ch.njol.skript.lang.Expression;
@@ -20,6 +21,7 @@ import javax.annotation.Nullable;
 @Description({"Checks if the item is an ItemsAdder item."})
 @Examples({"if player's tool is a custom item", "if player's tool is a custom item \"icon_arrow_chest\""})
 @Since("1.0, 1.5 (Negative comparison)")
+@RequiredPlugins("ItemsAdder")
 public class CondIsCustomItem extends Condition {
 
     private Expression<ItemType> item;

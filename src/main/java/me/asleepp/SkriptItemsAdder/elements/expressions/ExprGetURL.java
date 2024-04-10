@@ -3,6 +3,7 @@ package me.asleepp.SkriptItemsAdder.elements.expressions;
 import ch.njol.skript.doc.Description;
 import ch.njol.skript.doc.Examples;
 import ch.njol.skript.doc.Name;
+import ch.njol.skript.doc.RequiredPlugins;
 import ch.njol.skript.doc.Since;
 import ch.njol.skript.lang.ExpressionType;
 import ch.njol.skript.Skript;
@@ -18,6 +19,7 @@ import javax.annotation.Nullable;
 @Description({"Gets the URL of a resource pack."})
 @Examples({"set {_t} to resource pack url"})
 @Since("1.0")
+@RequiredPlugins("ItemsAdder")
 public class ExprGetURL extends SimpleExpression<String> {
 
     static {

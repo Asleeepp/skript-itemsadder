@@ -4,6 +4,7 @@ import ch.njol.skript.Skript;
 import ch.njol.skript.doc.Description;
 import ch.njol.skript.doc.Examples;
 import ch.njol.skript.doc.Name;
+import ch.njol.skript.doc.RequiredPlugins;
 import ch.njol.skript.doc.Since;
 import ch.njol.skript.lang.ExpressionType;
 import ch.njol.skript.lang.Expression;
@@ -19,6 +20,7 @@ import javax.annotation.Nullable;
 @Description({"Gets the hash of a resource pack."})
 @Examples({"set {_t} to resource pack hash"})
 @Since("1.0")
+@RequiredPlugins("ItemsAdder")
 public class ExprGetHash extends SimpleExpression<String> {
 
     static {

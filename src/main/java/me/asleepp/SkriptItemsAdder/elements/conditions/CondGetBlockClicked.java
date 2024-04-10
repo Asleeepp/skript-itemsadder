@@ -4,6 +4,7 @@ import ch.njol.skript.Skript;
 import ch.njol.skript.doc.Description;
 import ch.njol.skript.doc.Examples;
 import ch.njol.skript.doc.Name;
+import ch.njol.skript.doc.RequiredPlugins;
 import ch.njol.skript.doc.Since;
 import ch.njol.skript.lang.Condition;
 import ch.njol.skript.lang.Expression;
@@ -15,8 +16,12 @@ import dev.lone.itemsadder.api.Events.CustomBlockInteractEvent;
 import javax.annotation.Nullable;
 @Name("Is Block Clicked")
 @Description({"This condition checks what block the player clicked."})
-@Examples({"on interact with custom block: /tif clicked block is \"diamond_tiles\" /t/tsend \"That's quite valuable.\" "})
+@Examples({
+    "on interact with custom block:",
+        "/tif clicked block is \"diamond_tiles\"",
+            "/t/tsend \"That's quite valuable.\" "})
 @Since("1.4")
+@RequiredPlugins("ItemsAdder")
 public class CondGetBlockClicked extends Condition {
 
     private Expression<String> block;

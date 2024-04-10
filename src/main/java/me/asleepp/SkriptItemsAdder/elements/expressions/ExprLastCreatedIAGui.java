@@ -1,6 +1,11 @@
 package me.asleepp.SkriptItemsAdder.elements.expressions;
 
 import ch.njol.skript.Skript;
+import ch.njol.skript.doc.Description;
+import ch.njol.skript.doc.Examples;
+import ch.njol.skript.doc.Name;
+import ch.njol.skript.doc.RequiredPlugins;
+import ch.njol.skript.doc.Since;
 import ch.njol.skript.lang.Expression;
 import ch.njol.skript.lang.ExpressionType;
 import ch.njol.skript.lang.SkriptParser;
@@ -11,11 +16,20 @@ import me.asleepp.SkriptItemsAdder.elements.sections.SecCreateCustomInventory;
 import org.bukkit.event.Event;
 
 import javax.annotation.Nullable;
-
-public class ExprLastCreatedGui extends SimpleExpression<TexturedInventoryWrapper> {
+@Name("Last Created ItemsAdder Gui")
+@Description("Get's the last created ItemsAdder inventory by the Create ItemsAdder Inventory section.")
+@Examples({
+    "create a new custom inventory:",
+        "\ttitle: \"Auction House\"",
+        "\trows: 6",
+        "\ttexture: \"inventory:auction_house\"",
+    "set {_g} to last created ia gui"})
+@Since("1.5")
+@RequiredPlugins("ItemsAdder")
+public class ExprLastCreatedIAGui extends SimpleExpression<TexturedInventoryWrapper> {
 
     static {
-        Skript.registerExpression(ExprLastCreatedGui.class, TexturedInventoryWrapper.class, ExpressionType.SIMPLE, "last created [custom] gui");
+        Skript.registerExpression(ExprLastCreatedIAGui.class, TexturedInventoryWrapper.class, ExpressionType.SIMPLE, "last created (custom|ia|itemsadder) gui");
     }
 
     @Override

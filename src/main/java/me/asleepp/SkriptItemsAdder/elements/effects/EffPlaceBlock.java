@@ -4,6 +4,7 @@ import ch.njol.skript.Skript;
 import ch.njol.skript.doc.Description;
 import ch.njol.skript.doc.Examples;
 import ch.njol.skript.doc.Name;
+import ch.njol.skript.doc.RequiredPlugins;
 import ch.njol.skript.doc.Since;
 import ch.njol.skript.lang.Effect;
 import ch.njol.skript.lang.Expression;
@@ -14,10 +15,11 @@ import org.bukkit.Location;
 import org.bukkit.event.Event;
 
 import javax.annotation.Nullable;
-@Name("PlaceCustomBlock")
-@Description({"Places a custom block."})
-@Examples({"set block at player's location to custom itemsadder block \"ruby_block\""})
+@Name("Place Custom Block")
+@Description({"Places a custom block at a location."})
+@Examples({"set block at player's location to custom itemsadder block \"iasurvival:ruby_block\""})
 @Since("1.0")
+@RequiredPlugins("ItemsAdder")
 public class EffPlaceBlock extends Effect {
     private Expression<Location> locationExpr;
     private Expression<String> customBlockIdExpr;

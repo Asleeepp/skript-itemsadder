@@ -4,6 +4,7 @@ import ch.njol.skript.Skript;
 import ch.njol.skript.doc.Description;
 import ch.njol.skript.doc.Examples;
 import ch.njol.skript.doc.Name;
+import ch.njol.skript.doc.RequiredPlugins;
 import ch.njol.skript.doc.Since;
 import ch.njol.skript.lang.Literal;
 import ch.njol.skript.lang.SkriptEvent;
@@ -20,6 +21,7 @@ import javax.annotation.Nullable;
 @Description({"Fires when a ItemsAdder block gets interacted with."})
 @Examples({"on interact with custom block:"})
 @Since("1.0")
+@RequiredPlugins("ItemsAdder")
 public class EvtCustomBlockInteract extends SkriptEvent {
     private Literal<String> blockName;
 

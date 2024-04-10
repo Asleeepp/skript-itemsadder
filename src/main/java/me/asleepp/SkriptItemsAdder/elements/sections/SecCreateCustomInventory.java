@@ -2,6 +2,11 @@ package me.asleepp.SkriptItemsAdder.elements.sections;
 
 import ch.njol.skript.Skript;
 import ch.njol.skript.config.SectionNode;
+import ch.njol.skript.doc.Description;
+import ch.njol.skript.doc.Examples;
+import ch.njol.skript.doc.Name;
+import ch.njol.skript.doc.RequiredPlugins;
+import ch.njol.skript.doc.Since;
 import ch.njol.skript.lang.Expression;
 import ch.njol.skript.lang.Section;
 import ch.njol.skript.lang.SkriptParser.ParseResult;
@@ -20,8 +25,29 @@ import org.skriptlang.skript.lang.entry.util.ExpressionEntryData;
 import java.util.List;
 import java.util.UUID;
 
+@Name("Create Custom Inventory")
+@Description({
+        "Creates a new ItemsAdder inventory with the following properties:",
+        "- Title: The title of the inventory. This will be displayed at the top of the inventory GUI.",
+        "- Rows: The number of rows in the inventory. Each row corresponds to 9 slots, so an inventory with 3 rows would have 27 slots.",
+        "- Texture: The texture of the inventory. This should be the name of a texture defined in your ItemsAdder configuration. You may also have multple strings/textures here.",
+        "- Title Offset: The horizontal offset of the title in pixels. This can be used to adjust the position of the title relative to the top of the inventory GUI.",
+        "- Texture Offset: The horizontal offset of the texture in pixels. This can be used to adjust the position of the texture relative to the top of the inventory GUI.",
+        "The last created inventory can be accessed using the 'Last Created Gui' expression.",
+        "To create an Inventory, you need a Texture, everything else is optional. See Examples for a demonstration."
+})
+@Examples({
+    "create a new custom inventory:",
+        "title: \"Shop\"",
+        "rows: 5",
+        "texture: \"inventory:shop\" and \"inventory:shop_extras\"",
+        "title offset: 150",
+        "texture offset: 0",
+    "set {_shop} to last created ia gui",
+    "show custom {_gui} to all players"})
+@Since("1.5")
+@RequiredPlugins("ItemsAdder")
 public class SecCreateCustomInventory extends Section {
-
     @Nullable
     public static TexturedInventoryWrapper lastCreatedGui;
     private Expression<String> title;
@@ -29,6 +55,7 @@ public class SecCreateCustomInventory extends Section {
     private Expression<String> texture;
     private Expression<Integer> titleOffset;
     private Expression<Integer> textureOffset;
+
     private static final EntryValidator validator = EntryValidator.builder()
             .addEntryData(new ExpressionEntryData<>("title", null, true, String.class))
             .addEntryData(new ExpressionEntryData<>("rows", new SimpleLiteral<>(3, false), true, Integer.class))
@@ -71,20 +98,27 @@ public class SecCreateCustomInventory extends Section {
     protected void execute(Event e) {
         String title = this.title.getSingle(e);
         int rows = this.rows.getSingle(e);
-        String texture = this.texture.getSingle(e);
+        String textures[] = this.texture.getArray(e);
         int titleOffset = this.titleOffset != null ? this.titleOffset.getSingle(e) : 0;
         int textureOffset = this.textureOffset != null ? this.textureOffset.getSingle(e) : 0;
 
-        FontImageWrapper fontTexture = new FontImageWrapper(texture);
-        if (fontTexture.exists()) {
-            TexturedInventoryWrapper inventory = new TexturedInventoryWrapper(null, rows * 9, title, fontTexture, titleOffset, textureOffset);
-            if (inventory != null) {
-                String id = UUID.randomUUID().toString(); // uuid for storing inventory
-                Types.inventoryMap.put(id, inventory);
-                lastCreatedGui = inventory;
+        FontImageWrapper[] fontTextures = new FontImageWrapper[textures.length];
+        for (int i = 0; i < textures.length; i++) {
+            fontTextures[i] = new FontImageWrapper(textures[i]);
+            if (!fontTextures[i].exists()) {
+                Skript.error("The specified texture does not exist: " + textures[i]);
+                return;
             }
         }
+
+        TexturedInventoryWrapper inventory = new TexturedInventoryWrapper(null, rows * 9, title, titleOffset, textureOffset, fontTextures);
+        if (inventory != null) {
+            String id = UUID.randomUUID().toString(); // uuid for storing inventory
+            Types.inventoryMap.put(id, inventory);
+            lastCreatedGui = inventory;
+        }
     }
+
 
 
     @Override

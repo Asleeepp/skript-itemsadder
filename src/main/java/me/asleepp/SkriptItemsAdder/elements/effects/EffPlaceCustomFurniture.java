@@ -4,6 +4,7 @@ import ch.njol.skript.Skript;
 import ch.njol.skript.doc.Description;
 import ch.njol.skript.doc.Examples;
 import ch.njol.skript.doc.Name;
+import ch.njol.skript.doc.RequiredPlugins;
 import ch.njol.skript.doc.Since;
 import ch.njol.skript.lang.Effect;
 import ch.njol.skript.lang.Expression;
@@ -17,8 +18,9 @@ import javax.annotation.Nullable;
 
 @Name("Place Custom Furniture")
 @Description({"Place a custom furniture at a location."})
-@Examples({"place custom furniture \"comfy_chair\" at player's location"})
+@Examples({"place custom furniture \"coolfurniture:comfy_chair\" at player's location"})
 @Since("1.3")
+@RequiredPlugins("ItemsAdder")
 public class EffPlaceCustomFurniture extends Effect {
 
     private Expression<String> furnitureId;

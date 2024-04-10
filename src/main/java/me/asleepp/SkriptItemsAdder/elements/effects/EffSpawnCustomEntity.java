@@ -4,6 +4,7 @@ import ch.njol.skript.Skript;
 import ch.njol.skript.doc.Description;
 import ch.njol.skript.doc.Examples;
 import ch.njol.skript.doc.Name;
+import ch.njol.skript.doc.RequiredPlugins;
 import ch.njol.skript.doc.Since;
 import ch.njol.skript.lang.Effect;
 import ch.njol.skript.lang.Expression;
@@ -16,15 +17,16 @@ import org.bukkit.event.Event;
 import javax.annotation.Nullable;
 @Name("Spawn ItemsAdder Entity")
 @Description({"Spawns an ItemsAdder entity."})
-@Examples({"spawn custom entity \"john_wick\" at player's location"})
+@Examples({"spawn custom entity \"bosses:john_wick\" at player's location"})
 @Since("1.0")
+@RequiredPlugins("ItemsAdder")
 public class EffSpawnCustomEntity extends Effect {
 
     private Expression<String> entityIdExpr;
     private Expression<Location> locationExpr;
 
     static {
-        Skript.registerEffect(EffSpawnCustomEntity.class, new String[]{"(spawn|summon) [the] (custom|ia|itemsadder) (entity|mob) %string% at %locations%"});
+        Skript.registerEffect(EffSpawnCustomEntity.class, "(spawn|summon) [the] (custom|ia|itemsadder) (entity|mob) %string% at %locations%");
     }
 
     @Override

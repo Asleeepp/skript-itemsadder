@@ -1,6 +1,11 @@
 package me.asleepp.SkriptItemsAdder.elements.events;
 
 import ch.njol.skript.Skript;
+import ch.njol.skript.doc.Description;
+import ch.njol.skript.doc.Examples;
+import ch.njol.skript.doc.Name;
+import ch.njol.skript.doc.RequiredPlugins;
+import ch.njol.skript.doc.Since;
 import ch.njol.skript.lang.Literal;
 import ch.njol.skript.lang.SkriptEvent;
 import ch.njol.skript.lang.SkriptParser;
@@ -11,13 +16,19 @@ import org.bukkit.Location;
 import org.bukkit.event.Event;
 
 import javax.annotation.Nullable;
-
-public class EvtCustomFurnitureSucessEvent extends SkriptEvent {
+@Name("Furniture Place Sucess")
+@Description("This event is called when a furniture is succesfully placed into the world, use this event instead if you would like to know the location, etc.")
+@Examples({"on place success of custom furniture:", "on successfully placing a custom furniture:"})
+@Since("1.5")
+@RequiredPlugins("ItemsAdder")
+public class EvtCustomFurnitureSuccessEvent extends SkriptEvent {
 
     private Literal<String> furnitureID;
 
     static {
-        Skript.registerEvent("Custom Furniture Success", EvtCustomFurnitureSucessEvent.class, FurniturePlaceSuccessEvent.class,  "sucess[fully] plac(e|ing) [of] (custom|ia|itemsadder) furniture [%string%]");
+        Skript.registerEvent("Custom Furniture Success", EvtCustomFurnitureSuccessEvent.class, FurniturePlaceSuccessEvent.class,
+                "success[fully] plac(e|ing) [a] (custom|ia|itemsadder) furniture [%string%]",
+                "place success [of] (custom|ia|itemsadder) furniture [%string%]");
         EventValues.registerEventValue(FurniturePlaceSuccessEvent.class, Location.class, new Getter<Location, FurniturePlaceSuccessEvent>() {
             @Override
             public Location get(FurniturePlaceSuccessEvent arg) {
