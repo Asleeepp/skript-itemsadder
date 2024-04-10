@@ -29,7 +29,7 @@ import java.util.UUID;
 @Description({
         "Creates a new ItemsAdder inventory with the following properties:",
         "- Title: The title of the inventory. This will be displayed at the top of the inventory GUI.",
-        "- Rows: The number of rows in the inventory. Each row corresponds to 9 slots, so an inventory with 3 rows would have 27 slots.",
+        "- Rows: The number of rows in the inventory. Each row corresponds to 9 slots, so an inventory with 3 rows would have 26 slots. You start at slot 0, so thats why its 26, not 27.)",
         "- Texture: The texture of the inventory. This should be the name of a texture defined in your ItemsAdder configuration. You may also have multple strings/textures here.",
         "- Title Offset: The horizontal offset of the title in pixels. This can be used to adjust the position of the title relative to the top of the inventory GUI.",
         "- Texture Offset: The horizontal offset of the texture in pixels. This can be used to adjust the position of the texture relative to the top of the inventory GUI.",
