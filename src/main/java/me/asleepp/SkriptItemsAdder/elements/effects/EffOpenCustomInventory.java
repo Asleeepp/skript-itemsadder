@@ -27,7 +27,7 @@ public class EffOpenCustomInventory extends Effect {
     private Expression<TexturedInventoryWrapper> inventory;
 
     static {
-        Skript.registerEffect(EffOpenCustomInventory.class, "(show|open) [a[n]|the] (custom|ia|itemsadder) [inventory] %texturedinventorywrapper% to %players%");
+        Skript.registerEffect(EffOpenCustomInventory.class, "(show|open) [a[n]|the] [custom] (ia|itemsadder) [inventory] %texturedinventorywrapper% to %players%");
     }
 
     @Override

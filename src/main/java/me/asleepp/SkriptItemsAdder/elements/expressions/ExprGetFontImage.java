@@ -31,6 +31,12 @@ public class ExprGetFontImage extends SimpleExpression<String> {
         Skript.registerExpression(ExprGetFontImage.class, String.class, ExpressionType.SIMPLE, "[font|custom|ia|itemsadder] image[s] %strings%");
     }
 
+    @Override
+    public boolean init(Expression<?>[] exprs, int matchedPattern, Kleenean isDelayed, SkriptParser.ParseResult parseResult) {
+        fontImageNames = (Expression<String>) exprs[0];
+        return true;
+    }
+
     @NotNull
     @Override
     public Class<? extends String> getReturnType() {
@@ -39,14 +45,9 @@ public class ExprGetFontImage extends SimpleExpression<String> {
 
     @Override
     public boolean isSingle() {
-        return false;
+        return fontImageNames.isSingle();
     }
 
-    @Override
-    public boolean init(Expression<?>[] exprs, int matchedPattern, Kleenean isDelayed, SkriptParser.ParseResult parseResult) {
-        fontImageNames = (Expression<String>) exprs[0];
-        return true;
-    }
 
     @NotNull
     @Override

@@ -24,7 +24,7 @@ import javax.annotation.Nullable;
 public class EffRemoveCustomFurniture extends Effect {
 
     static {
-        Skript.registerEffect(EffRemoveCustomFurniture.class, "(remove|delete) (custom|ia|itemsadder) furniture [%string%] at %locations%");
+        Skript.registerEffect(EffRemoveCustomFurniture.class, "(remove|delete) [custom] (ia|itemsadder) furniture [%string%] at %locations%");
     }
 
     private Expression<String> furnitureId;

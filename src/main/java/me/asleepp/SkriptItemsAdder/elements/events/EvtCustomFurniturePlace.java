@@ -23,7 +23,7 @@ public class EvtCustomFurniturePlace extends SkriptEvent {
     private Literal<String> furnitureID;
 
     static {
-        Skript.registerEvent("Custom Furniture Place", EvtCustomFurniturePlace.class, FurniturePlaceEvent.class, "place of (custom|ia|itemsadder) furniture [%string%]");
+        Skript.registerEvent("Custom Furniture Place", EvtCustomFurniturePlace.class, FurniturePlaceEvent.class, "place of [custom] (ia|itemsadder) furniture [%string%]");
     }
 
     @SuppressWarnings("unchecked")

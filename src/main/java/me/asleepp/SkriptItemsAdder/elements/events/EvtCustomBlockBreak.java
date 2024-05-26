@@ -29,7 +29,7 @@ public class EvtCustomBlockBreak extends SkriptEvent {
     private Literal<String> blockName;
 
     static {
-        Skript.registerEvent("Custom Block Break", EvtCustomBlockBreak.class, CustomBlockBreakEvent.class, "break of (custom|ia|itemsadder) block [%string%]");
+        Skript.registerEvent("Custom Block Break", EvtCustomBlockBreak.class, CustomBlockBreakEvent.class, "break of [custom] (ia|itemsadder) block [%string%]");
         EventValues.registerEventValue(CustomBlockBreakEvent.class, CustomBlock.class, new Getter<CustomBlock, CustomBlockBreakEvent>() {
             @Override
             public CustomBlock get(CustomBlockBreakEvent event) {

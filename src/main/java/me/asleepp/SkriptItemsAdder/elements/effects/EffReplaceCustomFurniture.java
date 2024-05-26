@@ -26,7 +26,7 @@ public class EffReplaceCustomFurniture extends Effect {
     private Expression<Location> location;
 
     static {
-        Skript.registerEffect(EffReplaceCustomFurniture.class, "replace (custom|ia|itemsadder) furniture %string% at %location%");
+        Skript.registerEffect(EffReplaceCustomFurniture.class, "replace [custom] (ia|itemsadder) furniture %string% at %location%");
     }
 
     @Override
@@ -46,7 +46,7 @@ public class EffReplaceCustomFurniture extends Effect {
 
     @Override
     public String toString(@Nullable Event e, boolean debug) {
-        return "replace (custom|ia|itemsadder) furniture " + furnitureId.toString(e, debug) + " at " + location.toString(e, debug);
+        return "replace itemsadder furniture " + furnitureId.toString(e, debug) + " at " + location.toString(e, debug);
     }
 
     @Override

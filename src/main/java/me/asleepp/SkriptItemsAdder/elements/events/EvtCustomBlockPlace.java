@@ -30,7 +30,7 @@ public class EvtCustomBlockPlace extends SkriptEvent {
     private boolean isCancelled;
 
     static {
-        Skript.registerEvent("Custom Block Place", EvtCustomBlockPlace.class, CustomBlockPlaceEvent.class, "place [of] (custom|ia|itemsadder) block [%string%]");
+        Skript.registerEvent("Custom Block Place", EvtCustomBlockPlace.class, CustomBlockPlaceEvent.class, "place [of] [custom] (ia|itemsadder) block [%string%]");
         EventValues.registerEventValue(CustomBlockPlaceEvent.class, CustomBlock.class, new Getter<CustomBlock, CustomBlockPlaceEvent>() {
             @Override
             public CustomBlock get(CustomBlockPlaceEvent event) {

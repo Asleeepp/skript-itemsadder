@@ -19,14 +19,14 @@ import javax.annotation.Nullable;
 @Name("Get Custom Block Item")
 @Description({"Gets the item associated with the custom block."})
 @Examples({
-    "on interact with custom block:",
-        "\tset {_t} to the item linked with the block"})
+    "on interact with custom itemsadder block:",
+        "\tset {_t} to the item linked with the itemsadder block"})
 @Since("1.4")
 @RequiredPlugins("ItemsAdder")
 public class ExprGetCustomBlockItem extends SimpleExpression<ItemStack> {
 
     static {
-        Skript.registerExpression(ExprGetCustomBlockItem.class, ItemStack.class, ExpressionType.SIMPLE, "[the] item (linked|associated) with [the] block");
+        Skript.registerExpression(ExprGetCustomBlockItem.class, ItemStack.class, ExpressionType.SIMPLE, "[the] item (linked|associated) with [the] [custom] (ia|itemsadder) block");
     }
 
     @Override

@@ -22,7 +22,7 @@ public class EvtCustomEntityDeath extends SkriptEvent {
     private Literal<String> mobID;
 
     static {
-        Skript.registerEvent("Custom Entity Death", EvtCustomEntityDeath.class, CustomEntityDeathEvent.class, "(custom|ia|itemsadder) entity death [of %string%]");
+        Skript.registerEvent("Custom Entity Death", EvtCustomEntityDeath.class, CustomEntityDeathEvent.class, "[custom] (ia|itemsadder) entity death [of %string%]");
     }
 
     @SuppressWarnings("unchecked")

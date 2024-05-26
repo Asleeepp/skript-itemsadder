@@ -31,7 +31,7 @@ public class CondIsCustomEntity extends Condition {
     private Expression<String> entityId;
 
     static {
-        Skript.registerCondition(CondIsCustomEntity.class, new String[] {"%entities% (is [a[n]]|are) (custom|ia|itemsadder) entit(y|ies) [[with id] %-string%]", "%entities% (is[n't| not]) [a] (custom|ia|itemsadder) entit(y|ies) [[with id] %-string%]"});
+        Skript.registerCondition(CondIsCustomEntity.class, "%entities% (is [a[n]]|are) [custom] (ia|itemsadder) entit(y|ies) [[with id] %-string%]", "%entities% (is[n't| not]) [a] [custom] (ia|itemsadder) entit(y|ies) [[with id] %-string%]");
     }
 
     @SuppressWarnings("unchecked")

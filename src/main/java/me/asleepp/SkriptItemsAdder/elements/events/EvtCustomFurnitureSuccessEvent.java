@@ -11,6 +11,7 @@ import ch.njol.skript.lang.SkriptEvent;
 import ch.njol.skript.lang.SkriptParser;
 import ch.njol.skript.registrations.EventValues;
 import ch.njol.skript.util.Getter;
+import dev.lone.itemsadder.api.CustomFurniture;
 import dev.lone.itemsadder.api.Events.FurniturePlaceSuccessEvent;
 import org.bukkit.Location;
 import org.bukkit.event.Event;
@@ -18,7 +19,7 @@ import org.bukkit.event.Event;
 import javax.annotation.Nullable;
 @Name("Furniture Place Sucess")
 @Description("This event is called when a furniture is succesfully placed into the world, use this event instead if you would like to know the location, etc.")
-@Examples({"on place success of custom furniture:", "on successfully placing a custom furniture:"})
+@Examples({"on place success of custom itemsadder furniture:", "on successfully placing a custom itemsadder furniture:"})
 @Since("1.5")
 @RequiredPlugins("ItemsAdder")
 public class EvtCustomFurnitureSuccessEvent extends SkriptEvent {
@@ -27,12 +28,18 @@ public class EvtCustomFurnitureSuccessEvent extends SkriptEvent {
 
     static {
         Skript.registerEvent("Custom Furniture Success", EvtCustomFurnitureSuccessEvent.class, FurniturePlaceSuccessEvent.class,
-                "success[fully] plac(e|ing) [a] (custom|ia|itemsadder) furniture [%string%]",
-                "place success [of] (custom|ia|itemsadder) furniture [%string%]");
+                "success[fully] plac(e|ing) [a] [custom] (ia|itemsadder) furniture [%string%]",
+                "place success [of] [custom] (ia|itemsadder) furniture [%string%]");
         EventValues.registerEventValue(FurniturePlaceSuccessEvent.class, Location.class, new Getter<Location, FurniturePlaceSuccessEvent>() {
             @Override
             public Location get(FurniturePlaceSuccessEvent arg) {
-                return arg.getFurniture().getEntity().getLocation();
+                return arg.getBukkitEntity().getLocation();
+            }
+        }, 0);
+        EventValues.registerEventValue(FurniturePlaceSuccessEvent.class, CustomFurniture.class, new Getter<CustomFurniture, FurniturePlaceSuccessEvent>() {
+            @Override
+            public @Nullable CustomFurniture get(FurniturePlaceSuccessEvent event) {
+                return event.getFurniture();
             }
         }, 0);
     }

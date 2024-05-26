@@ -28,7 +28,7 @@ public class CondIsCustomItem extends Condition {
     private Expression<String> itemId;
 
     static{
-        Skript.registerCondition(CondIsCustomItem.class, new String[] {"%itemtypes% (is [a[n]]|are) (custom|ia|itemsadder) item[s] [[with id] %-string%]", "%itemtypes% (is[n't| not]) [a] (custom|ia|itemsadder) item[s] [[with id] %-string%]"});
+        Skript.registerCondition(CondIsCustomItem.class, "%itemtypes% (is [a[n]]|are) [custom] (ia|itemsadder) item[s] [[with id] %-string%]", "%itemtypes% (is[n't| not]) [a] [custom] (ia|itemsadder) item[s] [[with id] %-string%]");
     }
 
     @SuppressWarnings("unchecked")

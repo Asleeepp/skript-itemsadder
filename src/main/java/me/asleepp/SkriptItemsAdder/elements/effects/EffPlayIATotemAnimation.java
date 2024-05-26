@@ -26,7 +26,7 @@ public class EffPlayIATotemAnimation extends Effect {
     private Expression<String> totem;
 
     static {
-        Skript.registerEffect(EffPlayIATotemAnimation.class, "(play|make) [the] (custom|ia|itemsadder) totem [anim|animation] %string% to %players%");
+        Skript.registerEffect(EffPlayIATotemAnimation.class, "(play|make) [the] [custom] (ia|itemsadder) totem [anim|animation] %string% to %players%");
     }
 
     @SuppressWarnings("unchecked")

@@ -26,7 +26,7 @@ public class EffReplaceBlock extends Effect {
     private Expression<Location> location;
 
     static {
-        Skript.registerEffect(EffReplaceBlock.class, "replace (custom|ia|itemsadder) block %string% at %location%");
+        Skript.registerEffect(EffReplaceBlock.class, "replace [custom] (ia|itemsadder) block %string% at %location%");
     }
 
     @Override
@@ -46,7 +46,7 @@ public class EffReplaceBlock extends Effect {
 
     @Override
     public String toString(@Nullable Event e, boolean debug) {
-        return "replace (custom|ia|itemsadder) block " + blockId.toString(e, debug) + " at " + location.toString(e, debug);
+        return "replace itemsadder block " + blockId.toString(e, debug) + " at " + location.toString(e, debug);
     }
 
     @Override

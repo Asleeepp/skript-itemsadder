@@ -23,7 +23,7 @@ public class EvtResourcePackSendEvent extends SkriptEvent {
     private boolean isItemsAdderPack;
 
     static {
-        Skript.registerEvent("Resource Pack Send Event", EvtResourcePackSendEvent.class, ResourcePackSendEvent.class, "[ia|itemsadder] (texture|resource) pack send");
+        Skript.registerEvent("Resource Pack Send Event", EvtResourcePackSendEvent.class, ResourcePackSendEvent.class, "[custom] [ia|itemsadder] (texture|resource) pack send");
     }
 
     @Override

@@ -9,7 +9,12 @@ import ch.njol.skript.doc.Since;
 import ch.njol.skript.lang.Literal;
 import ch.njol.skript.lang.SkriptEvent;
 import ch.njol.skript.lang.SkriptParser;
+import ch.njol.skript.registrations.EventValues;
+import ch.njol.skript.util.Getter;
+import dev.lone.itemsadder.api.CustomFurniture;
 import dev.lone.itemsadder.api.Events.FurnitureInteractEvent;
+import dev.lone.itemsadder.api.Events.FurnitureInteractEvent;
+import org.bukkit.Location;
 import org.bukkit.event.Event;
 
 import javax.annotation.Nullable;
@@ -22,7 +27,19 @@ public class EvtCustomFurnitureInteract extends SkriptEvent {
     private Literal<String> furnitureID;
 
     static {
-        Skript.registerEvent("Custom Furniture Interact", EvtCustomFurnitureInteract.class, FurnitureInteractEvent.class, "interact with (custom|ia|itemsadder) furniture [%string%]");
+        Skript.registerEvent("Custom Furniture Interact", EvtCustomFurnitureInteract.class, FurnitureInteractEvent.class, "interact with [custom] (ia|itemsadder) furniture [%string%]");
+        EventValues.registerEventValue(FurnitureInteractEvent.class, Location.class, new Getter<Location, FurnitureInteractEvent>() {
+            @Override
+            public @Nullable Location get(FurnitureInteractEvent event) {
+                return event.getBukkitEntity().getLocation();
+            }
+        }, 0);
+        EventValues.registerEventValue(FurnitureInteractEvent.class, CustomFurniture.class, new Getter<CustomFurniture, FurnitureInteractEvent>() {
+            @Override
+            public @Nullable CustomFurniture get(FurnitureInteractEvent event) {
+                return event.getFurniture();
+            }
+        }, 0);
     }
 
     @SuppressWarnings("unchecked")

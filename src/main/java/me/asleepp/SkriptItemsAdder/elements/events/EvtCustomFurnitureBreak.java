@@ -9,7 +9,11 @@ import ch.njol.skript.doc.Since;
 import ch.njol.skript.lang.Literal;
 import ch.njol.skript.lang.SkriptEvent;
 import ch.njol.skript.lang.SkriptParser;
+import ch.njol.skript.registrations.EventValues;
+import ch.njol.skript.util.Getter;
+import dev.lone.itemsadder.api.CustomFurniture;
 import dev.lone.itemsadder.api.Events.FurnitureBreakEvent;
+import org.bukkit.Location;
 import org.bukkit.event.Event;
 
 import javax.annotation.Nullable;
@@ -22,7 +26,19 @@ public class EvtCustomFurnitureBreak extends SkriptEvent {
     private Literal<String> furnitureID;
 
     static {
-        Skript.registerEvent("Custom Furniture Break", EvtCustomFurnitureBreak.class, FurnitureBreakEvent.class, "break of (custom|ia|itemsadder) furniture [%string%]");
+        Skript.registerEvent("Custom Furniture Break", EvtCustomFurnitureBreak.class, FurnitureBreakEvent.class, "break of [custom] (ia|itemsadder) furniture [%string%]");
+        EventValues.registerEventValue(FurnitureBreakEvent.class, Location.class, new Getter<Location, FurnitureBreakEvent>() {
+            @Override
+            public @Nullable Location get(FurnitureBreakEvent event) {
+                return event.getBukkitEntity().getLocation();
+            }
+        }, 0);
+        EventValues.registerEventValue(FurnitureBreakEvent.class, CustomFurniture.class, new Getter<CustomFurniture, FurnitureBreakEvent>() {
+            @Override
+            public @Nullable CustomFurniture get(FurnitureBreakEvent event) {
+                return event.getFurniture();
+            }
+        }, 0);
     }
 
     @SuppressWarnings("unchecked")

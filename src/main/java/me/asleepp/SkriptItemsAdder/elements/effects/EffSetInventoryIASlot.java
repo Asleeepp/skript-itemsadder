@@ -28,7 +28,7 @@ public class EffSetInventoryIASlot extends Effect {
     private Expression<ItemStack> items;
 
     static {
-        Skript.registerEffect(EffSetInventoryIASlot.class, "set slot[s] %integers% of (custom|ia|itemsadder) %texturedinventorywrapper% to %itemstacks%");
+        Skript.registerEffect(EffSetInventoryIASlot.class, "set slot[s] %integers% of [custom] (ia|itemsadder) %texturedinventorywrapper% to %itemstacks%");
     }
 
     @Override

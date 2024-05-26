@@ -27,7 +27,7 @@ public class CondGetBlockClicked extends Condition {
     private Expression<String> block;
 
     static {
-        Skript.registerCondition(CondGetBlockClicked.class, "[the] block clicked is %strings%");
+        Skript.registerCondition(CondGetBlockClicked.class, "[the] [custom] (ia|itemsadder) clicked block is %strings%");
     }
 
     @Override

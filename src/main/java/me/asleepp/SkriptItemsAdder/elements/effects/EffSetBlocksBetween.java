@@ -26,7 +26,7 @@ public class EffSetBlocksBetween extends Effect {
     private Expression<String> customBlockIdExpr;
 
     static {
-        Skript.registerEffect(EffSetBlocksBetween.class, new String[] {"(set|place) [all] blocks within %location% and %location% to (custom|ia|itemsadder) block %string%"});
+        Skript.registerEffect(EffSetBlocksBetween.class, new String[] {"(set|place) [all] blocks within %location% and %location% to [custom] (ia|itemsadder) block %string%"});
     }
     @Override
     public boolean init(Expression<?>[] exprs, int matchedPattern, Kleenean isDelayed, SkriptParser.ParseResult parseResult) {

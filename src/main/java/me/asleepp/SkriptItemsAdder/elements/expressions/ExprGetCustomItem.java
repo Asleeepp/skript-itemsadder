@@ -32,21 +32,25 @@ public class ExprGetCustomItem extends SimpleExpression<ItemType> {
     private Expression<String> itemNames;
 
     static {
-        Skript.registerExpression(ExprGetCustomItem.class, ItemType.class, ExpressionType.SIMPLE, "(custom|ia|itemsadder) item[s] %strings%");
+        Skript.registerExpression(ExprGetCustomItem.class, ItemType.class, ExpressionType.SIMPLE, "[custom] (ia|itemsadder) item[s] %strings%");
+    }
+
+    @Override
+    public boolean init(Expression<?>[] exprs, int matchedPattern, Kleenean isDelayed, SkriptParser.ParseResult parseResult) {
+        itemNames = (Expression<String>) exprs[0];
+        return true;
     }
 
     @Override
     protected ItemType[] get(Event e) {
-        String[] names = itemNames.getAll(e);
+        String[] names = itemNames.getArray(e);
         List<ItemType> items = new ArrayList<>();
         for (String name : names) {
-            if (name != null) {
-                CustomStack customStack = CustomStack.getInstance(name);
-                if (customStack != null) {
-                    ItemStack item = customStack.getItemStack();
-                    if (item != null) {
-                        items.add(new ItemType(item));
-                    }
+            CustomStack customStack = CustomStack.getInstance(name);
+            if (customStack != null) {
+                ItemStack item = customStack.getItemStack();
+                if (item != null) {
+                    items.add(new ItemType(item));
                 }
             }
         }
@@ -55,7 +59,7 @@ public class ExprGetCustomItem extends SimpleExpression<ItemType> {
 
     @Override
     public boolean isSingle() {
-        return false;
+        return itemNames.isSingle();
     }
 
     @Override
@@ -66,12 +70,5 @@ public class ExprGetCustomItem extends SimpleExpression<ItemType> {
     @Override
     public String toString(@Nullable Event e, boolean debug) {
         return "ItemsAdder items " + itemNames.toString(e, debug);
-    }
-
-    @SuppressWarnings("unchecked")
-    @Override
-    public boolean init(Expression<?>[] exprs, int matchedPattern, Kleenean isDelayed, SkriptParser.ParseResult parseResult) {
-        itemNames = (Expression<String>) exprs[0];
-        return true;
     }
 }

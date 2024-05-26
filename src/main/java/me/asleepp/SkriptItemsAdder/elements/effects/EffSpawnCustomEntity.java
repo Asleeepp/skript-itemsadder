@@ -26,7 +26,7 @@ public class EffSpawnCustomEntity extends Effect {
     private Expression<Location> locationExpr;
 
     static {
-        Skript.registerEffect(EffSpawnCustomEntity.class, "(spawn|summon) [the] (custom|ia|itemsadder) (entity|mob) %string% at %locations%");
+        Skript.registerEffect(EffSpawnCustomEntity.class, "(spawn|summon) [the] [custom] (ia|itemsadder) (entity|mob) %string% at %locations%");
     }
 
     @Override

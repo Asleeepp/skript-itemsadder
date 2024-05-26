@@ -26,7 +26,7 @@ public class EvtCustomBlockInteract extends SkriptEvent {
     private Literal<String> blockName;
 
     static {
-        Skript.registerEvent("Custom Block Interact", EvtCustomBlockInteract.class, CustomBlockInteractEvent.class, "interact with (custom|ia|itemsadder) block [%string%]");
+        Skript.registerEvent("Custom Block Interact", EvtCustomBlockInteract.class, CustomBlockInteractEvent.class, "interact with [custom] (ia|itemsadder) block [%string%]");
         EventValues.registerEventValue(CustomBlockInteractEvent.class, Block.class, new Getter<Block, CustomBlockInteractEvent>() {
             @Override
             public Block get(CustomBlockInteractEvent event) {

@@ -25,7 +25,7 @@ public class EffSendIAResourcePack extends Effect {
     private Expression<Player> players;
 
     static {
-        Skript.registerEffect(EffSendIAResourcePack.class, "(send|apply) [current] (itemsadder|ia) (texture|resource) pack to %players%");
+        Skript.registerEffect(EffSendIAResourcePack.class, "(send|apply) [current] [custom] (ia|itemsadder) (texture|resource) pack to %players%");
     }
     @Override
     public boolean init(Expression<?>[] exprs, int matchedPattern, Kleenean isDelayed, SkriptParser.ParseResult parseResult) {

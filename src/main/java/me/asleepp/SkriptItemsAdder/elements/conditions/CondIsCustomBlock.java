@@ -30,7 +30,7 @@ public class CondIsCustomBlock extends Condition {
     private Expression<String> blockId;
 
     static {
-        Skript.registerCondition(CondIsCustomBlock.class, "%blocks% (is [a[n]]|are) (custom|ia|itemsadder) block[s] [[with id] %-string%]", "%blocks% (is[n't| not]) [a] (custom|ia|itemsadder) block[s] [[with id] %-string%]");
+        Skript.registerCondition(CondIsCustomBlock.class, "%blocks% (is [a[n]]|are) [custom] (ia|itemsadder) block[s] [[with id] %-string%]", "%blocks% (is[n't| not]) [a] [custom] (ia|itemsadder) block[s] [[with id] %-string%]");
     }
 
     @SuppressWarnings("unchecked")

@@ -54,6 +54,7 @@ public class SkriptItemsAdder extends JavaPlugin {
         instance = this;
         addon = Skript.registerAddon(this);
         addon.setLanguageFileDirectory("lang");
+        UpdateChecker.check(this);
         try {
             addon.loadClasses("me.asleepp.SkriptItemsAdder");
         } catch (IOException error) {

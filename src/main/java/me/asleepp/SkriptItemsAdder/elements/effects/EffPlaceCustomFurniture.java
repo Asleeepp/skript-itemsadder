@@ -27,7 +27,7 @@ public class EffPlaceCustomFurniture extends Effect {
     private Expression<Location> location;
 
     static {
-        Skript.registerEffect(EffPlaceCustomFurniture.class, "(set|place) (custom|ia|itemsadder) furniture %string% at %location%");
+        Skript.registerEffect(EffPlaceCustomFurniture.class, "(set|place) [custom] (ia|itemsadder) furniture %string% at %location%");
     }
 
     @Override
@@ -42,7 +42,7 @@ public class EffPlaceCustomFurniture extends Effect {
 
     @Override
     public String toString(@Nullable Event e, boolean debug) {
-        return "(set|place) (custom|ia|itemsadder) furniture " + furnitureId.toString(e, debug) + " at " + location.toString(e, debug);
+        return "(set|place) [custom] (ia|itemsadder) furniture " + furnitureId.toString(e, debug) + " at " + location.toString(e, debug);
     }
 
     @Override
