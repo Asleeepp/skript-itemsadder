@@ -1,62 +1,68 @@
 package me.asleepp.SkriptItemsAdder;
 
-import ch.njol.skript.util.Version;
-import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.plugin.java.JavaPlugin;
 
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.net.URL;
-import java.util.logging.Level;
+import java.net.URI;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
+import java.util.concurrent.CompletableFuture;
 
-/**
- * @author ShaneBeee, ImNotStable, Equipable
- */
+public class UpdateChecker implements Listener {
 
-public class UpdateChecker {
+    private final JavaPlugin plugin;
+    private final String currentVersion;
+    private String latestVersion;
 
-    public static void check(SkriptItemsAdder plugin) {
-        String latestVersion = getLatestVersion();
-        if (latestVersion == null)
-            return;
-        String currentVersion = plugin.getDescription().getVersion();
-        if (new Version(currentVersion).isSmallerThan(new Version(latestVersion))) {
-            SkriptItemsAdder.getInstance().getLogger().info("skript-itemsadder is NOT up to date!");
-            SkriptItemsAdder.getInstance().getLogger().info("> Current Version: " + currentVersion);
-            SkriptItemsAdder.getInstance().getLogger().info("> Latest Version: " + latestVersion);
-            SkriptItemsAdder.getInstance().getLogger().info("> Download it at: https://github.com/Asleeepp/skript-itemsadder/releases");
-            Bukkit.getPluginManager().registerEvents(new Listener() {
-                @EventHandler
-                public void on(PlayerJoinEvent event) {
-                    Player player = event.getPlayer();
-                    if (!player.hasPermission("skript-itemsadder.update.check") && !player.isOp()) return;
-
-                    player.sendMessage(" ");
-                    player.sendMessage(MiniMessage.miniMessage().deserialize("<red>[<white>skript-itemsadder<red>] <white>skript-itemsadder is <red><bold>OUTDATED<white>!"));
-                    player.sendMessage(MiniMessage.miniMessage().deserialize("<red>[<white>skript-itemsadder<red>] <white>New version: " + latestVersion));
-                    player.sendMessage(MiniMessage.miniMessage().deserialize("<red>[<white>skript-itemsadder<red>] <white>Download at: <link>https://github.com/Asleeepp/skript-itemsadder/releases"));
-                    player.sendMessage(" ");
-                }
-            }, plugin);
-        } else
-            SkriptItemsAdder.getInstance().getLogger().info("skript-itemsadder is up to date!");
+    public UpdateChecker(JavaPlugin plugin) {
+        this.plugin = plugin;
+        this.currentVersion = plugin.getDescription().getVersion();
+        Bukkit.getPluginManager().registerEvents(this, plugin);
+        checkForUpdate();
     }
 
-    private static String getLatestVersion() {
-        String url = "https://api.github.com/repos/Asleeepp/skript-itemsadder/releases/latest";
-        try (BufferedReader reader = new BufferedReader(new InputStreamReader(new URL(url).openStream()))) {
-            JsonObject jsonObject = new Gson().fromJson(reader, JsonObject.class);
-            return jsonObject.get("tag_name").getAsString();
-        } catch (Exception exception) {
-            SkriptItemsAdder.getInstance().getLogger().log(Level.WARNING, "Failed to check for latest version.");
-            exception.printStackTrace();
+    @EventHandler
+    public void onPlayerJoin(PlayerJoinEvent event) {
+        Player player = event.getPlayer();
+        if (player.hasPermission("skript-nonplayercharacter.update.check") && latestVersion != null) {
+            player.sendMessage(" ");
+            player.sendMessage(MiniMessage.miniMessage().deserialize("<red>[<white>skript-itemsadder<red>] <white>skript-itemsadder is <red><bold>OUTDATED<white>!"));
+            player.sendMessage(MiniMessage.miniMessage().deserialize("<red>[<white>skript-itemsadder<red>] <white>New version: " + latestVersion));
+            player.sendMessage(MiniMessage.miniMessage().deserialize("<red>[<white>skript-itemsadder<red>] <white>Download at: <link>https://github.com/Asleeepp/skript-itemsadder/releases"));
+            player.sendMessage(" ");
         }
-        return null;
+    }
+
+    private void checkForUpdate() {
+        HttpClient httpClient = HttpClient.newHttpClient();
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create("https://api.github.com/repos/asleeepp/skript-itemsadder/releases/latest"))
+                .build();
+
+        CompletableFuture<HttpResponse<String>> responseFuture = httpClient.sendAsync(request, HttpResponse.BodyHandlers.ofString());
+
+        responseFuture.thenApply(HttpResponse::body)
+                .thenAccept(body -> {
+                    JsonObject jsonResponse = new JsonObject().getAsJsonObject();
+                    latestVersion = jsonResponse.get("tag_name").getAsString();
+
+                    if (!currentVersion.equals(latestVersion)) {
+                        SkriptItemsAdder.getInstance().getLogger().warning("An update for skript-nonplayercharacter is available: " + latestVersion + " (current version: " + currentVersion + ")");
+                    } else {
+                        SkriptItemsAdder.getInstance().getLogger().info("skript-nonplayercharacter is up to date!");
+                    }
+                })
+                .exceptionally(e -> {
+                    SkriptItemsAdder.getInstance().getLogger().severe("Failed to check for updates: " + e.getMessage());
+                    return null;
+                });
     }
 }
