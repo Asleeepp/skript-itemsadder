@@ -9,7 +9,11 @@ import ch.njol.skript.doc.Since;
 import ch.njol.skript.lang.Literal;
 import ch.njol.skript.lang.SkriptEvent;
 import ch.njol.skript.lang.SkriptParser;
+import ch.njol.skript.registrations.EventValues;
+import ch.njol.skript.util.Getter;
 import dev.lone.itemsadder.api.Events.CustomEntityDeathEvent;
+import org.bukkit.Location;
+import org.bukkit.entity.Entity;
 import org.bukkit.event.Event;
 
 import javax.annotation.Nullable;
@@ -23,6 +27,24 @@ public class EvtCustomEntityDeath extends SkriptEvent {
 
     static {
         Skript.registerEvent("Custom Entity Death", EvtCustomEntityDeath.class, CustomEntityDeathEvent.class, "[custom] (ia|itemsadder) entity death [of %string%]");
+        EventValues.registerEventValue(CustomEntityDeathEvent.class, Entity.class, new Getter<Entity, CustomEntityDeathEvent>() {
+            @Override
+            public @Nullable Entity get(CustomEntityDeathEvent customEntityDeathEvent) {
+                return customEntityDeathEvent.getEntity();
+            }
+        }, 0);
+        EventValues.registerEventValue(CustomEntityDeathEvent.class, Location.class, new Getter<Location, CustomEntityDeathEvent>() {
+            @Override
+            public @Nullable Location get(CustomEntityDeathEvent customEntityDeathEvent) {
+                return customEntityDeathEvent.getEntity().getLocation();
+            }
+        },0);
+        EventValues.registerEventValue(CustomEntityDeathEvent.class, Entity.class, new Getter<Entity, CustomEntityDeathEvent>() {
+            @Override
+            public @Nullable Entity get(CustomEntityDeathEvent customEntityDeathEvent) {
+                return customEntityDeathEvent.getKiller();
+            }
+        }, 0);
     }
 
     @SuppressWarnings("unchecked")

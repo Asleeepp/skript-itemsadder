@@ -1,15 +1,26 @@
 package me.asleepp.SkriptItemsAdder.elements.types;
 
+import ch.njol.skript.classes.Changer;
 import ch.njol.skript.classes.ClassInfo;
 import ch.njol.skript.classes.Parser;
-import ch.njol.skript.expressions.base.EventValueExpression;
+import ch.njol.skript.classes.Serializer;
+import ch.njol.skript.lang.DefaultExpression;
+import ch.njol.skript.lang.Expression;
 import ch.njol.skript.lang.ParseContext;
+import ch.njol.skript.lang.SkriptParser;
 import ch.njol.skript.registrations.Classes;
-import dev.lone.itemsadder.api.CustomBlock;
-import dev.lone.itemsadder.api.FontImages.FontImageWrapper;
+import ch.njol.util.Checker;
+import ch.njol.util.Kleenean;
+import ch.njol.yggdrasil.Fields;
 import dev.lone.itemsadder.api.FontImages.TexturedInventoryWrapper;
+import me.asleepp.SkriptItemsAdder.SkriptItemsAdder;
+import me.asleepp.SkriptItemsAdder.other.AliasesGenerator;
+import me.asleepp.SkriptItemsAdder.other.CustomItemType;
+import org.bukkit.event.Event;
 
+import javax.annotation.Nullable;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 
 public class Types {
@@ -17,34 +28,63 @@ public class Types {
     public static Map<String, TexturedInventoryWrapper> inventoryMap = new HashMap<>();
 
     static {
-        Classes.registerClass(new ClassInfo<>(CustomBlock.class, "customblock")
-                .user("customblock")
-                .name("Custom Block")
-                .description("Represents a Custom/ItemsAdder Block")
-                .defaultExpression(new EventValueExpression<>(CustomBlock.class))
-                .since("1.5")
-                .parser(new Parser<CustomBlock>() {
-
+        Classes.registerClass(new ClassInfo<>(CustomItemType.class, "customitemtype")
+                .user("customitemtypes?")
+                .name("Custom Item Type")
+                .description("Represents a custom item type using aliases.")
+                .serializer(new Serializer<CustomItemType>() {
                     @Override
-                    public String toString(CustomBlock customBlock, int flags) {
-                        return customBlock.getId();
+                    public Fields serialize(CustomItemType customItemType) {
+                        Fields fields = new Fields();
+                        fields.putObject("namespacedID", customItemType.getNamespacedID());
+                        return fields;
                     }
 
                     @Override
-                    public String toVariableNameString(CustomBlock customBlock) {
-                        return "customblock:" + customBlock.getId();
+                    public void deserialize(CustomItemType customItemType, Fields fields) {
+                        try {
+                            customItemType.setNamespacedID((String) fields.getObject("namespacedID"));
+                        } catch (java.io.StreamCorruptedException e) {
+                            e.printStackTrace();
+                        }
                     }
 
                     @Override
-                    public CustomBlock parse(String s, ParseContext context) {
-                        return CustomBlock.getInstance(s);
-                    }
-
-                    @Override
-                    public boolean canParse(ParseContext context) {
+                    public boolean mustSyncDeserialization() {
                         return true;
                     }
-                }));
+
+                    @Override
+                    public boolean canBeInstantiated() {
+                        return true;
+                    }
+                })
+
+                .parser(new Parser<CustomItemType>() {
+                    @Override
+                    @Nullable
+                    public CustomItemType parse(String s, ParseContext context) {
+                        AliasesGenerator aliasesGenerator = SkriptItemsAdder.getInstance().getAliasesGenerator();
+                        String namespacedID = aliasesGenerator.getNamespacedId(s.toLowerCase().replace("_", " "));
+                        return namespacedID == null ? null : new CustomItemType(namespacedID);
+                    }
+
+                    @Override
+                    public String toString(CustomItemType customItemType, int flags) {
+                        return customItemType.getNamespacedID();
+                    }
+
+                    @Override
+                    public String toVariableNameString(CustomItemType customItemType) {
+                        return customItemType.getNamespacedID();
+                    }
+
+
+                    public String getVariableNamePattern() {
+                        return ".+";
+                    }
+                })
+        );
 
         Classes.registerClass(new ClassInfo<>(TexturedInventoryWrapper.class, "texturedinventorywrapper")
                 .user("texturedinventorywrappers?")

@@ -13,6 +13,7 @@ import ch.njol.skript.registrations.EventValues;
 import ch.njol.skript.util.Getter;
 import dev.lone.itemsadder.api.CustomFurniture;
 import dev.lone.itemsadder.api.Events.FurnitureBreakEvent;
+import me.asleepp.SkriptItemsAdder.other.CustomItemType;
 import org.bukkit.Location;
 import org.bukkit.event.Event;
 
@@ -23,10 +24,10 @@ import javax.annotation.Nullable;
 @Since("1.0")
 @RequiredPlugins("ItemsAdder")
 public class EvtCustomFurnitureBreak extends SkriptEvent {
-    private Literal<String> furnitureID;
+    private Literal<CustomItemType> furnitureID;
 
     static {
-        Skript.registerEvent("Custom Furniture Break", EvtCustomFurnitureBreak.class, FurnitureBreakEvent.class, "break of [custom] (ia|itemsadder) furniture [%string%]");
+        Skript.registerEvent("Custom Furniture Break", EvtCustomFurnitureBreak.class, FurnitureBreakEvent.class, "break of [custom] (ia|itemsadder) furniture [%customitemtype%]");
         EventValues.registerEventValue(FurnitureBreakEvent.class, Location.class, new Getter<Location, FurnitureBreakEvent>() {
             @Override
             public @Nullable Location get(FurnitureBreakEvent event) {
@@ -44,7 +45,7 @@ public class EvtCustomFurnitureBreak extends SkriptEvent {
     @SuppressWarnings("unchecked")
     @Override
     public boolean init(Literal<?>[] args, int matchedPattern, SkriptParser.ParseResult parseResult) {
-        furnitureID = (Literal<String>) args[0];
+        furnitureID = (Literal<CustomItemType>) args[0];
         return true;
     }
 
@@ -55,8 +56,8 @@ public class EvtCustomFurnitureBreak extends SkriptEvent {
             if (furnitureID == null) {
                 return !event.isCancelled();
             } else {
-                String id = event.getNamespacedID();
-                if (id.equals(furnitureID.getSingle(e))) {
+                CustomItemType id = furnitureID.getSingle(e);
+                if (id != null && id.equals(new CustomItemType(event.getNamespacedID()))) {
                     return !event.isCancelled();
                 }
             }

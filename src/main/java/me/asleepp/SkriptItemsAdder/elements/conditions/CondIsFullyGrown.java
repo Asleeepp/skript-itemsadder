@@ -30,14 +30,10 @@ public class CondIsFullyGrown extends Condition {
 
     @Override
     public boolean check(Event e) {
-        Block[] bs = blocks.getArray(e);
-        for (Block b : bs) {
-            CustomCrop crop = CustomCrop.byAlreadyPlaced(b);
-            if (crop != null && crop.isFullyGrown() != isNegated()) {
-                return false;
-            }
-        }
-        return true;
+        return blocks.check(e, block -> {
+            CustomCrop crop = CustomCrop.byAlreadyPlaced(block);
+            return crop != null && crop.isFullyGrown();
+        }, isNegated());
     }
 
     @Override

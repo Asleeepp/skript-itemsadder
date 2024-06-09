@@ -12,6 +12,10 @@ import ch.njol.skript.lang.SkriptParser;
 import ch.njol.skript.registrations.EventValues;
 import ch.njol.skript.util.Getter;
 import dev.lone.itemsadder.api.Events.CustomBlockInteractEvent;
+import me.asleepp.SkriptItemsAdder.SkriptItemsAdder;
+import me.asleepp.SkriptItemsAdder.other.AliasesGenerator;
+import me.asleepp.SkriptItemsAdder.other.CustomItemType;
+import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.event.Event;
 
@@ -23,14 +27,20 @@ import javax.annotation.Nullable;
 @Since("1.0")
 @RequiredPlugins("ItemsAdder")
 public class EvtCustomBlockInteract extends SkriptEvent {
-    private Literal<String> blockName;
+    private Literal<CustomItemType> blockName;
 
     static {
-        Skript.registerEvent("Custom Block Interact", EvtCustomBlockInteract.class, CustomBlockInteractEvent.class, "interact with [custom] (ia|itemsadder) block [%string%]");
+        Skript.registerEvent("Custom Block Interact", EvtCustomBlockInteract.class, CustomBlockInteractEvent.class, "interact with [custom] (ia|itemsadder) block [%customitemtype%]");
         EventValues.registerEventValue(CustomBlockInteractEvent.class, Block.class, new Getter<Block, CustomBlockInteractEvent>() {
             @Override
             public Block get(CustomBlockInteractEvent event) {
                 return event.getBlockClicked();
+            }
+        }, 0);
+        EventValues.registerEventValue(CustomBlockInteractEvent.class, Location.class, new Getter<Location, CustomBlockInteractEvent>() {
+            @Override
+            public @Nullable Location get(CustomBlockInteractEvent customBlockInteractEvent) {
+                return customBlockInteractEvent.getBlockClicked().getLocation();
             }
         }, 0);
     }
@@ -39,7 +49,7 @@ public class EvtCustomBlockInteract extends SkriptEvent {
     @SuppressWarnings("unchecked")
     @Override
     public boolean init(Literal<?>[] args, int matchedPattern, SkriptParser.ParseResult parseResult) {
-        blockName = (Literal<String>) args[0];
+        blockName = (Literal<CustomItemType>) args[0];
         return true;
     }
 
@@ -56,8 +66,17 @@ public class EvtCustomBlockInteract extends SkriptEvent {
 
         // check block
         if (blockName != null) {
-            String specifiedBlockName = blockName.getSingle(event);
-            if (specifiedBlockName == null || !specifiedBlockName.equals(customEvent.getNamespacedID())) {
+            CustomItemType specifiedBlockType = blockName.getSingle(event);
+            AliasesGenerator aliasesGenerator = SkriptItemsAdder.getInstance().getAliasesGenerator();
+            CustomItemType actualBlockType = EventValues.getEventValue(customEvent, CustomItemType.class, 0);
+
+            if (specifiedBlockType == null || actualBlockType == null) {
+                return false;
+            }
+
+            String specifiedBlockName = specifiedBlockType.getNamespacedID();
+            String actualBlockName = actualBlockType.getNamespacedID();
+            if (actualBlockName == null || actualBlockName.isEmpty() || !actualBlockName.equals(specifiedBlockName)) {
                 return false;
             }
         }

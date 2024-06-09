@@ -13,6 +13,9 @@ import ch.njol.skript.registrations.EventValues;
 import ch.njol.skript.util.Getter;
 import dev.lone.itemsadder.api.CustomBlock;
 import dev.lone.itemsadder.api.Events.CustomBlockPlaceEvent;
+import me.asleepp.SkriptItemsAdder.SkriptItemsAdder;
+import me.asleepp.SkriptItemsAdder.other.AliasesGenerator;
+import me.asleepp.SkriptItemsAdder.other.CustomItemType;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.event.Event;
@@ -26,11 +29,11 @@ import javax.annotation.Nullable;
 @RequiredPlugins("ItemsAdder")
 public class EvtCustomBlockPlace extends SkriptEvent {
 
-    private Literal<String> blockName;
+    private Literal<CustomItemType> blockName;
     private boolean isCancelled;
 
     static {
-        Skript.registerEvent("Custom Block Place", EvtCustomBlockPlace.class, CustomBlockPlaceEvent.class, "place [of] [custom] (ia|itemsadder) block [%string%]");
+        Skript.registerEvent("Custom Block Place", EvtCustomBlockPlace.class, CustomBlockPlaceEvent.class, "place [of] [custom] (ia|itemsadder) block [%customitemtype%]");
         EventValues.registerEventValue(CustomBlockPlaceEvent.class, CustomBlock.class, new Getter<CustomBlock, CustomBlockPlaceEvent>() {
             @Override
             public CustomBlock get(CustomBlockPlaceEvent event) {
@@ -48,7 +51,7 @@ public class EvtCustomBlockPlace extends SkriptEvent {
     @SuppressWarnings("unchecked")
     @Override
     public boolean init(Literal<?>[] args, int matchedPattern, SkriptParser.ParseResult parseResult) {
-        blockName = (Literal<String>) args[0];
+        blockName = (Literal<CustomItemType>) args[0];
         return true;
     }
 
@@ -66,12 +69,16 @@ public class EvtCustomBlockPlace extends SkriptEvent {
 
         // check block
         if (blockName != null) {
-            String specifiedBlockName = blockName.getSingle(event);
-            Block block = customEvent.getBlock();
-            if (block == null) {
+            CustomItemType specifiedBlockType = blockName.getSingle(event);
+            AliasesGenerator aliasesGenerator = SkriptItemsAdder.getInstance().getAliasesGenerator();
+            CustomItemType actualBlockType = EventValues.getEventValue(customEvent, CustomItemType.class, 0);
+
+            if (specifiedBlockType == null || actualBlockType == null) {
                 return false;
             }
-            String actualBlockName = customEvent.getNamespacedID();
+
+            String specifiedBlockName = specifiedBlockType.getNamespacedID();
+            String actualBlockName = actualBlockType.getNamespacedID();
             if (actualBlockName == null || actualBlockName.isEmpty() || !actualBlockName.equals(specifiedBlockName)) {
                 return false;
             }

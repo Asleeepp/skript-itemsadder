@@ -1,9 +1,10 @@
-package me.asleepp.SkriptItemsAdder;
+package me.asleepp.SkriptItemsAdder.other;
 
+import com.google.gson.Gson;
 import com.google.gson.JsonObject;
+import me.asleepp.SkriptItemsAdder.SkriptItemsAdder;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -32,12 +33,14 @@ public class UpdateChecker implements Listener {
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent event) {
         Player player = event.getPlayer();
-        if (player.hasPermission("skript-nonplayercharacter.update.check") && latestVersion != null) {
-            player.sendMessage(" ");
-            player.sendMessage(MiniMessage.miniMessage().deserialize("<red>[<white>skript-itemsadder<red>] <white>skript-itemsadder is <red><bold>OUTDATED<white>!"));
-            player.sendMessage(MiniMessage.miniMessage().deserialize("<red>[<white>skript-itemsadder<red>] <white>New version: " + latestVersion));
-            player.sendMessage(MiniMessage.miniMessage().deserialize("<red>[<white>skript-itemsadder<red>] <white>Download at: <link>https://github.com/Asleeepp/skript-itemsadder/releases"));
-            player.sendMessage(" ");
+        if (player.hasPermission("skript-itemsadder.update.check") && latestVersion != null) {
+            if (!currentVersion.equals(latestVersion)) {
+                player.sendMessage(" ");
+                player.sendMessage(MiniMessage.miniMessage().deserialize("<dark_red>[<red>skript-itemsadder<dark_red>] <white>skript-itemsadder is <red><bold>OUTDATED<white>!"));
+                player.sendMessage(MiniMessage.miniMessage().deserialize("<dark_red>[<red>skript-itemsadder<dark_red>] <white>New version: " + latestVersion));
+                player.sendMessage(MiniMessage.miniMessage().deserialize("<dark_red>[<red>skript-itemsadder<dark_red>] <white>Download <click:open_url:https://github.com/Asleeepp/skript-itemsadder/releases>here!</click>"));
+                player.sendMessage(" ");
+            }
         }
     }
 
@@ -51,13 +54,17 @@ public class UpdateChecker implements Listener {
 
         responseFuture.thenApply(HttpResponse::body)
                 .thenAccept(body -> {
-                    JsonObject jsonResponse = new JsonObject().getAsJsonObject();
-                    latestVersion = jsonResponse.get("tag_name").getAsString();
+                    JsonObject jsonResponse = new Gson().fromJson(body, JsonObject.class);
+                    if (jsonResponse != null && jsonResponse.has("tag_name")) {
+                        latestVersion = jsonResponse.get("tag_name").getAsString();
 
-                    if (!currentVersion.equals(latestVersion)) {
-                        SkriptItemsAdder.getInstance().getLogger().warning("An update for skript-nonplayercharacter is available: " + latestVersion + " (current version: " + currentVersion + ")");
+                        if (!currentVersion.equals(latestVersion)) {
+                            SkriptItemsAdder.getInstance().getLogger().warning("An update for skript-itemsadder is available: " + latestVersion + " (current version: " + currentVersion + ")");
+                        } else {
+                            SkriptItemsAdder.getInstance().getLogger().info("skript-itemsadder is up to date!");
+                        }
                     } else {
-                        SkriptItemsAdder.getInstance().getLogger().info("skript-nonplayercharacter is up to date!");
+                        SkriptItemsAdder.getInstance().getLogger().severe("Failed to check for updates: Unexpected JSON format.");
                     }
                 })
                 .exceptionally(e -> {
@@ -65,4 +72,5 @@ public class UpdateChecker implements Listener {
                     return null;
                 });
     }
+
 }

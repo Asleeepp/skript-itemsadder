@@ -13,6 +13,8 @@ import ch.njol.skript.lang.SkriptParser;
 import ch.njol.skript.lang.util.SimpleExpression;
 import ch.njol.util.Kleenean;
 import dev.lone.itemsadder.api.CustomStack;
+import dev.lone.itemsadder.api.ItemsAdder;
+import me.asleepp.SkriptItemsAdder.other.CustomItemType;
 import org.bukkit.event.Event;
 import org.bukkit.inventory.ItemStack;
 
@@ -29,37 +31,56 @@ import java.util.List;
 @RequiredPlugins("ItemsAdder")
 public class ExprGetCustomItem extends SimpleExpression<ItemType> {
 
-    private Expression<String> itemNames;
+    private Expression<CustomItemType> itemTypes;
 
     static {
-        Skript.registerExpression(ExprGetCustomItem.class, ItemType.class, ExpressionType.SIMPLE, "[custom] (ia|itemsadder) item[s] %strings%");
+        Skript.registerExpression(ExprGetCustomItem.class, ItemType.class, ExpressionType.SIMPLE,
+                "[custom] (ia|itemsadder) item[s] %customitemtype%",
+                "(all [[of] the]) [custom] (ia|itemsadder) item[s]");
     }
 
     @Override
     public boolean init(Expression<?>[] exprs, int matchedPattern, Kleenean isDelayed, SkriptParser.ParseResult parseResult) {
-        itemNames = (Expression<String>) exprs[0];
+        if (matchedPattern == 1)
+            return true;
+        itemTypes = (Expression<CustomItemType>) exprs[0];
         return true;
     }
 
     @Override
     protected ItemType[] get(Event e) {
-        String[] names = itemNames.getArray(e);
         List<ItemType> items = new ArrayList<>();
-        for (String name : names) {
-            CustomStack customStack = CustomStack.getInstance(name);
-            if (customStack != null) {
-                ItemStack item = customStack.getItemStack();
-                if (item != null) {
-                    items.add(new ItemType(item));
+        if (itemTypes != null) {
+            if (itemTypes.isSingle()) {
+                CustomItemType itemType = itemTypes.getSingle(e);
+                if (itemType != null) {
+                    CustomStack customStack = CustomStack.getInstance(itemType.getNamespacedID());
+                    if (customStack != null) {
+                        items.add(new ItemType(customStack.getItemStack()));
+                    }
                 }
+            } else {
+                for (CustomItemType itemType : itemTypes.getArray(e)) {
+                    CustomStack customStack = CustomStack.getInstance(itemType.getNamespacedID());
+                    if (customStack != null) {
+                        items.add(new ItemType(customStack.getItemStack()));
+                    }
+                }
+            }
+        } else {
+            List<CustomStack> customStacks = ItemsAdder.getAllItems();
+            for (CustomStack customStack : customStacks) {
+                items.add(new ItemType(customStack.getItemStack()));
             }
         }
         return items.toArray(new ItemType[0]);
     }
 
+
+
     @Override
     public boolean isSingle() {
-        return itemNames.isSingle();
+        return itemTypes != null && itemTypes.isSingle();
     }
 
     @Override
@@ -69,6 +90,6 @@ public class ExprGetCustomItem extends SimpleExpression<ItemType> {
 
     @Override
     public String toString(@Nullable Event e, boolean debug) {
-        return "ItemsAdder items " + itemNames.toString(e, debug);
+        return "ItemsAdder items " + itemTypes.toString(e, debug);
     }
 }

@@ -30,7 +30,7 @@ public class EffPlaceBlockOrCrop extends Effect {
     private boolean isCrop;
 
     static {
-        Skript.registerEffect(EffPlaceBlockOrCrop.class, "(set|place) [custom] (ia|itemsadder) (block|:crop) %string% at [%directions% %locations%]");
+        Skript.registerEffect(EffPlaceBlockOrCrop.class, "(set|place) [custom] (ia|itemsadder) (block|:crop) %string% [%directions% %locations%]");
     }
 
     @Override

@@ -14,6 +14,7 @@ import ch.njol.skript.util.Getter;
 import dev.lone.itemsadder.api.CustomFurniture;
 import dev.lone.itemsadder.api.Events.FurnitureInteractEvent;
 import dev.lone.itemsadder.api.Events.FurnitureInteractEvent;
+import me.asleepp.SkriptItemsAdder.other.CustomItemType;
 import org.bukkit.Location;
 import org.bukkit.event.Event;
 
@@ -24,10 +25,10 @@ import javax.annotation.Nullable;
 @Since("1.0")
 @RequiredPlugins("ItemsAdder")
 public class EvtCustomFurnitureInteract extends SkriptEvent {
-    private Literal<String> furnitureID;
+    private Literal<CustomItemType> furnitureID;
 
     static {
-        Skript.registerEvent("Custom Furniture Interact", EvtCustomFurnitureInteract.class, FurnitureInteractEvent.class, "interact with [custom] (ia|itemsadder) furniture [%string%]");
+        Skript.registerEvent("Custom Furniture Interact", EvtCustomFurnitureInteract.class, FurnitureInteractEvent.class, "interact with [custom] (ia|itemsadder) furniture [%customitemtype%]");
         EventValues.registerEventValue(FurnitureInteractEvent.class, Location.class, new Getter<Location, FurnitureInteractEvent>() {
             @Override
             public @Nullable Location get(FurnitureInteractEvent event) {
@@ -45,7 +46,7 @@ public class EvtCustomFurnitureInteract extends SkriptEvent {
     @SuppressWarnings("unchecked")
     @Override
     public boolean init(Literal<?>[] args, int matchedPattern, SkriptParser.ParseResult parseResult) {
-        furnitureID = (Literal<String>) args[0];
+        furnitureID = (Literal<CustomItemType>) args[0];
         return true;
     }
 
@@ -56,8 +57,8 @@ public class EvtCustomFurnitureInteract extends SkriptEvent {
             if (furnitureID == null) {
                 return !event.isCancelled();
             } else {
-                String id = event.getNamespacedID();
-                if (id.equals(furnitureID.getSingle(e))) {
+                CustomItemType id = furnitureID.getSingle(e);
+                if (id != null && id.equals(new CustomItemType(event.getNamespacedID()))) {
                     return !event.isCancelled();
                 }
             }
