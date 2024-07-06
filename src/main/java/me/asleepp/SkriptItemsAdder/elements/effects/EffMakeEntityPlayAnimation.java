@@ -30,7 +30,7 @@ public class EffMakeEntityPlayAnimation extends Effect {
 
 
     static {
-        Skript.registerEffect(EffMakeEntityPlayAnimation.class, new String[] {"(make|force) %entities% [to] play [custom] (ia|itemsadder) (anim[ation]) %string%"});
+        Skript.registerEffect(EffMakeEntityPlayAnimation.class, "(make|force) %entities% [to] play [custom] (ia|itemsadder) (anim[ation]) %string%");
     }
 
     @Override

@@ -13,10 +13,14 @@ import ch.njol.skript.util.Direction;
 import ch.njol.util.Kleenean;
 import dev.lone.itemsadder.api.CustomBlock;
 import dev.lone.itemsadder.api.CustomCrop;
+import me.asleepp.SkriptItemsAdder.other.CustomItemType;
 import org.bukkit.Location;
 import org.bukkit.event.Event;
 
 import javax.annotation.Nullable;
+import java.util.Arrays;
+import java.util.List;
+
 @Name("Place Custom Block/Crop")
 @Description({"Places a custom block or crop at a location."})
 @Examples({
@@ -26,42 +30,61 @@ import javax.annotation.Nullable;
 @RequiredPlugins("ItemsAdder")
 public class EffPlaceBlockOrCrop extends Effect {
     private Expression<Location> locations;
-    private Expression<String> customBlockIdExpr;
+    private Expression<Object> customBlockIdExpr;
     private boolean isCrop;
 
     static {
-        Skript.registerEffect(EffPlaceBlockOrCrop.class, "(set|place) [custom] (ia|itemsadder) (block|:crop) %string% [%directions% %locations%]");
+        Skript.registerEffect(EffPlaceBlockOrCrop.class, "(set|place) [custom] (ia|itemsadder) (block|:crop) %customitemtypes/strings% [%directions% %locations%]");
     }
 
     @Override
-    public boolean init(Expression<?>[] exprs, int matchedPattern, Kleenean isDelayed, SkriptParser.ParseResult parseResult) {
-        customBlockIdExpr = (Expression<String>) exprs[0];
-        locations = Direction.combine((Expression<? extends Direction>) exprs[1], (Expression<? extends Location>) exprs[2]);
-        if (parseResult.hasTag("crop"))
+    public boolean init(Expression<?>[] expressions, int matchedPattern, Kleenean isDelayed, SkriptParser.ParseResult parseResult) {
+        customBlockIdExpr = (Expression<Object>) expressions[0];
+        locations = Direction.combine((Expression<? extends Direction>) expressions[1], (Expression<? extends Location>) expressions[2]);
+        if (parseResult.regexes.size() > 0 && parseResult.regexes.get(0).group().equals("crop"))
             isCrop = true;
         return true;
     }
 
     @Override
     protected void execute(Event e) {
-        String customBlockId = customBlockIdExpr.getSingle(e);
+        List<Object> customBlockIds = Arrays.asList(customBlockIdExpr.getArray(e));
 
-        if (locations == null || customBlockId == null) {
+        if (locations == null || customBlockIds.isEmpty()) {
             return;
         }
-        // TODO test this
-        for (Location location : this.locations.getArray(e)) {
-            if (isCrop) {
-                try { // for some reason CustomCrop doesn't have getInstance
-                    CustomCrop crop = CustomCrop.place(customBlockId, location);
+
+        for (Location location : locations.getArray(e)) {
+            for (Object customBlockIdObj : customBlockIds) {
+                String customBlockId;
+                if (customBlockIdObj instanceof CustomItemType) {
+                    customBlockId = ((CustomItemType) customBlockIdObj).getNamespacedID();
+                } else if (customBlockIdObj instanceof String) {
+                    customBlockId = (String) customBlockIdObj;
+                } else {
+                    continue;
                 }
-                catch (Exception exception) {
-                   Skript.error("Your namespace:id does not exist.");
-                }
-            } else {
-                CustomBlock block = CustomBlock.getInstance(customBlockId);
-                if (block != null) {
-                    block.place(location);
+
+                try {
+                    if (isCrop) {
+                        CustomCrop existingCrop = CustomCrop.byAlreadyPlaced(location.getBlock());
+                        if (existingCrop == null) {
+                            CustomCrop crop = CustomCrop.place(customBlockId, location);
+                        } else {
+                            Skript.error("There is already a crop here!");
+                        }
+                    } else {
+                        CustomBlock existingBlock = CustomBlock.byAlreadyPlaced(location.getBlock());
+                        CustomBlock block = CustomBlock.getInstance(customBlockId);
+                        if (block != null) {
+                            if (existingBlock == null) {
+                                existingBlock.remove();
+                            }
+                            block.place(location);
+                        }
+                    }
+                } catch (Exception ex) {
+                    ex.printStackTrace();
                 }
             }
         }
@@ -69,6 +92,8 @@ public class EffPlaceBlockOrCrop extends Effect {
 
     @Override
     public String toString(@Nullable Event e, boolean debug) {
-        return "place custom " + (isCrop ? "crop " : "block ") + this.customBlockIdExpr.toString(e, debug) + " at " + this.locations.toString(e, debug);
+        String itemTypeString = customBlockIdExpr.toString(e, debug);
+        String type = isCrop ? "crop" : "block";
+        return "place custom " + type + " " + itemTypeString + " at " + locations.toString(e, debug);
     }
 }

@@ -1,32 +1,46 @@
 package me.asleepp.SkriptItemsAdder.elements.events;
 
 import ch.njol.skript.Skript;
+import ch.njol.skript.doc.Description;
+import ch.njol.skript.doc.Examples;
+import ch.njol.skript.doc.Name;
+import ch.njol.skript.doc.RequiredPlugins;
+import ch.njol.skript.doc.Since;
 import ch.njol.skript.lang.Literal;
 import ch.njol.skript.lang.SkriptEvent;
 import ch.njol.skript.lang.SkriptParser;
 import ch.njol.skript.registrations.EventValues;
 import ch.njol.skript.util.Getter;
+import dev.lone.itemsadder.api.CustomBlock;
 import dev.lone.itemsadder.api.Events.CustomBlockBreakEvent;
 import me.asleepp.SkriptItemsAdder.SkriptItemsAdder;
 import me.asleepp.SkriptItemsAdder.other.AliasesGenerator;
 import me.asleepp.SkriptItemsAdder.other.CustomItemType;
 import org.bukkit.Location;
 import org.bukkit.event.Event;
-import org.bukkit.inventory.ItemStack;
 
 import javax.annotation.Nullable;
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
 
+@Name("On Custom Block Break")
+@Description({"Fires when a ItemsAdder block gets broken."})
+@Examples({"on break of custom block \"namespace:ruby_block\":", "on break of custom block ruby block:"})
+@Since("1.0")
+@RequiredPlugins("ItemsAdder")
 public class EvtCustomBlockBreak extends SkriptEvent {
 
-    private Literal<CustomItemType> blockName;
+    private Literal<?>[] blockNames;
+    private List<String> aliases;
+    private AliasesGenerator aliasesGenerator = SkriptItemsAdder.getInstance().getAliasesGenerator();
 
     static {
-        Skript.registerEvent("Custom Block Break", EvtCustomBlockBreak.class, CustomBlockBreakEvent.class, "break of [custom] (ia|itemsadder) block [%customitemtype%]");
-        EventValues.registerEventValue(CustomBlockBreakEvent.class, CustomItemType.class, new Getter<CustomItemType, CustomBlockBreakEvent>() {
+        Skript.registerEvent("Custom Block Break", EvtCustomBlockBreak.class, CustomBlockBreakEvent.class, "break [of] [custom] (ia|itemsadder) block[s] [%customitemtypes/strings%]");
+        EventValues.registerEventValue(CustomBlockBreakEvent.class, CustomBlock.class, new Getter<CustomBlock, CustomBlockBreakEvent>() {
             @Override
-            public CustomItemType get(CustomBlockBreakEvent event) {
-                String namespacedID = event.getNamespacedID();
-                return new CustomItemType(namespacedID);
+            public CustomBlock get(CustomBlockBreakEvent event) {
+                return CustomBlock.byAlreadyPlaced(event.getBlock());
             }
         }, 0);
         EventValues.registerEventValue(CustomBlockBreakEvent.class, Location.class, new Getter<Location, CustomBlockBreakEvent>() {
@@ -35,19 +49,27 @@ public class EvtCustomBlockBreak extends SkriptEvent {
                 return event.getBlock().getLocation();
             }
         }, 0);
-        EventValues.registerEventValue(CustomBlockBreakEvent.class, ItemStack.class, new Getter<ItemStack, CustomBlockBreakEvent>() {
-            @Override
-            public @Nullable ItemStack get(CustomBlockBreakEvent event) {
-                return event.getCustomBlockItem();
-            }
-        }, 0);
     }
 
     @SuppressWarnings("unchecked")
     @Override
     public boolean init(Literal<?>[] args, int matchedPattern, SkriptParser.ParseResult parseResult) {
-        if (args.length > 0 && args[0] instanceof Literal) {
-            blockName = (Literal<CustomItemType>) args[0];
+        blockNames = args;
+        if (blockNames != null) {
+            aliases = Arrays.stream(blockNames)
+                    .map(literal -> {
+                        if (literal instanceof Literal) {
+                            Object value = ((Literal<?>) literal).getSingle();
+                            if (value instanceof CustomItemType) {
+                                return ((CustomItemType) value).getNamespacedID();
+                            } else if (value instanceof String) {
+                                return (String) value;
+                            }
+                        }
+                        return null;
+                    })
+                    .filter(name -> name != null)
+                    .collect(Collectors.toList());
         }
         return true;
     }
@@ -64,25 +86,13 @@ public class EvtCustomBlockBreak extends SkriptEvent {
         }
 
         // Check block name
-        if (blockName != null) {
-            CustomItemType specifiedBlockType = blockName.getSingle(event);
-            AliasesGenerator aliasesGenerator = SkriptItemsAdder.getInstance().getAliasesGenerator();
-            CustomItemType actualBlockType = EventValues.getEventValue(customEvent, CustomItemType.class, 0);
-
-            if (specifiedBlockType == null || actualBlockType == null) {
-                return false;
-            }
-
-            String specifiedBlockName = specifiedBlockType.getNamespacedID();
-            String actualBlockName = actualBlockType.getNamespacedID();
-            if (actualBlockName == null || actualBlockName.isEmpty() || !actualBlockName.equals(specifiedBlockName)) {
-                return false;
-            }
+        if (aliases != null && !aliases.isEmpty()) {
+            String actualBlockName = customEvent.getNamespacedID();
+            return aliases.contains(aliasesGenerator.getNamespacedId(actualBlockName));
         }
 
         return true;
     }
-
 
     @Override
     public String toString(@Nullable Event e, boolean debug) {

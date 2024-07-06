@@ -1,26 +1,18 @@
 package me.asleepp.SkriptItemsAdder.elements.types;
 
-import ch.njol.skript.classes.Changer;
 import ch.njol.skript.classes.ClassInfo;
 import ch.njol.skript.classes.Parser;
 import ch.njol.skript.classes.Serializer;
-import ch.njol.skript.lang.DefaultExpression;
-import ch.njol.skript.lang.Expression;
 import ch.njol.skript.lang.ParseContext;
-import ch.njol.skript.lang.SkriptParser;
 import ch.njol.skript.registrations.Classes;
-import ch.njol.util.Checker;
-import ch.njol.util.Kleenean;
 import ch.njol.yggdrasil.Fields;
 import dev.lone.itemsadder.api.FontImages.TexturedInventoryWrapper;
 import me.asleepp.SkriptItemsAdder.SkriptItemsAdder;
 import me.asleepp.SkriptItemsAdder.other.AliasesGenerator;
 import me.asleepp.SkriptItemsAdder.other.CustomItemType;
-import org.bukkit.event.Event;
 
 import javax.annotation.Nullable;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
 
 public class Types {
@@ -59,7 +51,6 @@ public class Types {
                         return true;
                     }
                 })
-
                 .parser(new Parser<CustomItemType>() {
                     @Override
                     @Nullable
@@ -78,7 +69,6 @@ public class Types {
                     public String toVariableNameString(CustomItemType customItemType) {
                         return customItemType.getNamespacedID();
                     }
-
 
                     public String getVariableNamePattern() {
                         return ".+";
@@ -119,4 +109,3 @@ public class Types {
                 }));
     }
 }
-

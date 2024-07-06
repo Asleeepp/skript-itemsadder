@@ -13,21 +13,30 @@ import ch.njol.skript.registrations.EventValues;
 import ch.njol.skript.util.Getter;
 import dev.lone.itemsadder.api.CustomFurniture;
 import dev.lone.itemsadder.api.Events.FurnitureBreakEvent;
+import me.asleepp.SkriptItemsAdder.SkriptItemsAdder;
+import me.asleepp.SkriptItemsAdder.other.AliasesGenerator;
 import me.asleepp.SkriptItemsAdder.other.CustomItemType;
 import org.bukkit.Location;
 import org.bukkit.event.Event;
 
 import javax.annotation.Nullable;
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Name("On Custom Furniture Break")
 @Description({"Fires when a ItemsAdder furniture gets broken."})
 @Examples({"on break of custom furniture:"})
 @Since("1.0")
 @RequiredPlugins("ItemsAdder")
 public class EvtCustomFurnitureBreak extends SkriptEvent {
-    private Literal<CustomItemType> furnitureID;
+
+    private Literal<?>[] furnitureIDs;
+    private List<String> aliases;
+    private AliasesGenerator aliasesGenerator = SkriptItemsAdder.getInstance().getAliasesGenerator();
 
     static {
-        Skript.registerEvent("Custom Furniture Break", EvtCustomFurnitureBreak.class, FurnitureBreakEvent.class, "break of [custom] (ia|itemsadder) furniture [%customitemtype%]");
+        Skript.registerEvent("Custom Furniture Break", EvtCustomFurnitureBreak.class, FurnitureBreakEvent.class, "break of [custom] (ia|itemsadder) furniture [%customitemtypes/strings%]");
         EventValues.registerEventValue(FurnitureBreakEvent.class, Location.class, new Getter<Location, FurnitureBreakEvent>() {
             @Override
             public @Nullable Location get(FurnitureBreakEvent event) {
@@ -45,7 +54,23 @@ public class EvtCustomFurnitureBreak extends SkriptEvent {
     @SuppressWarnings("unchecked")
     @Override
     public boolean init(Literal<?>[] args, int matchedPattern, SkriptParser.ParseResult parseResult) {
-        furnitureID = (Literal<CustomItemType>) args[0];
+        furnitureIDs = args;
+        if (furnitureIDs != null) {
+            aliases = Arrays.stream(furnitureIDs)
+                    .map(literal -> {
+                        if (literal instanceof Literal) {
+                            Object value = ((Literal<?>) literal).getSingle();
+                            if (value instanceof CustomItemType) {
+                                return ((CustomItemType) value).getNamespacedID();
+                            } else if (value instanceof String) {
+                                return (String) value;
+                            }
+                        }
+                        return null;
+                    })
+                    .filter(name -> name != null)
+                    .collect(Collectors.toList());
+        }
         return true;
     }
 
@@ -53,20 +78,19 @@ public class EvtCustomFurnitureBreak extends SkriptEvent {
     public boolean check(Event e) {
         if (e instanceof FurnitureBreakEvent) {
             FurnitureBreakEvent event = (FurnitureBreakEvent) e;
-            if (furnitureID == null) {
-                return !event.isCancelled();
-            } else {
-                CustomItemType id = furnitureID.getSingle(e);
-                if (id != null && id.equals(new CustomItemType(event.getNamespacedID()))) {
-                    return !event.isCancelled();
-                }
+
+            if (aliases != null && !aliases.isEmpty()) {
+                String actualFurnitureName = event.getNamespacedID();
+                return aliases.contains(aliasesGenerator.getNamespacedId(actualFurnitureName)) && !event.isCancelled();
             }
+
+            return !event.isCancelled();
         }
         return false;
     }
 
     @Override
     public String toString(@Nullable Event e, boolean debug) {
-        return "ItemsAdder custom furniture " + (furnitureID != null ? furnitureID.toString(e, debug) : "") + " break";
+        return "ItemsAdder custom furniture " + (furnitureIDs != null ? furnitureIDs.toString() : "") + " break";
     }
 }

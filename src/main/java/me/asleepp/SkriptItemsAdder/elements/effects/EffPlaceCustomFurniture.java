@@ -10,9 +10,12 @@ import ch.njol.skript.lang.Effect;
 import ch.njol.skript.lang.Expression;
 import ch.njol.skript.lang.SkriptParser;
 import ch.njol.util.Kleenean;
+import org.bukkit.entity.Entity;
 import org.bukkit.event.Event;
 import dev.lone.itemsadder.api.CustomFurniture;
 import org.bukkit.Location;
+import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.scheduler.BukkitRunnable;
 
 import javax.annotation.Nullable;
 
@@ -25,24 +28,10 @@ public class EffPlaceCustomFurniture extends Effect {
 
     private Expression<String> furnitureId;
     private Expression<Location> location;
+    private JavaPlugin plugin;
 
     static {
         Skript.registerEffect(EffPlaceCustomFurniture.class, "(set|place) [custom] (ia|itemsadder) furniture %string% at %location%");
-    }
-
-    @Override
-    protected void execute(Event e) {
-        String id = furnitureId.getSingle(e);
-        Location loc = location.getSingle(e);
-
-        if (id != null && loc != null) {
-            CustomFurniture.spawn(id, loc.getBlock());
-        }
-    }
-
-    @Override
-    public String toString(@Nullable Event e, boolean debug) {
-        return "(set|place) [custom] (ia|itemsadder) furniture " + furnitureId.toString(e, debug) + " at " + location.toString(e, debug);
     }
 
     @Override
@@ -51,4 +40,35 @@ public class EffPlaceCustomFurniture extends Effect {
         location = (Expression<Location>) exprs[1];
         return true;
     }
+
+    @Override
+    protected void execute(Event e) {
+        String id = furnitureId.getSingle(e);
+        Location loc = location.getSingle(e);
+
+        CustomFurniture customFurniture = CustomFurniture.byAlreadySpawned(loc.getBlock());
+        if (id != null && loc != null) {
+            if (customFurniture == null) {
+                CustomFurniture.spawn(id, loc.getBlock());
+            } else {
+                Entity armorStand = customFurniture.getArmorstand();
+                if (armorStand != null) {
+                    Location originalLocation = armorStand.getLocation();
+                    customFurniture.remove(false);
+                    new BukkitRunnable() {
+                        @Override
+                        public void run() {
+                            customFurniture.teleport(originalLocation);
+                        }
+                    }.runTaskLater(plugin, 3);
+                }
+            }
+        }
+    }
+
+    @Override
+    public String toString(@Nullable Event e, boolean debug) {
+        return "(set|place) [custom] (ia|itemsadder) furniture " + furnitureId.toString(e, debug) + " at " + location.toString(e, debug);
+    }
+
 }

@@ -1,5 +1,5 @@
 version: @version@
 
 types:
-    customblock: customblock
     texturedinventorywrapper: texturedinventorywrapper
+    customitemtype: custom item type

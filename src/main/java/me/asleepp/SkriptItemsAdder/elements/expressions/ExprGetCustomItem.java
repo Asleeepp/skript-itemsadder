@@ -15,6 +15,7 @@ import ch.njol.util.Kleenean;
 import dev.lone.itemsadder.api.CustomStack;
 import dev.lone.itemsadder.api.ItemsAdder;
 import me.asleepp.SkriptItemsAdder.other.CustomItemType;
+import org.bukkit.Material;
 import org.bukkit.event.Event;
 import org.bukkit.inventory.ItemStack;
 
@@ -31,19 +32,28 @@ import java.util.List;
 @RequiredPlugins("ItemsAdder")
 public class ExprGetCustomItem extends SimpleExpression<ItemType> {
 
-    private Expression<CustomItemType> itemTypes;
+    private Expression<Object> itemTypes;
+    private Expression<ItemStack> itemStacks;
+    private boolean usesItemMaterial;
 
     static {
         Skript.registerExpression(ExprGetCustomItem.class, ItemType.class, ExpressionType.SIMPLE,
-                "[custom] (ia|itemsadder) item[s] %customitemtype%",
-                "(all [[of] the]) [custom] (ia|itemsadder) item[s]");
+                "[custom] (ia|itemsadder) item[s] %customitemtypes/strings%",
+            "(all [[of] the]) [custom] (ia|itemsadder) item[s] [1:(that uses|using) [item[s]|material[s]] %-itemstacks%]");
     }
 
     @Override
     public boolean init(Expression<?>[] exprs, int matchedPattern, Kleenean isDelayed, SkriptParser.ParseResult parseResult) {
-        if (matchedPattern == 1)
-            return true;
-        itemTypes = (Expression<CustomItemType>) exprs[0];
+        if (matchedPattern == 1) {
+            usesItemMaterial = parseResult.mark == 1;
+            if (usesItemMaterial) {
+                itemStacks = (Expression<ItemStack>) exprs[0];
+            } else {
+                itemTypes = (Expression<Object>) exprs[0];
+            }
+        } else {
+            itemTypes = (Expression<Object>) exprs[0];
+        }
         return true;
     }
 
@@ -52,19 +62,27 @@ public class ExprGetCustomItem extends SimpleExpression<ItemType> {
         List<ItemType> items = new ArrayList<>();
         if (itemTypes != null) {
             if (itemTypes.isSingle()) {
-                CustomItemType itemType = itemTypes.getSingle(e);
+                Object itemType = itemTypes.getSingle(e);
                 if (itemType != null) {
-                    CustomStack customStack = CustomStack.getInstance(itemType.getNamespacedID());
+                    CustomStack customStack = getCustomStack(itemType);
                     if (customStack != null) {
                         items.add(new ItemType(customStack.getItemStack()));
                     }
                 }
             } else {
-                for (CustomItemType itemType : itemTypes.getArray(e)) {
-                    CustomStack customStack = CustomStack.getInstance(itemType.getNamespacedID());
+                for (Object itemType : itemTypes.getArray(e)) {
+                    CustomStack customStack = getCustomStack(itemType);
                     if (customStack != null) {
                         items.add(new ItemType(customStack.getItemStack()));
                     }
+                }
+            }
+        } else if (itemStacks != null) {
+            for (ItemStack itemStack : itemStacks.getArray(e)) {
+                Material material = itemStack.getType();
+                List<CustomStack> customStacks = ItemsAdder.getAllItems(material);
+                for (CustomStack customStack : customStacks) {
+                    items.add(new ItemType(customStack.getItemStack()));
                 }
             }
         } else {
@@ -76,7 +94,14 @@ public class ExprGetCustomItem extends SimpleExpression<ItemType> {
         return items.toArray(new ItemType[0]);
     }
 
-
+    private CustomStack getCustomStack(Object itemType) {
+        if (itemType instanceof CustomItemType) {
+            return CustomStack.getInstance(((CustomItemType) itemType).getNamespacedID());
+        } else if (itemType instanceof String) {
+            return CustomStack.getInstance((String) itemType);
+        }
+        return null;
+    }
 
     @Override
     public boolean isSingle() {
@@ -90,6 +115,10 @@ public class ExprGetCustomItem extends SimpleExpression<ItemType> {
 
     @Override
     public String toString(@Nullable Event e, boolean debug) {
-        return "ItemsAdder items " + itemTypes.toString(e, debug);
+        if (usesItemMaterial) {
+            return "ItemsAdder items that use item material " + itemStacks.toString(e, debug);
+        } else {
+            return "ItemsAdder items " + itemTypes.toString(e, debug);
+        }
     }
 }

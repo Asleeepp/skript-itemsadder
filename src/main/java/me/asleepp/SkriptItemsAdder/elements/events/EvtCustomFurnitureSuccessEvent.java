@@ -13,24 +13,32 @@ import ch.njol.skript.registrations.EventValues;
 import ch.njol.skript.util.Getter;
 import dev.lone.itemsadder.api.CustomFurniture;
 import dev.lone.itemsadder.api.Events.FurniturePlaceSuccessEvent;
+import me.asleepp.SkriptItemsAdder.SkriptItemsAdder;
+import me.asleepp.SkriptItemsAdder.other.AliasesGenerator;
 import me.asleepp.SkriptItemsAdder.other.CustomItemType;
 import org.bukkit.Location;
 import org.bukkit.event.Event;
 
 import javax.annotation.Nullable;
-@Name("Furniture Place Sucess")
-@Description("This event is called when a furniture is succesfully placed into the world, use this event instead if you would like to know the location, etc.")
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
+
+@Name("Furniture Place Success")
+@Description("This event is called when a furniture is successfully placed into the world, use this event instead if you would like to know the location, etc.")
 @Examples({"on place success of custom itemsadder furniture:", "on successfully placing a custom itemsadder furniture:"})
 @Since("1.5")
 @RequiredPlugins("ItemsAdder")
 public class EvtCustomFurnitureSuccessEvent extends SkriptEvent {
 
-    private Literal<CustomItemType> furnitureID;
+    private Literal<?>[] furnitureIDs;
+    private List<String> aliases;
+    private AliasesGenerator aliasesGenerator = SkriptItemsAdder.getInstance().getAliasesGenerator();
 
     static {
         Skript.registerEvent("Custom Furniture Success", EvtCustomFurnitureSuccessEvent.class, FurniturePlaceSuccessEvent.class,
-                "success[fully] plac(e|ing) [a] [custom] (ia|itemsadder) furniture [%customitemtype%]",
-                "place success [of] [custom] (ia|itemsadder) furniture [%customitemtype%]");
+                "success[fully] plac(e|ing) [a] [custom] (ia|itemsadder) furniture [%customitemtypes/strings%]",
+                "place success [of] [custom] (ia|itemsadder) furniture [%customitemtypes/strings%]");
         EventValues.registerEventValue(FurniturePlaceSuccessEvent.class, Location.class, new Getter<Location, FurniturePlaceSuccessEvent>() {
             @Override
             public Location get(FurniturePlaceSuccessEvent arg) {
@@ -48,7 +56,23 @@ public class EvtCustomFurnitureSuccessEvent extends SkriptEvent {
     @SuppressWarnings("unchecked")
     @Override
     public boolean init(Literal<?>[] args, int matchedPattern, SkriptParser.ParseResult parseResult) {
-        furnitureID = (Literal<CustomItemType>) args[0];
+        furnitureIDs = args;
+        if (furnitureIDs != null) {
+            aliases = Arrays.stream(furnitureIDs)
+                    .map(literal -> {
+                        if (literal instanceof Literal) {
+                            Object value = ((Literal<?>) literal).getSingle();
+                            if (value instanceof CustomItemType) {
+                                return ((CustomItemType) value).getNamespacedID();
+                            } else if (value instanceof String) {
+                                return (String) value;
+                            }
+                        }
+                        return null;
+                    })
+                    .filter(name -> name != null)
+                    .collect(Collectors.toList());
+        }
         return true;
     }
 
@@ -56,12 +80,12 @@ public class EvtCustomFurnitureSuccessEvent extends SkriptEvent {
     public boolean check(Event e) {
         if (e instanceof FurniturePlaceSuccessEvent) {
             FurniturePlaceSuccessEvent event = (FurniturePlaceSuccessEvent) e;
-            if (furnitureID != null) {
-                CustomItemType id = furnitureID.getSingle(e);
-                if (id != null && !id.equals(new CustomItemType(event.getNamespacedID()))) {
-                    return false;
-                }
+
+            if (furnitureIDs != null && !aliases.isEmpty()) {
+                String actualFurnitureName = event.getNamespacedID();
+                return aliases.contains(aliasesGenerator.getNamespacedId(actualFurnitureName));
             }
+
             return true;
         }
         return false;
@@ -69,6 +93,6 @@ public class EvtCustomFurnitureSuccessEvent extends SkriptEvent {
 
     @Override
     public String toString(@Nullable Event e, boolean debug) {
-        return "Furniture Place Success event" + (furnitureID != null ? " with id " + furnitureID.toString(e, debug) : "");
+        return "Furniture Place Success event" + (furnitureIDs != null ? " with id " + Arrays.toString(furnitureIDs) : "");
     }
 }
