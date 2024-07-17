@@ -77,7 +77,7 @@ public class SkriptItemsAdder extends JavaPlugin {
             @Override
             public void run() {
                 loadInitialItems();
-                ItemsAdderEventListener eventListener = new ItemsAdderEventListener(plugin, aliasesGenerator, initialItems);
+                ItemsAdderEventListener eventListener = new ItemsAdderEventListener(plugin, aliasesGenerator);
                 manager.registerEvents(eventListener, plugin);
             }
         }.runTask(this);
