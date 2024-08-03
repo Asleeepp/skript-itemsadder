@@ -46,6 +46,4 @@ public class CustomItemType {
         return alias != null ? new CustomItemType(alias) : null;
     }
 
-
-
 }

@@ -5,7 +5,6 @@ import ch.njol.skript.aliases.Aliases;
 import ch.njol.skript.aliases.AliasesProvider;
 import ch.njol.skript.aliases.InvalidMinecraftIdException;
 import dev.lone.itemsadder.api.CustomStack;
-import dev.lone.itemsadder.api.FontImages.FontImageWrapper;
 import dev.lone.itemsadder.api.ItemsAdder;
 import me.asleepp.SkriptItemsAdder.SkriptItemsAdder;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -13,11 +12,7 @@ import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.HashSet;
+import java.util.*;
 
 public class AliasesGenerator {
 
@@ -31,7 +26,7 @@ public class AliasesGenerator {
         this.plugin = plugin;
         this.aliasesFile = new File(plugin.getDataFolder(), "aliases.yml");
         loadAliasesFile();
-        loadAliases();
+        loadAliasesFromFile();
     }
 
     public void loadAliasesFile() {
@@ -42,16 +37,16 @@ public class AliasesGenerator {
         aliasesConfig = YamlConfiguration.loadConfiguration(aliasesFile);
     }
 
-    private void loadAliases() {
+    private void loadAliasesFromFile() {
         if (aliasesConfig.contains("items")) {
             for (String key : aliasesConfig.getConfigurationSection("items").getKeys(false)) {
-                itemAliases.put(key, aliasesConfig.getString(key));
+                itemAliases.put(key, aliasesConfig.getString("items." + key));
             }
         }
         plugin.getLogger().info("Loaded " + itemAliases.size() + " aliases from file.");
     }
 
-    public void saveAliases() {
+    private void saveAliasesToFile() {
         for (Map.Entry<String, String> entry : itemAliases.entrySet()) {
             aliasesConfig.set("items." + entry.getKey(), entry.getValue());
         }
@@ -64,69 +59,26 @@ public class AliasesGenerator {
         }
     }
 
-    public String generateAliasForItem(CustomStack item) {
-        String name = item.getId().toLowerCase().replace("_", " ");
-        String namespace = item.getNamespace();
-
-        String existingAlias = getAliasForItem(item);
-        if (existingAlias != null) {
-            return existingAlias;
-        } else {
-            if (!itemAliases.containsValue(name)) {
-                return name;
-            } else {
-                for (Map.Entry<String, String> entry : itemAliases.entrySet()) {
-                    if (entry.getValue().equals(name) && !namespace.equals(entry.getKey().split(":")[0])) {
-                        return namespace + ":" + item.getId().toLowerCase().replace("_", " ");
-                    }
-                }
-            }
-        }
+    private String generateUniqueAlias(String baseAlias) {
+        String uniqueAlias = baseAlias;
         int counter = 1;
-        String uniqueAlias;
-        do {
-            uniqueAlias = name + "_" + counter;
+        while (itemAliases.containsKey(uniqueAlias)) {
+            uniqueAlias = baseAlias + "_" + counter;
             counter++;
-        } while (itemAliases.containsValue(uniqueAlias));
+        }
         return uniqueAlias;
     }
 
-    private String getAliasForItem(CustomStack item) {
-        for (Map.Entry<String, String> entry : itemAliases.entrySet()) {
-            if (entry.getValue().equals(item.getNamespacedID())) {
-                return entry.getKey();
-            }
+    private String generateAliasForItem(CustomStack item) {
+        String baseAlias = item.getId().toLowerCase().replace("_", " ");
+        if (itemAliases.containsValue(baseAlias)) {
+            return generateUniqueAlias(baseAlias);
         }
-        return null;
+        return baseAlias;
     }
 
-    public void generateAliasesForNewItems(List<CustomStack> newItems) {
-        for (CustomStack item : newItems) {
-            String alias = generateAliasForItem(item);
-            registerAlias(alias, item.getNamespacedID());
-        }
-        saveAliases();
-    }
-
-    public void generateAliasesForAllItems() {
-        plugin.getLogger().info("Generating aliases for all items.");
-        List<CustomStack> allItems = ItemsAdder.getAllItems();
-        plugin.getLogger().info("Total items: " + allItems.size());
-        for (CustomStack item : allItems) {
-            String existingAlias = getAliasForItem(item);
-            if (existingAlias == null) {
-                String alias = generateAliasForItem(item);
-                plugin.getLogger().info("Generated alias: " + alias + " for item: " + item.getNamespacedID());
-                registerAlias(alias, item.getNamespacedID());
-            }
-        }
-        saveAliases();
-        plugin.getLogger().info("Aliases have been generated");
-    }
-
-    public void registerAlias(String alias, String namespacedId) {
+    private void registerAlias(String alias, String namespacedId) {
         itemAliases.put(alias, namespacedId);
-        aliasesConfig.set(alias, namespacedId);
         generatedAliases.add(alias);
 
         AliasesProvider addonProvider = Aliases.getAddonProvider(Skript.getAddonInstance());
@@ -134,9 +86,34 @@ public class AliasesGenerator {
         try {
             addonProvider.addAlias(aliasName, namespacedId, null, new HashMap<>());
             plugin.getLogger().info("Registered alias: " + alias + " for item: " + namespacedId + " with AliasesProvider.");
+        } catch (InvalidMinecraftIdException e) {
+            plugin.getLogger().severe("Invalid Minecraft ID: " + namespacedId);
         } catch (NullPointerException e) {
             plugin.getLogger().severe("Failed to register alias with AliasesProvider: " + e.getMessage());
         }
+    }
+
+    public void generateAliasesForNewItems(List<CustomStack> newItems) {
+        for (CustomStack item : newItems) {
+            String alias = generateAliasForItem(item);
+            registerAlias(alias, item.getNamespacedID());
+        }
+        saveAliasesToFile();
+    }
+
+    public void generateAliasesForAllItems() {
+        plugin.getLogger().info("Generating aliases for all items.");
+        List<CustomStack> allItems = ItemsAdder.getAllItems();
+        plugin.getLogger().info("Total items: " + allItems.size());
+        for (CustomStack item : allItems) {
+            if (!itemAliases.containsValue(item.getNamespacedID())) {
+                String alias = generateAliasForItem(item);
+                plugin.getLogger().info("Generated alias: " + alias + " for item: " + item.getNamespacedID());
+                registerAlias(alias, item.getNamespacedID());
+            }
+        }
+        saveAliasesToFile();
+        plugin.getLogger().info("Aliases have been generated");
     }
 
     public void syncAliasesWithProvider() {
@@ -155,9 +132,8 @@ public class AliasesGenerator {
 
     public void handleAliasChange(String alias, String newNamespacedId) {
         itemAliases.put(alias, newNamespacedId);
-        aliasesConfig.set(alias, newNamespacedId);
-        saveAliases();
-
+        aliasesConfig.set("items." + alias, newNamespacedId);
+        saveAliasesToFile();
         syncAliasesWithProvider();
     }
 
@@ -165,9 +141,24 @@ public class AliasesGenerator {
         String alias = getAliasForItem(item);
         if (alias != null) {
             itemAliases.remove(alias);
-            aliasesConfig.set(alias, null);
-            saveAliases();
+            aliasesConfig.set("items." + alias, null);
+            saveAliasesToFile();
             syncAliasesWithProvider();
+        }
+    }
+
+    private String getAliasForItem(CustomStack item) {
+        for (Map.Entry<String, String> entry : itemAliases.entrySet()) {
+            if (entry.getValue().equals(item.getNamespacedID())) {
+                return entry.getKey();
+            }
+        }
+        return null;
+    }
+
+    public void handleRemovedItems(List<CustomStack> removedItems) {
+        for (CustomStack item : removedItems) {
+            handleItemUnregister(item);
         }
     }
 
@@ -179,10 +170,7 @@ public class AliasesGenerator {
         return generatedAliases;
     }
 
-    public void handleRemovedItems(List<CustomStack> removedItems) {
-        for (CustomStack item : removedItems) {
-            handleItemUnregister(item);
-        }
+    public void saveAliases() {
+        saveAliasesToFile();
     }
-
 }

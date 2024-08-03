@@ -1,16 +1,12 @@
 package me.asleepp.SkriptItemsAdder;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 import ch.njol.skript.util.Version;
 import dev.lone.itemsadder.api.CustomStack;
 import dev.lone.itemsadder.api.ItemsAdder;
-import me.asleepp.SkriptItemsAdder.other.AliasesGenerator;
-import me.asleepp.SkriptItemsAdder.other.ItemsAdderEventListener;
-import me.asleepp.SkriptItemsAdder.other.Metrics;
-import me.asleepp.SkriptItemsAdder.other.UpdateChecker;
+import me.asleepp.SkriptItemsAdder.other.*;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -26,7 +22,6 @@ public class SkriptItemsAdder extends JavaPlugin {
     private static SkriptAddon addon;
     private static SkriptItemsAdder instance;
     private AliasesGenerator aliasesGenerator;
-    private List<CustomStack> initialItems = new ArrayList<>();
 
     @Nullable
     public static SkriptItemsAdder getInstance() {
@@ -39,10 +34,12 @@ public class SkriptItemsAdder extends JavaPlugin {
     }
 
     public boolean itemsAdderReady = false;
+    public boolean loading = true;
 
     @Override
     public void onEnable() {
         // Let's get this show on the road.
+        long start = System.currentTimeMillis();
         final PluginManager manager = this.getServer().getPluginManager();
         final Plugin skript = manager.getPlugin("Skript");
         if (skript == null || !skript.isEnabled()) {
@@ -50,7 +47,7 @@ public class SkriptItemsAdder extends JavaPlugin {
             manager.disablePlugin(this);
             return;
         } else if (Skript.getVersion().compareTo(new Version(2, 7, 0)) < 0) {
-            getLogger().warning("You are running an unsupported version of Skript. Disabling...");
+            getLogger().severe("You are running an unsupported version of Skript. Disabling...");
             manager.disablePlugin(this);
             return;
         }
@@ -73,10 +70,8 @@ public class SkriptItemsAdder extends JavaPlugin {
 
         // Pass the aliasesGenerator to the event listener
         new BukkitRunnable() {
-
             @Override
             public void run() {
-                loadInitialItems();
                 ItemsAdderEventListener eventListener = new ItemsAdderEventListener(plugin, aliasesGenerator);
                 manager.registerEvents(eventListener, plugin);
             }
@@ -89,19 +84,18 @@ public class SkriptItemsAdder extends JavaPlugin {
             if (itemsAdderReady) {
                 return;
             }
-
-
         }, 0, 20);
 
         int pluginId = 20971;
         Metrics metrics = new Metrics(this, pluginId);
         metrics.addCustomChart(new Metrics.SimplePie("skript_version", () -> Skript.getVersion().toString()));
+        metrics.addCustomChart(new Metrics.SimplePie("itemsadder_version", () -> Util.getPluginVersion("ItemsAdder")));
         instance = this;
         addon = Skript.registerAddon(this);
         addon.setLanguageFileDirectory("lang");
+        new SkriptItemsAdderCommand(this);
 
         saveDefaultConfig();
-        aliasesGenerator.loadAliasesFile();
 
         if (getConfig().getBoolean("check-for-updates", true))
             new UpdateChecker(this);
@@ -113,7 +107,9 @@ public class SkriptItemsAdder extends JavaPlugin {
             manager.disablePlugin(this);
             return;
         }
-        getLogger().info("Loaded!");
+        long finish = System.currentTimeMillis() - start;
+        getLogger().info("Succesfully loaded skript-itemsadder in " + finish + "ms!");
+        loading = false;
     }
 
     @Override
@@ -127,11 +123,6 @@ public class SkriptItemsAdder extends JavaPlugin {
 
     public AliasesGenerator getAliasesGenerator() {
         return aliasesGenerator;
-    }
-
-    private void loadInitialItems() {
-        initialItems = ItemsAdder.getAllItems();
-        getLogger().info("Loaded " + initialItems.size() + " aliases.");
     }
 
 }

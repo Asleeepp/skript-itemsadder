@@ -5,3 +5,7 @@ api-version: 1.13
 version: 1.5
 main: me.asleepp.SkriptItemsAdder.SkriptItemsAdder
 depend: [Skript, ItemsAdder]
+
+commands:
+  skriptitemsadder:
+    description: Reload the plugin's config or see information
