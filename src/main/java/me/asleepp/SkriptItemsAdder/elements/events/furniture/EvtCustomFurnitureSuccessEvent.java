@@ -1,4 +1,4 @@
-package me.asleepp.SkriptItemsAdder.elements.events;
+package me.asleepp.SkriptItemsAdder.elements.events.furniture;
 
 import ch.njol.skript.Skript;
 import ch.njol.skript.doc.Description;
@@ -14,8 +14,8 @@ import ch.njol.skript.util.Getter;
 import dev.lone.itemsadder.api.CustomFurniture;
 import dev.lone.itemsadder.api.Events.FurniturePlaceSuccessEvent;
 import me.asleepp.SkriptItemsAdder.SkriptItemsAdder;
-import me.asleepp.SkriptItemsAdder.other.AliasesGenerator;
-import me.asleepp.SkriptItemsAdder.other.CustomItemType;
+import me.asleepp.SkriptItemsAdder.other.aliases.AliasesGenerator;
+import me.asleepp.SkriptItemsAdder.other.aliases.CustomItemType;
 import org.bukkit.Location;
 import org.bukkit.event.Event;
 

@@ -1,4 +1,4 @@
-package me.asleepp.SkriptItemsAdder.other;
+package me.asleepp.SkriptItemsAdder.other.util;
 
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.Bukkit;

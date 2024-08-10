@@ -1,4 +1,4 @@
-package me.asleepp.SkriptItemsAdder.elements.effects;
+package me.asleepp.SkriptItemsAdder.elements.effects.furniture;
 
 import ch.njol.skript.Skript;
 import ch.njol.skript.doc.Description;

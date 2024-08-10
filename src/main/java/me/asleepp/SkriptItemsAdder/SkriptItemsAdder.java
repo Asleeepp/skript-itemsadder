@@ -1,12 +1,14 @@
 package me.asleepp.SkriptItemsAdder;
 
 import java.io.IOException;
-import java.util.List;
 
 import ch.njol.skript.util.Version;
-import dev.lone.itemsadder.api.CustomStack;
-import dev.lone.itemsadder.api.ItemsAdder;
-import me.asleepp.SkriptItemsAdder.other.*;
+import me.asleepp.SkriptItemsAdder.other.aliases.AliasesGenerator;
+import me.asleepp.SkriptItemsAdder.other.listeners.ItemsAdderEventListener;
+import me.asleepp.SkriptItemsAdder.other.util.Metrics;
+import me.asleepp.SkriptItemsAdder.other.util.SkriptItemsAdderCommand;
+import me.asleepp.SkriptItemsAdder.other.util.UpdateChecker;
+import me.asleepp.SkriptItemsAdder.other.util.Util;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -77,7 +79,6 @@ public class SkriptItemsAdder extends JavaPlugin {
             }
         }.runTask(this);
 
-
         getLogger().info("Waiting for ItemsAdder to finish loading.");
 
         getServer().getScheduler().runTaskTimer(this, () -> {
@@ -108,7 +109,7 @@ public class SkriptItemsAdder extends JavaPlugin {
             return;
         }
         long finish = System.currentTimeMillis() - start;
-        getLogger().info("Succesfully loaded skript-itemsadder in " + finish + "ms!");
+        getLogger().info("Successfully loaded skript-itemsadder in " + finish + "ms!");
         loading = false;
     }
 

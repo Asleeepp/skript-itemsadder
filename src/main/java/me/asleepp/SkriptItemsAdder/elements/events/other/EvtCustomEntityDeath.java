@@ -1,4 +1,4 @@
-package me.asleepp.SkriptItemsAdder.elements.events;
+package me.asleepp.SkriptItemsAdder.elements.events.other;
 
 import ch.njol.skript.Skript;
 import ch.njol.skript.doc.Description;

@@ -1,0 +1,17 @@
+[versions]
+paper-api = "1.21-R0.1-SNAPSHOT"
+lombok = "1.18.34"
+shadow = "8.1.8"
+run-paper = "2.3.0"
+skript = "2.7.1"
+itemsadder = "3.6.1"
+
+[libraries]
+paper-api = { module = "io.papermc.paper:paper-api", version.ref = "paper-api" }
+lombok = { group = "org.projectlombok", name = "lombok", version.ref = "lombok" }
+skript = { group = "com.github.SkriptLang", name = "Skript", version.ref = "skript"}
+itemsadder = { group = "com.github.LoneDev6", name = "API-ItemsAdder", version.ref = "itemsadder"}
+
+[plugins]
+run-paper = { id = "xyz.jpenilla.run-paper", version.ref = "run-paper" }
+shadow = { id = "io.github.goooler.shadow", version.ref = "shadow" }

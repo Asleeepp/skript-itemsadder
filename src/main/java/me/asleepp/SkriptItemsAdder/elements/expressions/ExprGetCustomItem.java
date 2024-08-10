@@ -14,7 +14,7 @@ import ch.njol.skript.lang.util.SimpleExpression;
 import ch.njol.util.Kleenean;
 import dev.lone.itemsadder.api.CustomStack;
 import dev.lone.itemsadder.api.ItemsAdder;
-import me.asleepp.SkriptItemsAdder.other.CustomItemType;
+import me.asleepp.SkriptItemsAdder.other.aliases.CustomItemType;
 import org.bukkit.Material;
 import org.bukkit.event.Event;
 import org.bukkit.inventory.ItemStack;
@@ -37,7 +37,7 @@ public class ExprGetCustomItem extends SimpleExpression<ItemType> {
     private boolean usesItemMaterial;
 
     static {
-        Skript.registerExpression(ExprGetCustomItem.class, ItemType.class, ExpressionType.SIMPLE,
+        Skript.registerExpression(ExprGetCustomItem.class, ItemType.class, ExpressionType.COMBINED,
                 "[custom] (ia|itemsadder) item[s] %customitemtypes/strings%",
             "(all [[of] the]) [custom] (ia|itemsadder) item[s] [1:(that uses|using) [item[s]|material[s]] %-itemstacks%]");
     }

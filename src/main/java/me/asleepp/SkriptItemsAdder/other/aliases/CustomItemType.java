@@ -1,4 +1,4 @@
-package me.asleepp.SkriptItemsAdder.other;
+package me.asleepp.SkriptItemsAdder.other.aliases;
 
 import org.bukkit.event.Event;
 

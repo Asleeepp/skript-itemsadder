@@ -1,4 +1,4 @@
-package me.asleepp.SkriptItemsAdder.elements.effects;
+package me.asleepp.SkriptItemsAdder.elements.effects.blocks;
 
 import ch.njol.skript.Skript;
 import ch.njol.skript.doc.Description;
@@ -8,15 +8,14 @@ import ch.njol.skript.doc.RequiredPlugins;
 import ch.njol.skript.doc.Since;
 import ch.njol.skript.lang.Effect;
 import ch.njol.skript.lang.Expression;
-import ch.njol.skript.lang.Literal;
 import ch.njol.skript.lang.SkriptParser;
 import ch.njol.skript.util.Direction;
 import ch.njol.util.Kleenean;
 import dev.lone.itemsadder.api.CustomBlock;
 import dev.lone.itemsadder.api.CustomCrop;
 import me.asleepp.SkriptItemsAdder.SkriptItemsAdder;
-import me.asleepp.SkriptItemsAdder.other.AliasesGenerator;
-import me.asleepp.SkriptItemsAdder.other.CustomItemType;
+import me.asleepp.SkriptItemsAdder.other.aliases.AliasesGenerator;
+import me.asleepp.SkriptItemsAdder.other.aliases.CustomItemType;
 import org.bukkit.Location;
 import org.bukkit.event.Event;
 
@@ -78,7 +77,6 @@ public class EffPlaceBlockOrCrop extends Effect {
             return;
         }
 
-
         for (Location location : locations.getArray(e)) {
             for (String alias : aliases) {
                 String customBlockId = aliasesGenerator.getNamespacedId(alias);
@@ -88,24 +86,18 @@ public class EffPlaceBlockOrCrop extends Effect {
                     continue;
                 }
 
+                Skript.info("Attempting to place custom block/crop with ID: " + customBlockId + " at location: " + location);
+
                 try {
                     if (isCrop) {
-                        // attempt to place a crop
                         try {
                             CustomCrop.place(customBlockId, location);
+                            Skript.info("Placed custom crop with ID: " + customBlockId + " at location: " + location);
                         } catch (Exception ex) {
                             Skript.error("The ID " + customBlockId + " does not correspond to a valid crop.");
                             continue;
                         }
-
-                        CustomCrop existingCrop = CustomCrop.byAlreadyPlaced(location.getBlock());
-                        if (existingCrop == null) {
-                            CustomCrop.place(customBlockId, location);
-                        } else {
-                            Skript.error("There is already a crop here!");
-                        }
                     } else {
-                        // ensure it corresponds to a block
                         if (CustomBlock.getInstance(customBlockId) == null) {
                             Skript.error("The ID " + customBlockId + " does not correspond to a valid block.");
                             continue;
@@ -118,6 +110,7 @@ public class EffPlaceBlockOrCrop extends Effect {
                         CustomBlock block = CustomBlock.getInstance(customBlockId);
                         if (block != null) {
                             block.place(location);
+                            Skript.info("Placed custom block with ID: " + customBlockId + " at location: " + location);
                         } else {
                             Skript.error("Failed to get CustomBlock instance for ID: " + customBlockId);
                         }

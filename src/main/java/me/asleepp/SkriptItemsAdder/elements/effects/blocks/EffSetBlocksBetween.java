@@ -1,4 +1,4 @@
-package me.asleepp.SkriptItemsAdder.elements.effects;
+package me.asleepp.SkriptItemsAdder.elements.effects.blocks;
 
 import ch.njol.skript.Skript;
 import ch.njol.skript.doc.Description;
@@ -12,8 +12,8 @@ import ch.njol.skript.lang.SkriptParser;
 import ch.njol.util.Kleenean;
 import dev.lone.itemsadder.api.CustomBlock;
 import me.asleepp.SkriptItemsAdder.SkriptItemsAdder;
-import me.asleepp.SkriptItemsAdder.other.AliasesGenerator;
-import me.asleepp.SkriptItemsAdder.other.CustomItemType;
+import me.asleepp.SkriptItemsAdder.other.aliases.AliasesGenerator;
+import me.asleepp.SkriptItemsAdder.other.aliases.CustomItemType;
 import org.bukkit.Location;
 import org.bukkit.event.Event;
 

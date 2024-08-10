@@ -1,4 +1,4 @@
-package me.asleepp.SkriptItemsAdder.elements.events;
+package me.asleepp.SkriptItemsAdder.elements.events.furniture;
 
 import ch.njol.skript.Skript;
 import ch.njol.skript.doc.Description;
@@ -12,10 +12,10 @@ import ch.njol.skript.lang.SkriptParser;
 import ch.njol.skript.registrations.EventValues;
 import ch.njol.skript.util.Getter;
 import dev.lone.itemsadder.api.CustomFurniture;
-import dev.lone.itemsadder.api.Events.FurnitureBreakEvent;
+import dev.lone.itemsadder.api.Events.FurnitureInteractEvent;
 import me.asleepp.SkriptItemsAdder.SkriptItemsAdder;
-import me.asleepp.SkriptItemsAdder.other.AliasesGenerator;
-import me.asleepp.SkriptItemsAdder.other.CustomItemType;
+import me.asleepp.SkriptItemsAdder.other.aliases.AliasesGenerator;
+import me.asleepp.SkriptItemsAdder.other.aliases.CustomItemType;
 import org.bukkit.Location;
 import org.bukkit.event.Event;
 
@@ -24,28 +24,28 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@Name("On Custom Furniture Break")
-@Description({"Fires when a ItemsAdder furniture gets broken."})
-@Examples({"on break of custom furniture:"})
+@Name("On Custom Furniture Interact")
+@Description({"Fires when a ItemsAdder furniture gets interacted with."})
+@Examples({"on interact with custom furniture:"})
 @Since("1.0")
 @RequiredPlugins("ItemsAdder")
-public class EvtCustomFurnitureBreak extends SkriptEvent {
+public class EvtCustomFurnitureInteract extends SkriptEvent {
 
     private Literal<?>[] furnitureIDs;
     private List<String> aliases;
     private AliasesGenerator aliasesGenerator = SkriptItemsAdder.getInstance().getAliasesGenerator();
 
     static {
-        Skript.registerEvent("Custom Furniture Break", EvtCustomFurnitureBreak.class, FurnitureBreakEvent.class, "break of [custom] (ia|itemsadder) furniture [%customitemtypes/strings%]");
-        EventValues.registerEventValue(FurnitureBreakEvent.class, Location.class, new Getter<Location, FurnitureBreakEvent>() {
+        Skript.registerEvent("Custom Furniture Interact", EvtCustomFurnitureInteract.class, FurnitureInteractEvent.class, "interact with [custom] (ia|itemsadder) furniture [%customitemtypes/strings%]");
+        EventValues.registerEventValue(FurnitureInteractEvent.class, Location.class, new Getter<Location, FurnitureInteractEvent>() {
             @Override
-            public @Nullable Location get(FurnitureBreakEvent event) {
+            public @Nullable Location get(FurnitureInteractEvent event) {
                 return event.getBukkitEntity().getLocation();
             }
         }, 0);
-        EventValues.registerEventValue(FurnitureBreakEvent.class, CustomFurniture.class, new Getter<CustomFurniture, FurnitureBreakEvent>() {
+        EventValues.registerEventValue(FurnitureInteractEvent.class, CustomFurniture.class, new Getter<CustomFurniture, FurnitureInteractEvent>() {
             @Override
-            public @Nullable CustomFurniture get(FurnitureBreakEvent event) {
+            public @Nullable CustomFurniture get(FurnitureInteractEvent event) {
                 return event.getFurniture();
             }
         }, 0);
@@ -76,8 +76,8 @@ public class EvtCustomFurnitureBreak extends SkriptEvent {
 
     @Override
     public boolean check(Event e) {
-        if (e instanceof FurnitureBreakEvent) {
-            FurnitureBreakEvent event = (FurnitureBreakEvent) e;
+        if (e instanceof FurnitureInteractEvent) {
+            FurnitureInteractEvent event = (FurnitureInteractEvent) e;
 
             if (aliases != null && !aliases.isEmpty()) {
                 String actualFurnitureName = event.getNamespacedID();
@@ -91,6 +91,6 @@ public class EvtCustomFurnitureBreak extends SkriptEvent {
 
     @Override
     public String toString(@Nullable Event e, boolean debug) {
-        return "ItemsAdder custom furniture " + (furnitureIDs != null ? furnitureIDs.toString() : "") + " break";
+        return "ItemsAdder custom furniture " + (furnitureIDs != null ? furnitureIDs.toString() : "") + " interact";
     }
 }

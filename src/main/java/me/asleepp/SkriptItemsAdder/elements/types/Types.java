@@ -8,8 +8,8 @@ import ch.njol.skript.registrations.Classes;
 import ch.njol.yggdrasil.Fields;
 import dev.lone.itemsadder.api.FontImages.TexturedInventoryWrapper;
 import me.asleepp.SkriptItemsAdder.SkriptItemsAdder;
-import me.asleepp.SkriptItemsAdder.other.AliasesGenerator;
-import me.asleepp.SkriptItemsAdder.other.CustomItemType;
+import me.asleepp.SkriptItemsAdder.other.aliases.AliasesGenerator;
+import me.asleepp.SkriptItemsAdder.other.aliases.CustomItemType;
 
 import javax.annotation.Nullable;
 import java.util.HashMap;

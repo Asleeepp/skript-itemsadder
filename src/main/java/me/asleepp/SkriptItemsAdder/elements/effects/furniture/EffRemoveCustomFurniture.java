@@ -1,4 +1,4 @@
-package me.asleepp.SkriptItemsAdder.elements.effects;
+package me.asleepp.SkriptItemsAdder.elements.effects.furniture;
 
 import ch.njol.skript.Skript;
 import ch.njol.skript.doc.Description;
@@ -10,7 +10,6 @@ import ch.njol.skript.lang.Effect;
 import ch.njol.skript.lang.Expression;
 import ch.njol.skript.lang.SkriptParser;
 import ch.njol.util.Kleenean;
-import dev.lone.itemsadder.api.CustomBlock;
 import dev.lone.itemsadder.api.CustomFurniture;
 import org.bukkit.Location;
 import org.bukkit.event.Event;

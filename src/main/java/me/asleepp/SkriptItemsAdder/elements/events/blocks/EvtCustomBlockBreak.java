@@ -1,4 +1,4 @@
-package me.asleepp.SkriptItemsAdder.elements.events;
+package me.asleepp.SkriptItemsAdder.elements.events.blocks;
 
 import ch.njol.skript.Skript;
 import ch.njol.skript.doc.Description;
@@ -11,11 +11,11 @@ import ch.njol.skript.lang.SkriptEvent;
 import ch.njol.skript.lang.SkriptParser;
 import ch.njol.skript.registrations.EventValues;
 import ch.njol.skript.util.Getter;
-import dev.lone.itemsadder.api.CustomFurniture;
-import dev.lone.itemsadder.api.Events.FurniturePlaceEvent;
+import dev.lone.itemsadder.api.CustomBlock;
+import dev.lone.itemsadder.api.Events.CustomBlockBreakEvent;
 import me.asleepp.SkriptItemsAdder.SkriptItemsAdder;
-import me.asleepp.SkriptItemsAdder.other.AliasesGenerator;
-import me.asleepp.SkriptItemsAdder.other.CustomItemType;
+import me.asleepp.SkriptItemsAdder.other.aliases.AliasesGenerator;
+import me.asleepp.SkriptItemsAdder.other.aliases.CustomItemType;
 import org.bukkit.Location;
 import org.bukkit.event.Event;
 
@@ -24,27 +24,39 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@Name("On Custom Furniture Place")
-@Description({"Fires when a ItemsAdder furniture gets placed."})
-@Examples({"on place of custom furniture:"})
+@Name("On Custom Block Break")
+@Description({"Fires when a ItemsAdder block gets broken."})
+@Examples({"on break of custom block \"namespace:ruby_block\":", "on break of custom block ruby block:"})
 @Since("1.0")
 @RequiredPlugins("ItemsAdder")
-public class EvtCustomFurniturePlace extends SkriptEvent {
+public class EvtCustomBlockBreak extends SkriptEvent {
 
-    private Literal<?>[] furnitureIDs;
+    private Literal<?>[] blockNames;
     private List<String> aliases;
     private AliasesGenerator aliasesGenerator = SkriptItemsAdder.getInstance().getAliasesGenerator();
 
     static {
-        Skript.registerEvent("Custom Furniture Place", EvtCustomFurniturePlace.class, FurniturePlaceEvent.class, "place [of] [custom] (ia|itemsadder) furniture [%customitemtypes/strings%]");
+        Skript.registerEvent("Custom Block Break", EvtCustomBlockBreak.class, CustomBlockBreakEvent.class, "break [of] [custom] (ia|itemsadder) block[s] [%customitemtypes/strings%]");
+        EventValues.registerEventValue(CustomBlockBreakEvent.class, CustomBlock.class, new Getter<CustomBlock, CustomBlockBreakEvent>() {
+            @Override
+            public CustomBlock get(CustomBlockBreakEvent event) {
+                return CustomBlock.byAlreadyPlaced(event.getBlock());
+            }
+        }, 0);
+        EventValues.registerEventValue(CustomBlockBreakEvent.class, Location.class, new Getter<Location, CustomBlockBreakEvent>() {
+            @Override
+            public Location get(CustomBlockBreakEvent event) {
+                return event.getBlock().getLocation();
+            }
+        }, 0);
     }
 
     @SuppressWarnings("unchecked")
     @Override
     public boolean init(Literal<?>[] args, int matchedPattern, SkriptParser.ParseResult parseResult) {
-        furnitureIDs = args;
-        if (furnitureIDs != null) {
-            aliases = Arrays.stream(furnitureIDs)
+        blockNames = args;
+        if (blockNames != null) {
+            aliases = Arrays.stream(blockNames)
                     .map(literal -> {
                         if (literal instanceof Literal) {
                             Object value = ((Literal<?>) literal).getSingle();
@@ -64,19 +76,19 @@ public class EvtCustomFurniturePlace extends SkriptEvent {
 
     @Override
     public boolean check(Event event) {
-        if (!(event instanceof FurniturePlaceEvent)) {
+        if (!(event instanceof CustomBlockBreakEvent)) {
             return false;
         }
 
-        FurniturePlaceEvent customEvent = (FurniturePlaceEvent) event;
+        CustomBlockBreakEvent customEvent = (CustomBlockBreakEvent) event;
         if (customEvent.isCancelled()) {
             return false;
         }
 
-        // Check furniture name
+        // Check block name
         if (aliases != null && !aliases.isEmpty()) {
-            String actualFurnitureName = customEvent.getNamespacedID();
-            return aliases.contains(aliasesGenerator.getNamespacedId(actualFurnitureName));
+            String actualBlockName = customEvent.getNamespacedID();
+            return aliases.contains(aliasesGenerator.getNamespacedId(actualBlockName));
         }
 
         return true;
@@ -84,6 +96,6 @@ public class EvtCustomFurniturePlace extends SkriptEvent {
 
     @Override
     public String toString(@Nullable Event e, boolean debug) {
-        return "Custom Furniture Place event";
+        return "Custom Block Break event";
     }
 }

@@ -1,8 +1,8 @@
-package me.asleepp.SkriptItemsAdder.other;
+package me.asleepp.SkriptItemsAdder.other.listeners;
 
-import dev.lone.itemsadder.api.CustomStack;
 import dev.lone.itemsadder.api.Events.ItemsAdderLoadDataEvent;
 import me.asleepp.SkriptItemsAdder.SkriptItemsAdder;
+import me.asleepp.SkriptItemsAdder.other.aliases.AliasesGenerator;
 import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;

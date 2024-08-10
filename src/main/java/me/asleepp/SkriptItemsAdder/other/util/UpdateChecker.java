@@ -1,4 +1,4 @@
-package me.asleepp.SkriptItemsAdder.other;
+package me.asleepp.SkriptItemsAdder.other.util;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;

@@ -13,7 +13,7 @@ import ch.njol.util.Kleenean;
 import org.bukkit.event.Event;
 import org.bukkit.inventory.ItemStack;
 import dev.lone.itemsadder.api.CustomStack;
-import me.asleepp.SkriptItemsAdder.other.CustomItemType;
+import me.asleepp.SkriptItemsAdder.other.aliases.CustomItemType;
 
 import javax.annotation.Nullable;
 import java.util.Arrays;

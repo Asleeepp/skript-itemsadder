@@ -1,4 +1,4 @@
-package me.asleepp.SkriptItemsAdder.elements.events;
+package me.asleepp.SkriptItemsAdder.elements.events.blocks;
 
 import ch.njol.skript.Skript;
 import ch.njol.skript.doc.Description;
@@ -12,10 +12,10 @@ import ch.njol.skript.lang.SkriptParser;
 import ch.njol.skript.registrations.EventValues;
 import ch.njol.skript.util.Getter;
 import dev.lone.itemsadder.api.CustomBlock;
-import dev.lone.itemsadder.api.Events.CustomBlockInteractEvent;
+import dev.lone.itemsadder.api.Events.CustomBlockPlaceEvent;
 import me.asleepp.SkriptItemsAdder.SkriptItemsAdder;
-import me.asleepp.SkriptItemsAdder.other.AliasesGenerator;
-import me.asleepp.SkriptItemsAdder.other.CustomItemType;
+import me.asleepp.SkriptItemsAdder.other.aliases.AliasesGenerator;
+import me.asleepp.SkriptItemsAdder.other.aliases.CustomItemType;
 import org.bukkit.Location;
 import org.bukkit.event.Event;
 
@@ -24,30 +24,29 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
-
-@Name("On Custom Block Interact")
-@Description({"Fires when a ItemsAdder block gets interacted with."})
-@Examples({"on interact with custom block:"})
+@Name("On Custom Block Place")
+@Description({"Fires when a ItemsAdder block gets placed."})
+@Examples({"on place of custom block:"})
 @Since("1.0")
 @RequiredPlugins("ItemsAdder")
-public class EvtCustomBlockInteract extends SkriptEvent {
+public class EvtCustomBlockPlace extends SkriptEvent {
 
     private Literal<?>[] blockNames;
     private List<String> aliases;
     private AliasesGenerator aliasesGenerator = SkriptItemsAdder.getInstance().getAliasesGenerator();
 
     static {
-        Skript.registerEvent("Custom Block Interact", EvtCustomBlockInteract.class, CustomBlockInteractEvent.class, "interact with [custom] (ia|itemsadder) block[s] [%customitemtypes/strings%]");
-        EventValues.registerEventValue(CustomBlockInteractEvent.class, CustomBlock.class, new Getter<CustomBlock, CustomBlockInteractEvent>() {
+        Skript.registerEvent("Custom Block Place", EvtCustomBlockPlace.class, CustomBlockPlaceEvent.class, "place [of] [custom] (ia|itemsadder) block[s] [%customitemtypes/strings%]");
+        EventValues.registerEventValue(CustomBlockPlaceEvent.class, CustomBlock.class, new Getter<CustomBlock, CustomBlockPlaceEvent>() {
             @Override
-            public CustomBlock get(CustomBlockInteractEvent event) {
-                return CustomBlock.byAlreadyPlaced(event.getBlockClicked());
+            public CustomBlock get(CustomBlockPlaceEvent event) {
+                return CustomBlock.byAlreadyPlaced(event.getBlock());
             }
         }, 0);
-        EventValues.registerEventValue(CustomBlockInteractEvent.class, Location.class, new Getter<Location, CustomBlockInteractEvent>() {
+        EventValues.registerEventValue(CustomBlockPlaceEvent.class, Location.class, new Getter<Location, CustomBlockPlaceEvent>() {
             @Override
-            public Location get(CustomBlockInteractEvent event) {
-                return event.getBlockClicked().getLocation();
+            public Location get(CustomBlockPlaceEvent event) {
+                return event.getBlock().getLocation();
             }
         }, 0);
     }
@@ -77,11 +76,11 @@ public class EvtCustomBlockInteract extends SkriptEvent {
 
     @Override
     public boolean check(Event event) {
-        if (!(event instanceof CustomBlockInteractEvent)) {
+        if (!(event instanceof CustomBlockPlaceEvent)) {
             return false;
         }
 
-        CustomBlockInteractEvent customEvent = (CustomBlockInteractEvent) event;
+        CustomBlockPlaceEvent customEvent = (CustomBlockPlaceEvent) event;
         if (customEvent.isCancelled()) {
             return false;
         }
@@ -97,6 +96,6 @@ public class EvtCustomBlockInteract extends SkriptEvent {
 
     @Override
     public String toString(@Nullable Event e, boolean debug) {
-        return "Custom Block Interact event";
+        return "Custom Block Place event";
     }
 }
