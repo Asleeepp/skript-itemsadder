@@ -18,15 +18,15 @@ public class ItemsAdderEventListener implements Listener {
 
     @EventHandler
     public void onItemsAdderLoadData(ItemsAdderLoadDataEvent event) {
-        if (plugin.loading) {
-            plugin.getLogger().info("ItemsAdder fully loaded, enabling skript-itemsadder.");
-            plugin.setItemsAdderReady(true);
-        }
-
         // run alias generation async
+        generateAliases();
+    }
+
+    public void generateAliases() {
         Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
             aliasesGenerator.generateAliasesForAllItems();
             aliasesGenerator.saveAliases();
         });
     }
+
 }

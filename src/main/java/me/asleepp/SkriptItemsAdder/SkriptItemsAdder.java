@@ -3,6 +3,8 @@ package me.asleepp.SkriptItemsAdder;
 import java.io.IOException;
 
 import ch.njol.skript.util.Version;
+import lombok.Getter;
+import lombok.Setter;
 import me.asleepp.SkriptItemsAdder.other.aliases.AliasesGenerator;
 import me.asleepp.SkriptItemsAdder.other.listeners.ItemsAdderEventListener;
 import me.asleepp.SkriptItemsAdder.other.util.Metrics;
@@ -23,6 +25,7 @@ public class SkriptItemsAdder extends JavaPlugin {
 
     private static SkriptAddon addon;
     private static SkriptItemsAdder instance;
+    @Getter
     private AliasesGenerator aliasesGenerator;
 
     @Nullable
@@ -35,14 +38,12 @@ public class SkriptItemsAdder extends JavaPlugin {
         return addon;
     }
 
-    public boolean itemsAdderReady = false;
-    public boolean loading = true;
+    private final PluginManager manager = this.getServer().getPluginManager();
 
     @Override
     public void onEnable() {
         // Let's get this show on the road.
         long start = System.currentTimeMillis();
-        final PluginManager manager = this.getServer().getPluginManager();
         final Plugin skript = manager.getPlugin("Skript");
         if (skript == null || !skript.isEnabled()) {
             getLogger().severe("Could not find Skript! Disabling...");
@@ -71,21 +72,8 @@ public class SkriptItemsAdder extends JavaPlugin {
         final SkriptItemsAdder plugin = this;
 
         // Pass the aliasesGenerator to the event listener
-        new BukkitRunnable() {
-            @Override
-            public void run() {
-                ItemsAdderEventListener eventListener = new ItemsAdderEventListener(plugin, aliasesGenerator);
-                manager.registerEvents(eventListener, plugin);
-            }
-        }.runTask(this);
-
-        getLogger().info("Waiting for ItemsAdder to finish loading.");
-
-        getServer().getScheduler().runTaskTimer(this, () -> {
-            if (itemsAdderReady) {
-                return;
-            }
-        }, 0, 20);
+        ItemsAdderEventListener eventListener = new ItemsAdderEventListener(plugin, aliasesGenerator);
+        manager.registerEvents(eventListener, plugin);
 
         int pluginId = 20971;
         Metrics metrics = new Metrics(this, pluginId);
@@ -98,32 +86,24 @@ public class SkriptItemsAdder extends JavaPlugin {
 
         saveDefaultConfig();
 
-        if (getConfig().getBoolean("check-for-updates", true))
-            new UpdateChecker(this);
-
         try {
-            addon.loadClasses("me.asleepp.SkriptItemsAdder");
+            addon.loadClasses("me.asleepp.SkriptItemsAdder", "elements");
         } catch (IOException error) {
             error.printStackTrace();
             manager.disablePlugin(this);
             return;
         }
+
+        if (getConfig().getBoolean("check-for-updates", true))
+            new UpdateChecker(this);
+
         long finish = System.currentTimeMillis() - start;
         getLogger().info("Successfully loaded skript-itemsadder in " + finish + "ms!");
-        loading = false;
+        eventListener.generateAliases();
     }
 
     @Override
     public void onDisable() {
         aliasesGenerator.saveAliases();
     }
-
-    public void setItemsAdderReady(boolean ready) {
-        this.itemsAdderReady = ready;
-    }
-
-    public AliasesGenerator getAliasesGenerator() {
-        return aliasesGenerator;
-    }
-
 }

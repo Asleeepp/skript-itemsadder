@@ -10,6 +10,7 @@ import dev.lone.itemsadder.api.FontImages.TexturedInventoryWrapper;
 import me.asleepp.SkriptItemsAdder.SkriptItemsAdder;
 import me.asleepp.SkriptItemsAdder.other.aliases.AliasesGenerator;
 import me.asleepp.SkriptItemsAdder.other.aliases.CustomItemType;
+import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nullable;
 import java.util.HashMap;
@@ -26,14 +27,14 @@ public class Types {
                 .description("Represents a custom item type using aliases.")
                 .serializer(new Serializer<CustomItemType>() {
                     @Override
-                    public Fields serialize(CustomItemType customItemType) {
+                    public @NotNull Fields serialize(CustomItemType customItemType) {
                         Fields fields = new Fields();
                         fields.putObject("namespacedID", customItemType.getNamespacedID());
                         return fields;
                     }
 
                     @Override
-                    public void deserialize(CustomItemType customItemType, Fields fields) {
+                    public void deserialize(CustomItemType customItemType, @NotNull Fields fields) {
                         try {
                             customItemType.setNamespacedID((String) fields.getObject("namespacedID"));
                         } catch (java.io.StreamCorruptedException e) {
@@ -54,19 +55,19 @@ public class Types {
                 .parser(new Parser<CustomItemType>() {
                     @Override
                     @Nullable
-                    public CustomItemType parse(String s, ParseContext context) {
+                    public CustomItemType parse(@NotNull String s, @NotNull ParseContext context) {
                         AliasesGenerator aliasesGenerator = SkriptItemsAdder.getInstance().getAliasesGenerator();
                         String namespacedID = aliasesGenerator.getNamespacedId(s.toLowerCase().replace("_", " "));
                         return namespacedID == null ? null : new CustomItemType(namespacedID);
                     }
 
                     @Override
-                    public String toString(CustomItemType customItemType, int flags) {
+                    public @NotNull String toString(CustomItemType customItemType, int flags) {
                         return customItemType.getNamespacedID();
                     }
 
                     @Override
-                    public String toVariableNameString(CustomItemType customItemType) {
+                    public @NotNull String toVariableNameString(CustomItemType customItemType) {
                         return customItemType.getNamespacedID();
                     }
 
@@ -84,7 +85,7 @@ public class Types {
                 .parser(new Parser<TexturedInventoryWrapper>() {
 
                     @Override
-                    public TexturedInventoryWrapper parse(String s, ParseContext context) {
+                    public TexturedInventoryWrapper parse(@NotNull String s, @NotNull ParseContext context) {
                         return inventoryMap.get(s);
                     }
 
@@ -99,7 +100,7 @@ public class Types {
                     }
 
                     @Override
-                    public String toVariableNameString(TexturedInventoryWrapper texturedInventoryWrapper) {
+                    public @NotNull String toVariableNameString(TexturedInventoryWrapper texturedInventoryWrapper) {
                         return toString(texturedInventoryWrapper, 0);
                     }
 

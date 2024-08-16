@@ -1,23 +1,19 @@
 package me.asleepp.SkriptItemsAdder.other.aliases;
 
+import lombok.Getter;
+import lombok.Setter;
 import org.bukkit.event.Event;
 
 import java.util.Objects;
 import java.util.function.Function;
 
+@Setter
+@Getter
 public class CustomItemType {
 
     private String namespacedID;
 
     public CustomItemType(String namespacedID) {
-        this.namespacedID = namespacedID;
-    }
-
-    public String getNamespacedID() {
-        return namespacedID;
-    }
-
-    public void setNamespacedID(String namespacedID) {
         this.namespacedID = namespacedID;
     }
 

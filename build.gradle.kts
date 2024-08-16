@@ -21,7 +21,7 @@ java {
 }
 
 description = "A skript addon that aims to bring more to linking ItemsAdder and Skript"
-group = "me.Asleepp"
+group = "me.asleepp"
 version = "1.6"
 
 dependencies {
@@ -46,7 +46,6 @@ tasks {
             attributes["Implementation-Version"] = rootProject.version
         }
 
-        relocate("org.bstats", "me.asleepp.SkriptItemsAdder.bstats")
         configurations = listOf(project.configurations.shadow.get())
         minimize()
     }

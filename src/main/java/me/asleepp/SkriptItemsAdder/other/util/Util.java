@@ -1,5 +1,7 @@
 package me.asleepp.SkriptItemsAdder.other.util;
 
+import dev.lone.itemsadder.api.CustomBlock;
+import me.asleepp.SkriptItemsAdder.other.aliases.CustomItemType;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.Plugin;
@@ -43,6 +45,15 @@ public class Util {
         } else {
             return "Unknown";
         }
+    }
+
+    public static String getCustomBlockId(Object itemType) {
+        if (itemType instanceof CustomItemType) {
+            return ((CustomItemType) itemType).getNamespacedID();
+        } else if (itemType instanceof String) {
+            return CustomBlock.getInstance((String) itemType) != null ? (String) itemType : null;
+        }
+        return null;
     }
 
 }

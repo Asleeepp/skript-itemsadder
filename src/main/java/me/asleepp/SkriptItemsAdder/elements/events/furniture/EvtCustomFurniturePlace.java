@@ -9,10 +9,12 @@ import ch.njol.skript.doc.Since;
 import ch.njol.skript.lang.Literal;
 import ch.njol.skript.lang.SkriptEvent;
 import ch.njol.skript.lang.SkriptParser;
+import dev.lone.itemsadder.api.Events.FurnitureBreakEvent;
 import dev.lone.itemsadder.api.Events.FurniturePlaceEvent;
 import me.asleepp.SkriptItemsAdder.SkriptItemsAdder;
 import me.asleepp.SkriptItemsAdder.other.aliases.AliasesGenerator;
 import me.asleepp.SkriptItemsAdder.other.aliases.CustomItemType;
+import me.asleepp.SkriptItemsAdder.other.util.Util;
 import org.bukkit.event.Event;
 
 import javax.annotation.Nullable;
@@ -42,13 +44,9 @@ public class EvtCustomFurniturePlace extends SkriptEvent {
         if (furnitureIDs != null) {
             aliases = Arrays.stream(furnitureIDs)
                     .map(literal -> {
-                        if (literal instanceof Literal) {
-                            Object value = ((Literal<?>) literal).getSingle();
-                            if (value instanceof CustomItemType) {
-                                return ((CustomItemType) value).getNamespacedID();
-                            } else if (value instanceof String) {
-                                return (String) value;
-                            }
+                        if (literal != null) {
+                            Object value = literal.getSingle();
+                            return Util.getCustomBlockId(value);
                         }
                         return null;
                     })
@@ -60,19 +58,13 @@ public class EvtCustomFurniturePlace extends SkriptEvent {
 
     @Override
     public boolean check(Event event) {
-        if (!(event instanceof FurniturePlaceEvent)) {
-            return false;
-        }
+        if (event instanceof FurnitureBreakEvent furnEvent) {
+            if (aliases != null && !aliases.isEmpty()) {
+                String actualFurnitureName = Util.getCustomBlockId(furnEvent.getNamespacedID());
+                return aliases.contains(actualFurnitureName);
+            }
 
-        FurniturePlaceEvent customEvent = (FurniturePlaceEvent) event;
-        if (customEvent.isCancelled()) {
-            return false;
-        }
-
-        // Check furniture name
-        if (aliases != null && !aliases.isEmpty()) {
-            String actualFurnitureName = customEvent.getNamespacedID();
-            return aliases.contains(aliasesGenerator.getNamespacedId(actualFurnitureName));
+            return !furnEvent.isCancelled();
         }
 
         return true;

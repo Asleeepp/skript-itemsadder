@@ -16,6 +16,7 @@ import dev.lone.itemsadder.api.Events.CustomBlockBreakEvent;
 import me.asleepp.SkriptItemsAdder.SkriptItemsAdder;
 import me.asleepp.SkriptItemsAdder.other.aliases.AliasesGenerator;
 import me.asleepp.SkriptItemsAdder.other.aliases.CustomItemType;
+import me.asleepp.SkriptItemsAdder.other.util.Util;
 import org.bukkit.Location;
 import org.bukkit.event.Event;
 
@@ -59,12 +60,8 @@ public class EvtCustomBlockBreak extends SkriptEvent {
             aliases = Arrays.stream(blockNames)
                     .map(literal -> {
                         if (literal instanceof Literal) {
-                            Object value = ((Literal<?>) literal).getSingle();
-                            if (value instanceof CustomItemType) {
-                                return ((CustomItemType) value).getNamespacedID();
-                            } else if (value instanceof String) {
-                                return (String) value;
-                            }
+                            Object value = literal.getSingle();
+                            return Util.getCustomBlockId(value);
                         }
                         return null;
                     })
@@ -87,8 +84,8 @@ public class EvtCustomBlockBreak extends SkriptEvent {
 
         // Check block name
         if (aliases != null && !aliases.isEmpty()) {
-            String actualBlockName = customEvent.getNamespacedID();
-            return aliases.contains(aliasesGenerator.getNamespacedId(actualBlockName));
+            String actualBlockName = Util.getCustomBlockId(customEvent.getNamespacedID());
+            return aliases.contains(actualBlockName);
         }
 
         return true;

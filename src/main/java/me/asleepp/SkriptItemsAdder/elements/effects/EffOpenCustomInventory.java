@@ -13,7 +13,6 @@ import ch.njol.util.Kleenean;
 import dev.lone.itemsadder.api.FontImages.TexturedInventoryWrapper;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
-import ch.njol.skript.variables.Variables;
 
 import javax.annotation.Nullable;
 @Name("Open ItemsAdder Inventory")

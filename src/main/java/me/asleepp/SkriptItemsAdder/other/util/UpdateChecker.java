@@ -36,9 +36,9 @@ public class UpdateChecker implements Listener {
         if (player.hasPermission("skript-itemsadder.update.check") && latestVersion != null) {
             if (!currentVersion.equals(latestVersion)) {
                 player.sendMessage(" ");
-                player.sendMessage(MiniMessage.miniMessage().deserialize("<dark_red>[<red>skript-itemsadder<dark_red>] <white>skript-itemsadder is <red><bold>OUTDATED<white>!"));
-                player.sendMessage(MiniMessage.miniMessage().deserialize("<dark_red>[<red>skript-itemsadder<dark_red>] <white>New version: " + latestVersion));
-                player.sendMessage(MiniMessage.miniMessage().deserialize("<dark_red>[<red>skript-itemsadder<dark_red>] <white>Download <click:open_url:https://github.com/Asleeepp/skript-itemsadder/releases>here!</click>"));
+                player.sendMessage(MiniMessage.miniMessage().deserialize("<dark_red>[<red>skript-itemsadder<dark_red>] <white>skript-itemsadder is <red><bold>OUTDATED</bold><white>!"));
+                player.sendMessage(MiniMessage.miniMessage().deserialize("<dark_red>[<red>skript-itemsadder<dark_red>] <white>New version: <gold>" + latestVersion));
+                player.sendMessage(MiniMessage.miniMessage().deserialize("<dark_red>[<red>skript-itemsadder<dark_red>] <white>Download <gold><click:open_url:https://github.com/Asleeepp/skript-itemsadder/releases><hover:show_text:'<red>Click here to get the latest version!'>here<white>!</click>"));
                 player.sendMessage(" ");
             }
         }

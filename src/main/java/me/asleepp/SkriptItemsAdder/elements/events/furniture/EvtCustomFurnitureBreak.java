@@ -16,6 +16,7 @@ import dev.lone.itemsadder.api.Events.FurnitureBreakEvent;
 import me.asleepp.SkriptItemsAdder.SkriptItemsAdder;
 import me.asleepp.SkriptItemsAdder.other.aliases.AliasesGenerator;
 import me.asleepp.SkriptItemsAdder.other.aliases.CustomItemType;
+import me.asleepp.SkriptItemsAdder.other.util.Util;
 import org.bukkit.Location;
 import org.bukkit.event.Event;
 
@@ -58,13 +59,9 @@ public class EvtCustomFurnitureBreak extends SkriptEvent {
         if (furnitureIDs != null) {
             aliases = Arrays.stream(furnitureIDs)
                     .map(literal -> {
-                        if (literal instanceof Literal) {
-                            Object value = ((Literal<?>) literal).getSingle();
-                            if (value instanceof CustomItemType) {
-                                return ((CustomItemType) value).getNamespacedID();
-                            } else if (value instanceof String) {
-                                return (String) value;
-                            }
+                        if (literal != null) {
+                            Object value = literal.getSingle();
+                            return Util.getCustomBlockId(value);
                         }
                         return null;
                     })
@@ -75,16 +72,14 @@ public class EvtCustomFurnitureBreak extends SkriptEvent {
     }
 
     @Override
-    public boolean check(Event e) {
-        if (e instanceof FurnitureBreakEvent) {
-            FurnitureBreakEvent event = (FurnitureBreakEvent) e;
-
+    public boolean check(Event event) {
+        if (event instanceof FurnitureBreakEvent furnEvent) {
             if (aliases != null && !aliases.isEmpty()) {
-                String actualFurnitureName = event.getNamespacedID();
-                return aliases.contains(aliasesGenerator.getNamespacedId(actualFurnitureName)) && !event.isCancelled();
+                String actualFurnitureName = Util.getCustomBlockId(furnEvent.getNamespacedID());
+                return aliases.contains(actualFurnitureName);
             }
 
-            return !event.isCancelled();
+            return !furnEvent.isCancelled();
         }
         return false;
     }

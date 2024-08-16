@@ -6,9 +6,11 @@ import ch.njol.skript.aliases.AliasesProvider;
 import ch.njol.skript.aliases.InvalidMinecraftIdException;
 import dev.lone.itemsadder.api.CustomStack;
 import dev.lone.itemsadder.api.ItemsAdder;
+import lombok.Getter;
 import me.asleepp.SkriptItemsAdder.SkriptItemsAdder;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.scheduler.BukkitRunnable;
 
 import java.io.File;
 import java.io.IOException;
@@ -22,6 +24,7 @@ public class AliasesGenerator {
     private final File aliasesFile;
     private FileConfiguration aliasesConfig;
     private final Map<String, String> itemAliases = new ConcurrentHashMap<>();
+    @Getter
     private final Set<String> generatedAliases = ConcurrentHashMap.newKeySet();
 
     public AliasesGenerator(SkriptItemsAdder plugin) {
@@ -46,20 +49,22 @@ public class AliasesGenerator {
                 itemAliases.put(key, aliasesConfig.getString("items." + key));
             }
         }
-        plugin.getLogger().info("Loaded " + itemAliases.size() + " aliases from file.");
     }
 
     private void saveAliasesToFile() {
-        for (Map.Entry<String, String> entry : itemAliases.entrySet()) {
-            aliasesConfig.set("items." + entry.getKey(), entry.getValue());
-        }
-        try {
-            aliasesConfig.save(aliasesFile);
-            plugin.getLogger().info("Aliases saved to " + aliasesFile.getPath());
-        } catch (IOException e) {
-            plugin.getLogger().severe("Failed to save aliases: " + e.getMessage());
-            e.printStackTrace();
-        }
+        new BukkitRunnable() {
+            @Override
+            public void run() {
+                for (Map.Entry<String, String> entry : itemAliases.entrySet()) {
+                    aliasesConfig.set("items." + entry.getKey(), entry.getValue());
+                }
+                try {
+                    aliasesConfig.save(aliasesFile);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }.runTaskAsynchronously(plugin);
     }
 
     private String generateUniqueAlias(String baseAlias) {
@@ -88,71 +93,47 @@ public class AliasesGenerator {
         AliasesProvider.AliasName aliasName = new AliasesProvider.AliasName(alias, alias, 0);
         try {
             addonProvider.addAlias(aliasName, namespacedId, null, new HashMap<>());
-            plugin.getLogger().info("Registered alias: " + alias + " for item: " + namespacedId + " with AliasesProvider.");
         } catch (InvalidMinecraftIdException ignored) {
         }
     }
 
     public void generateAliasesForAllItems() {
-        plugin.getLogger().info("Generating aliases for all items.");
-        List<CustomStack> allItems = ItemsAdder.getAllItems();
-        plugin.getLogger().info("Total items: " + allItems.size());
+        new BukkitRunnable() {
+            @Override
+            public void run() {
+                List<CustomStack> allItems = ItemsAdder.getAllItems();
 
-        Set<String> currentNamespaces = allItems.stream()
-                .map(CustomStack::getNamespacedID)
-                .collect(Collectors.toSet());
+                Set<String> currentNamespaces = allItems.stream()
+                        .map(CustomStack::getNamespacedID)
+                        .collect(Collectors.toSet());
 
-        // Check if aliases need to be generated or updated
-        boolean allAliasesExist = currentNamespaces.stream()
-                .allMatch(itemAliases::containsValue);
+                boolean allAliasesExist = currentNamespaces.stream()
+                        .allMatch(itemAliases::containsValue);
 
-        if (allAliasesExist && currentNamespaces.size() == itemAliases.size()) {
-            plugin.getLogger().info("All aliases are up to date.");
-            return;
-        }
+                if (allAliasesExist && currentNamespaces.size() == itemAliases.size()) {
+                    return;
+                }
 
-        for (CustomStack item : allItems) {
-            String namespacedId = item.getNamespacedID();
-            if (!itemAliases.containsValue(namespacedId)) {
-                String alias = generateAliasForItem(item);
-                registerAlias(alias, namespacedId);
+                for (CustomStack item : allItems) {
+                    String namespacedId = item.getNamespacedID();
+                    if (!itemAliases.containsValue(namespacedId)) {
+                        String alias = generateAliasForItem(item);
+                        registerAlias(alias, namespacedId);
+                    }
+                }
+
+                Set<String> unusedAliases = itemAliases.keySet().stream()
+                        .filter(alias -> !generatedAliases.contains(alias))
+                        .collect(Collectors.toSet());
+                for (String unusedAlias : unusedAliases) {
+                    itemAliases.remove(unusedAlias);
+                }
+
+                // Save asynchronously
+                saveAliases();
             }
-        }
-
-        Set<String> unusedAliases = itemAliases.keySet().stream()
-                .filter(alias -> !generatedAliases.contains(alias))
-                .collect(Collectors.toSet());
-        for (String unusedAlias : unusedAliases) {
-            itemAliases.remove(unusedAlias);
-        }
+        }.runTaskAsynchronously(plugin);
     }
-
-//    private void watchAliasesFile() {
-//        try {
-//            WatchService watchService = FileSystems.getDefault().newWatchService();
-//            Path path = aliasesFile.toPath().getParent();
-//            path.register(watchService, StandardWatchEventKinds.ENTRY_MODIFY);
-//
-//            Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
-//                try {
-//                    while (true) {
-//                        WatchKey key = watchService.take();
-//                        for (WatchEvent<?> event : key.pollEvents()) {
-//                            if (event.context().toString().equals(aliasesFile.getName())) {
-//                                Bukkit.getScheduler().runTask(plugin, this::loadAliasesFromFile);
-//                                syncAliasesWithProvider();
-//                            }
-//                        }
-//                        key.reset();
-//                    }
-//                } catch (InterruptedException ignored) {
-//                }
-//            });
-//        } catch (IOException e) {
-//            plugin.getLogger().severe("Failed to watch aliases.yml for changes: " + e.getMessage());
-//            e.printStackTrace();
-//        }
-//    }
 
     public void syncAliasesWithProvider() {
         AliasesProvider addonProvider = Aliases.getAddonProvider(Skript.getAddonInstance());
@@ -170,10 +151,6 @@ public class AliasesGenerator {
 
     public String getNamespacedId(String alias) {
         return itemAliases.get(alias);
-    }
-
-    public Set<String> getGeneratedAliases() {
-        return generatedAliases;
     }
 
     public void saveAliases() {
