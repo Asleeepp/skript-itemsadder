@@ -1,16 +1,26 @@
 package me.asleepp.SkriptItemsAdder.elements.effects;
 
 import ch.njol.skript.Skript;
+import ch.njol.skript.doc.Examples;
+import ch.njol.skript.doc.RequiredPlugins;
+import ch.njol.skript.doc.Since;
 import ch.njol.skript.lang.Effect;
 import ch.njol.skript.lang.Expression;
 import ch.njol.skript.lang.SkriptParser;
 import ch.njol.util.Kleenean;
 import dev.lone.itemsadder.api.CustomEntity;
+import jdk.jfr.Description;
+import jdk.jfr.Name;
 import org.bukkit.entity.Entity;
 import org.bukkit.event.Event;
 
 import javax.annotation.Nullable;
 
+@Name("Damage Effect")
+@Description("Play the red damage effect on an ItemsAdder entity.")
+@Examples("play damage effect on custom itemsadder entity {_iaentity}")
+@Since("1.6")
+@RequiredPlugins("ItemsAdder")
 public class EffDamageEffect extends Effect {
 
     private Expression<Entity> entitiesExpr;

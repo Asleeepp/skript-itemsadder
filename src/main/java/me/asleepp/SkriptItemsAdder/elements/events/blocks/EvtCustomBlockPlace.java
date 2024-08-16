@@ -25,11 +25,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@Name("On Custom Block Place")
-@Description({"Fires when a ItemsAdder block gets placed."})
-@Examples({"on place of custom block:"})
-@Since("1.0")
-@RequiredPlugins("ItemsAdder")
 public class EvtCustomBlockPlace extends SkriptEvent {
 
     private Literal<?>[] blockNames;
@@ -37,7 +32,11 @@ public class EvtCustomBlockPlace extends SkriptEvent {
     private final AliasesGenerator aliasesGenerator = SkriptItemsAdder.getInstance().getAliasesGenerator();
 
     static {
-        Skript.registerEvent("Custom Block Place", EvtCustomBlockPlace.class, CustomBlockPlaceEvent.class, "place [of] [custom] (ia|itemsadder) block[s] [%customitemtypes/strings%]");
+        Skript.registerEvent("Custom Block Place", EvtCustomBlockPlace.class, CustomBlockPlaceEvent.class, "place [of] [custom] (ia|itemsadder) block[s] [%customitemtypes/strings%]")
+                .description("Fires when a ItemsAdder block gets placed.")
+                .examples("on place of itemsadder block:")
+                .since("1.0")
+                .requiredPlugins("ItemsAdder");
         EventValues.registerEventValue(CustomBlockPlaceEvent.class, CustomBlock.class, new Getter<CustomBlock, CustomBlockPlaceEvent>() {
             @Override
             public CustomBlock get(CustomBlockPlaceEvent event) {

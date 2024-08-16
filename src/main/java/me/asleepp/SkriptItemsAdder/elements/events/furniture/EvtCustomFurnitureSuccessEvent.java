@@ -26,11 +26,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@Name("Furniture Place Success")
-@Description("This event is called when a furniture is successfully placed into the world, use this event instead if you would like to know the location, etc.")
-@Examples({"on place success of custom itemsadder furniture:", "on successfully placing a custom itemsadder furniture:"})
-@Since("1.5")
-@RequiredPlugins("ItemsAdder")
 public class EvtCustomFurnitureSuccessEvent extends SkriptEvent {
 
     private Literal<?>[] furnitureIDs;
@@ -40,7 +35,14 @@ public class EvtCustomFurnitureSuccessEvent extends SkriptEvent {
     static {
         Skript.registerEvent("Custom Furniture Success", EvtCustomFurnitureSuccessEvent.class, FurniturePlaceSuccessEvent.class,
                 "success[fully] plac(e|ing) [a] [custom] (ia|itemsadder) furniture [%customitemtypes/strings%]",
-                "place success [of] [custom] (ia|itemsadder) furniture [%customitemtypes/strings%]");
+                "place success [of] [custom] (ia|itemsadder) furniture [%customitemtypes/strings%]")
+                .description("This event is called when a furniture is successfully placed into the world, use this event instead if you would like to know the location.")
+                .examples(
+                        "on place success of custom itemsadder furniture:",
+                        "on successfully placing a custom itemsadder furniture:"
+                )
+                .since("1.5")
+                .requiredPlugins("ItemsAdder");
         EventValues.registerEventValue(FurniturePlaceSuccessEvent.class, Location.class, new Getter<Location, FurniturePlaceSuccessEvent>() {
             @Override
             public Location get(FurniturePlaceSuccessEvent arg) {

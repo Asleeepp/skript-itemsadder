@@ -26,7 +26,7 @@ import java.util.List;
 @Description({"Places a custom block or crop at a location."})
 @Examples({
         "set block at player's location to itemsadder block \"iasurvival:ruby_block\"",
-        "set block at player's location to custom crop \"bestcrops:best_seed\""})
+        "set block at player's location to custom itemsadder crop best seed"})
 @Since("1.0, 1.5 (Placing Crops & Syntax rework)")
 @RequiredPlugins("ItemsAdder")
 public class EffPlaceBlockOrCrop extends Effect {

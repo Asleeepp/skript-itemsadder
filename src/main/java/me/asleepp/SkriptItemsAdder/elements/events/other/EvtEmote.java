@@ -21,7 +21,11 @@ public class EvtEmote extends SkriptEvent {
     static {
         Skript.registerEvent("Emote Play/Stop", EvtEmote.class, CollectionUtils.array(PlayerEmotePlayEvent.class, PlayerEmoteEndEvent.class),
                 "(perform|play[ing]) [of] [custom] (ia|itemsadder) emote [%strings%]",
-                "(stop|cancel[ing]) [of] [custom] (ia|itemsadder) emote [%strings%] [due to (:stop[ped]|:finish[ed]) [emote]]");
+                "(stop|cancel[ing]) [of] [custom] (ia|itemsadder) emote [%strings%] [due to (:stop[ped]|:finish[ed]) [emote]]")
+                .description("Called when a player begins to perform an emote.")
+                .examples("on perform custom itemsadder emote:")
+                .since("1.6")
+                .requiredPlugins("ItemsAdder");
     }
 
     @Override

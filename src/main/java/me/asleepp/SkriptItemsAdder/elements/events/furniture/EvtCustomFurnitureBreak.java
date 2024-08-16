@@ -25,11 +25,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@Name("On Custom Furniture Break")
-@Description({"Fires when a ItemsAdder furniture gets broken."})
-@Examples({"on break of custom furniture:"})
-@Since("1.0")
-@RequiredPlugins("ItemsAdder")
 public class EvtCustomFurnitureBreak extends SkriptEvent {
 
     private Literal<?>[] furnitureIDs;
@@ -37,7 +32,11 @@ public class EvtCustomFurnitureBreak extends SkriptEvent {
     private AliasesGenerator aliasesGenerator = SkriptItemsAdder.getInstance().getAliasesGenerator();
 
     static {
-        Skript.registerEvent("Custom Furniture Break", EvtCustomFurnitureBreak.class, FurnitureBreakEvent.class, "break of [custom] (ia|itemsadder) furniture [%customitemtypes/strings%]");
+        Skript.registerEvent("Custom Furniture Break", EvtCustomFurnitureBreak.class, FurnitureBreakEvent.class, "break of [custom] (ia|itemsadder) furniture [%customitemtypes/strings%]")
+                .description("Fires when a ItemsAdder furniture gets broken.")
+                .examples("on break of itemsadder furniture:")
+                .since("1.0")
+                .requiredPlugins("ItemsAdder");
         EventValues.registerEventValue(FurnitureBreakEvent.class, Location.class, new Getter<Location, FurnitureBreakEvent>() {
             @Override
             public @Nullable Location get(FurnitureBreakEvent event) {

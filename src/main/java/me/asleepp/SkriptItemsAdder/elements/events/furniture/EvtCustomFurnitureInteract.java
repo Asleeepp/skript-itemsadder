@@ -26,11 +26,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@Name("On Custom Furniture Interact")
-@Description({"Fires when a ItemsAdder furniture gets interacted with."})
-@Examples({"on interact with custom furniture:"})
-@Since("1.0")
-@RequiredPlugins("ItemsAdder")
 public class EvtCustomFurnitureInteract extends SkriptEvent {
 
     private Literal<?>[] furnitureIDs;
@@ -38,7 +33,11 @@ public class EvtCustomFurnitureInteract extends SkriptEvent {
     private AliasesGenerator aliasesGenerator = SkriptItemsAdder.getInstance().getAliasesGenerator();
 
     static {
-        Skript.registerEvent("Custom Furniture Interact", EvtCustomFurnitureInteract.class, FurnitureInteractEvent.class, "interact with [custom] (ia|itemsadder) furniture [%customitemtypes/strings%]");
+        Skript.registerEvent("Custom Furniture Interact", EvtCustomFurnitureInteract.class, FurnitureInteractEvent.class, "interact with [custom] (ia|itemsadder) furniture [%customitemtypes/strings%]")
+                .description("Fires when a ItemsAdder furniture gets interacted with.")
+                .examples("on interact with itemsadder furniture:")
+                .since("1.0")
+                .requiredPlugins("ItemsAdder");
         EventValues.registerEventValue(FurnitureInteractEvent.class, Location.class, new Getter<Location, FurnitureInteractEvent>() {
             @Override
             public @Nullable Location get(FurnitureInteractEvent event) {

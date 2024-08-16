@@ -13,17 +13,20 @@ import dev.lone.itemsadder.api.Events.ResourcePackSendEvent;
 import org.bukkit.event.Event;
 
 import javax.annotation.Nullable;
-@Name("On Resource Pack Send")
-@Description({"Fires when a Resource pack gets sent to the player."})
-@Examples({"on resource pack send:", "on ia resource pack send:"})
-@Since("1.0")
-@RequiredPlugins("ItemsAdder")
+
 public class EvtResourcePackSendEvent extends SkriptEvent {
 
     private boolean isItemsAdderPack;
 
     static {
-        Skript.registerEvent("Resource Pack Send Event", EvtResourcePackSendEvent.class, ResourcePackSendEvent.class, "[custom] [ia|itemsadder] (texture|resource) pack send");
+        Skript.registerEvent("ItemsAdder Resource Pack Send Event", EvtResourcePackSendEvent.class, ResourcePackSendEvent.class, "[custom] [ia|itemsadder] (texture|resource) pack send")
+                .description("Fires when a Resource pack from ItemsAdder gets sent to the player.")
+                .examples(
+                        "on resource pack send:",
+                        "on ia resource pack send:"
+                )
+                .since("1.0")
+                .requiredPlugins("ItemsAdder");
     }
 
     @Override

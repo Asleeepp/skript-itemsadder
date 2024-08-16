@@ -25,11 +25,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@Name("On Custom Block Break")
-@Description({"Fires when a ItemsAdder block gets broken."})
-@Examples({"on break of custom block \"namespace:ruby_block\":", "on break of custom block ruby block:"})
-@Since("1.0")
-@RequiredPlugins("ItemsAdder")
 public class EvtCustomBlockBreak extends SkriptEvent {
 
     private Literal<?>[] blockNames;
@@ -37,7 +32,14 @@ public class EvtCustomBlockBreak extends SkriptEvent {
     private AliasesGenerator aliasesGenerator = SkriptItemsAdder.getInstance().getAliasesGenerator();
 
     static {
-        Skript.registerEvent("Custom Block Break", EvtCustomBlockBreak.class, CustomBlockBreakEvent.class, "break [of] [custom] (ia|itemsadder) block[s] [%customitemtypes/strings%]");
+        Skript.registerEvent("Custom Block Break", EvtCustomBlockBreak.class, CustomBlockBreakEvent.class, "break [of] [custom] (ia|itemsadder) block[s] [%customitemtypes/strings%]")
+                .description("Fires when a ItemsAdder block gets broken.")
+                .examples(
+                        "on break of itemsadder block \"namespace:ruby_block\":",
+                        "on break of itemsadder block ruby block:"
+                )
+                .since("1.0")
+                .requiredPlugins("ItemsAdder");
         EventValues.registerEventValue(CustomBlockBreakEvent.class, CustomBlock.class, new Getter<CustomBlock, CustomBlockBreakEvent>() {
             @Override
             public CustomBlock get(CustomBlockBreakEvent event) {
@@ -59,7 +61,7 @@ public class EvtCustomBlockBreak extends SkriptEvent {
         if (blockNames != null) {
             aliases = Arrays.stream(blockNames)
                     .map(literal -> {
-                        if (literal instanceof Literal) {
+                        if (literal != null) {
                             Object value = literal.getSingle();
                             return Util.getCustomBlockId(value);
                         }

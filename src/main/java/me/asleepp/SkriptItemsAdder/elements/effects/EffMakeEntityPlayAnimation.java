@@ -19,7 +19,7 @@ import javax.annotation.Nullable;
 @Description({"Makes an ItemsAdder entity play an animation."})
 @Examples({
     "on right click:",
-        "\tif clicked entity is a custom entity",
+        "\tif clicked entity is an itemsadder entity",
             "\t\tmake clicked entity play itemsadder animation \"fortnite:default_dance\""})
 @Since("1.0")
 @RequiredPlugins("ItemsAdder")

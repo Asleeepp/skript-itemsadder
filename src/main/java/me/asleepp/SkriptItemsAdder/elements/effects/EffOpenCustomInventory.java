@@ -17,7 +17,7 @@ import org.bukkit.event.Event;
 import javax.annotation.Nullable;
 @Name("Open ItemsAdder Inventory")
 @Description("Opens an ItemsAdder inventory to a player(s), made using the ItemsAdder inventory section.")
-@Examples("open custom inventory {votegui} to all players")
+@Examples("open custom itemsadder inventory {votegui} to all players")
 @Since("1.5")
 @RequiredPlugins("ItemsAdder")
 public class EffOpenCustomInventory extends Effect {

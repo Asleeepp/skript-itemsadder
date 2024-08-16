@@ -1,6 +1,9 @@
 package me.asleepp.SkriptItemsAdder.elements.expressions;
 
 import ch.njol.skript.Skript;
+import ch.njol.skript.doc.Examples;
+import ch.njol.skript.doc.RequiredPlugins;
+import ch.njol.skript.doc.Since;
 import ch.njol.skript.lang.Expression;
 import ch.njol.skript.lang.ExpressionType;
 import ch.njol.skript.lang.SkriptParser;
@@ -9,6 +12,8 @@ import ch.njol.util.Kleenean;
 import dev.lone.itemsadder.api.CustomBlock;
 import dev.lone.itemsadder.api.CustomEntity;
 import dev.lone.itemsadder.api.CustomStack;
+import jdk.jfr.Description;
+import jdk.jfr.Name;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;
 import org.bukkit.event.Event;
@@ -18,12 +23,17 @@ import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 
+@Name("Get ID")
+@Description("Gets the Namespaced:ID of your blocks, furnitures, or items.")
+@Examples("send id of itemsadder item player's tool")
+@Since("1.6")
+@RequiredPlugins("ItemsAdder")
 public class ExprGetID extends SimpleExpression<String> {
 
     private Expression<?> expr;
 
     static {
-        Skript.registerExpression(ExprGetID.class, String.class, ExpressionType.SIMPLE, "id of [custom] (ia|itemsadder) %itemstacks/blocks/entities%");
+        Skript.registerExpression(ExprGetID.class, String.class, ExpressionType.SIMPLE, "id of [custom] (ia|itemsadder) [item|block|furniture] %itemstacks/blocks/entities%");
     }
 
     @Override
@@ -33,8 +43,8 @@ public class ExprGetID extends SimpleExpression<String> {
     }
 
     @Override
-    protected String[] get(Event e) {
-        Object[] objects = expr.getArray(e);
+    protected String[] get(Event event) {
+        Object[] objects = expr.getArray(event);
         List<String> ids = new ArrayList<>();
         for (Object object : objects) {
             if (object instanceof ItemStack) {

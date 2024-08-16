@@ -13,7 +13,7 @@ import ch.njol.util.Kleenean;
 import dev.lone.itemsadder.api.CustomBlock;
 import me.asleepp.SkriptItemsAdder.SkriptItemsAdder;
 import me.asleepp.SkriptItemsAdder.other.aliases.AliasesGenerator;
-import me.asleepp.SkriptItemsAdder.other.aliases.CustomItemType;
+import me.asleepp.SkriptItemsAdder.other.util.Util;
 import org.bukkit.Location;
 import org.bukkit.event.Event;
 
@@ -24,7 +24,7 @@ import java.util.stream.Collectors;
 
 @Name("Set Custom Blocks Within")
 @Description({"Sets the blocks within 2 locations to ItemsAdder custom blocks."})
-@Examples({"set all blocks within location(0, 100, 0) and player's location to custom block \"iasurvival:ruby_block\""})
+@Examples({"set all blocks within location(0, 100, 0) and player's location to itemsadder block \"iasurvival:ruby_block\""})
 @Since("1.0")
 @RequiredPlugins("ItemsAdder")
 public class EffSetBlocksBetween extends Effect {
@@ -47,12 +47,7 @@ public class EffSetBlocksBetween extends Effect {
                 .filter(expr -> expr instanceof Expression)
                 .map(expr -> {
                     Object value = ((Expression<?>) expr).getSingle(null);
-                    if (value instanceof CustomItemType) {
-                        return ((CustomItemType) value).getNamespacedID();
-                    } else if (value instanceof String) {
-                        return (String) value;
-                    }
-                    return null;
+                    return Util.getCustomBlockId(value);
                 })
                 .filter(name -> name != null)
                 .collect(Collectors.toList());
@@ -64,13 +59,7 @@ public class EffSetBlocksBetween extends Effect {
         Location location1 = location1Expr.getSingle(e);
         Location location2 = location2Expr.getSingle(e);
         Object customBlockIdObj = customBlockIdExpr.getSingle(e);
-        String customBlockId = null;
-
-        if (customBlockIdObj instanceof CustomItemType) {
-            customBlockId = ((CustomItemType) customBlockIdObj).getNamespacedID();
-        } else if (customBlockIdObj instanceof String) {
-            customBlockId = (String) customBlockIdObj;
-        }
+        String customBlockId = Util.getCustomBlockId(customBlockIdObj);
 
         if (location1 == null || location2 == null || customBlockId == null) {
             return;

@@ -26,7 +26,11 @@ public class EvtCustomEntityDeath extends SkriptEvent {
     private Literal<String> mobID;
 
     static {
-        Skript.registerEvent("Custom Entity Death", EvtCustomEntityDeath.class, CustomEntityDeathEvent.class, "[custom] (ia|itemsadder) entity death [of %string%]");
+        Skript.registerEvent("Custom Entity Death", EvtCustomEntityDeath.class, CustomEntityDeathEvent.class, "[custom] (ia|itemsadder) entity death [of %string%]")
+                .description("Fires when a ItemsAdder Entity dies.")
+                .examples("on itemsadder entity death:")
+                .since("1.0")
+                .requiredPlugins("ItemsAdder");
         EventValues.registerEventValue(CustomEntityDeathEvent.class, Entity.class, new Getter<Entity, CustomEntityDeathEvent>() {
             @Override
             public @Nullable Entity get(CustomEntityDeathEvent customEntityDeathEvent) {

@@ -2,16 +2,27 @@ package me.asleepp.SkriptItemsAdder.elements.expressions;
 
 import ch.njol.skript.Skript;
 import ch.njol.skript.classes.Changer;
+import ch.njol.skript.doc.Examples;
+import ch.njol.skript.doc.RequiredPlugins;
+import ch.njol.skript.doc.Since;
 import ch.njol.skript.lang.Expression;
 import ch.njol.skript.lang.ExpressionType;
 import ch.njol.skript.lang.SkriptParser;
 import ch.njol.skript.lang.util.SimpleExpression;
 import ch.njol.util.Kleenean;
 import dev.lone.itemsadder.api.CustomCrop;
+import jdk.jfr.Description;
+import jdk.jfr.Name;
 import org.bukkit.block.Block;
 import org.bukkit.event.Event;
 
 import javax.annotation.Nullable;
+
+@Name("Crop Age")
+@Description("Get or Set the age of a crop, or get the maximum age of one.")
+@Examples("send maximum age of custom itemsadder block {_crop}")
+@Since("1.6")
+@RequiredPlugins("ItemsAdder")
 
 public class ExprCropAge extends SimpleExpression<Number> {
 

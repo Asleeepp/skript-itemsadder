@@ -26,11 +26,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 
-@Name("On Custom Block Interact")
-@Description({"Fires when a ItemsAdder block gets interacted with."})
-@Examples({"on interact with custom block:"})
-@Since("1.0")
-@RequiredPlugins("ItemsAdder")
 public class EvtCustomBlockInteract extends SkriptEvent {
 
     private Literal<?>[] blockNames;
@@ -38,7 +33,11 @@ public class EvtCustomBlockInteract extends SkriptEvent {
     private AliasesGenerator aliasesGenerator = SkriptItemsAdder.getInstance().getAliasesGenerator();
 
     static {
-        Skript.registerEvent("Custom Block Interact", EvtCustomBlockInteract.class, CustomBlockInteractEvent.class, "interact with [custom] (ia|itemsadder) block[s] [%customitemtypes/strings%]");
+        Skript.registerEvent("Custom Block Interact", EvtCustomBlockInteract.class, CustomBlockInteractEvent.class, "interact with [custom] (ia|itemsadder) block[s] [%customitemtypes/strings%]")
+                .description("Fires when a ItemsAdder block gets interacted with.")
+                .examples("on interact with itemsadder block:")
+                .since("1.0")
+                .requiredPlugins("ItemsAdder");
         EventValues.registerEventValue(CustomBlockInteractEvent.class, CustomBlock.class, new Getter<CustomBlock, CustomBlockInteractEvent>() {
             @Override
             public CustomBlock get(CustomBlockInteractEvent event) {

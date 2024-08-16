@@ -22,11 +22,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@Name("On Custom Furniture Place")
-@Description({"Fires when a ItemsAdder furniture gets placed."})
-@Examples({"on place of custom furniture:"})
-@Since("1.0")
-@RequiredPlugins("ItemsAdder")
 public class EvtCustomFurniturePlace extends SkriptEvent {
 
     private Literal<?>[] furnitureIDs;
@@ -34,7 +29,11 @@ public class EvtCustomFurniturePlace extends SkriptEvent {
     private AliasesGenerator aliasesGenerator = SkriptItemsAdder.getInstance().getAliasesGenerator();
 
     static {
-        Skript.registerEvent("Custom Furniture Place", EvtCustomFurniturePlace.class, FurniturePlaceEvent.class, "place [of] [custom] (ia|itemsadder) furniture [%customitemtypes/strings%]");
+        Skript.registerEvent("Custom Furniture Place", EvtCustomFurniturePlace.class, FurniturePlaceEvent.class, "place [of] [custom] (ia|itemsadder) furniture [%customitemtypes/strings%]")
+                .description("Fires when a ItemsAdder furniture gets placed.")
+                .examples("on place of itemsadder furniture:")
+                .since("1.0")
+                .requiredPlugins("ItemsAdder");
     }
 
     @SuppressWarnings("unchecked")
