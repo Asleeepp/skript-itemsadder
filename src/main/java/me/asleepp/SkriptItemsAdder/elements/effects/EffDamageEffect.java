@@ -39,10 +39,6 @@ public class EffDamageEffect extends Effect {
     protected void execute(Event event) {
         Entity[] entities = entitiesExpr.getArray(event);
 
-        if (entities == null) {
-            return;
-        }
-
         for (Entity entity : entities) {
             CustomEntity customEntity = CustomEntity.byAlreadySpawned(entity);
             if (!(customEntity == null)) {

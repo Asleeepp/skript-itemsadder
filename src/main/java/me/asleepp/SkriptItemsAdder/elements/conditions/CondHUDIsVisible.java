@@ -1,6 +1,11 @@
 package me.asleepp.SkriptItemsAdder.elements.conditions;
 
 import ch.njol.skript.Skript;
+import ch.njol.skript.doc.Description;
+import ch.njol.skript.doc.Examples;
+import ch.njol.skript.doc.Name;
+import ch.njol.skript.doc.RequiredPlugins;
+import ch.njol.skript.doc.Since;
 import ch.njol.skript.lang.Condition;
 import ch.njol.skript.lang.Expression;
 import ch.njol.skript.lang.SkriptParser;
@@ -12,6 +17,11 @@ import org.bukkit.event.Event;
 
 import javax.annotation.Nullable;
 
+@Name("HUD Is Visible")
+@Description("Determines whether players can see a hud/if a hud is active.")
+@Examples("if player can see itemsadder hud \"namespaced:id\"")
+@Since("1.6")
+@RequiredPlugins("ItemsAdder")
 public class CondHUDIsVisible extends Condition {
 
     private Expression<Player> players;
@@ -33,7 +43,7 @@ public class CondHUDIsVisible extends Condition {
         Player[] p = players.getArray(event);
         String id = hudID.getSingle(event);
 
-        if (p != null && id != null) {
+        if (id != null) {
             for (Player players : p) {
                 PlayerHudsHolderWrapper hudsHolder = new PlayerHudsHolderWrapper(players);
                 PlayerHudWrapper hudWrapper = new PlayerHudWrapper(hudsHolder, id);
@@ -46,6 +56,6 @@ public class CondHUDIsVisible extends Condition {
 
     @Override
     public String toString(@Nullable Event event, boolean debug) {
-        return "player(s) " + players.toString(event, debug) + "can view itemsadder hud " + hudID.toString(event, debug);
+        return players.toString(event, debug) + "can view itemsadder hud " + hudID.toString(event, debug);
     }
 }

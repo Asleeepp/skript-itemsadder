@@ -18,7 +18,7 @@ public class CondIsFullyGrown extends Condition {
     static {
         Skript.registerCondition(CondIsFullyGrown.class,
                 "[the] [custom] (ia|itemsadder) %blocks% (is|are) full[y] grown",
-                "[the] [custom] (ia|itemsadder) %blocks% (is|are) not full[y] grown");
+                "[the] [custom] (ia|itemsadder) %blocks% (isn't|is not|aren't|are not) full[y] grown");
     }
 
     @Override

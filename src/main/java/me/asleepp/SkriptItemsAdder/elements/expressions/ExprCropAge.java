@@ -80,7 +80,7 @@ public class ExprCropAge extends SimpleExpression<Number> {
 
     @Override
     public void change(Event e, Object[] delta, Changer.ChangeMode mode) {
-        if (delta != null && delta.length != 0) {
+        if (delta.length != 0) {
             int age = ((Number) delta[0]).intValue();
             Block[] bs = block.getArray(e);
             for (Block b : bs) {

@@ -1,11 +1,6 @@
 package me.asleepp.SkriptItemsAdder.elements.events.blocks;
 
 import ch.njol.skript.Skript;
-import ch.njol.skript.doc.Description;
-import ch.njol.skript.doc.Examples;
-import ch.njol.skript.doc.Name;
-import ch.njol.skript.doc.RequiredPlugins;
-import ch.njol.skript.doc.Since;
 import ch.njol.skript.lang.Literal;
 import ch.njol.skript.lang.SkriptEvent;
 import ch.njol.skript.lang.SkriptParser;
@@ -14,9 +9,8 @@ import ch.njol.skript.util.Getter;
 import dev.lone.itemsadder.api.CustomBlock;
 import dev.lone.itemsadder.api.Events.CustomBlockBreakEvent;
 import me.asleepp.SkriptItemsAdder.SkriptItemsAdder;
-import me.asleepp.SkriptItemsAdder.other.aliases.AliasesGenerator;
-import me.asleepp.SkriptItemsAdder.other.aliases.CustomItemType;
-import me.asleepp.SkriptItemsAdder.other.util.Util;
+import me.asleepp.SkriptItemsAdder.aliases.AliasesGenerator;
+import me.asleepp.SkriptItemsAdder.util.Util;
 import org.bukkit.Location;
 import org.bukkit.event.Event;
 
@@ -24,6 +18,7 @@ import javax.annotation.Nullable;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class EvtCustomBlockBreak extends SkriptEvent {
 
@@ -60,12 +55,12 @@ public class EvtCustomBlockBreak extends SkriptEvent {
         blockNames = args;
         if (blockNames != null) {
             aliases = Arrays.stream(blockNames)
-                    .map(literal -> {
+                    .flatMap(literal -> {
                         if (literal != null) {
-                            Object value = literal.getSingle();
-                            return Util.getCustomBlockId(value);
+                            return Arrays.stream(literal.getArray())
+                                    .map(Util::getCustomBlockId);
                         }
-                        return null;
+                        return Stream.empty();
                     })
                     .filter(name -> name != null)
                     .collect(Collectors.toList());

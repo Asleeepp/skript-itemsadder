@@ -1,9 +1,9 @@
-package me.asleepp.SkriptItemsAdder.other.util;
+package me.asleepp.SkriptItemsAdder.util;
 
 import ch.njol.skript.Skript;
 import dev.lone.itemsadder.api.ItemsAdder;
 import me.asleepp.SkriptItemsAdder.SkriptItemsAdder;
-import me.asleepp.SkriptItemsAdder.other.aliases.AliasesGenerator;
+import me.asleepp.SkriptItemsAdder.aliases.AliasesGenerator;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;

@@ -13,8 +13,7 @@ import ch.njol.skript.util.Direction;
 import ch.njol.util.Kleenean;
 import dev.lone.itemsadder.api.CustomBlock;
 import dev.lone.itemsadder.api.CustomCrop;
-import me.asleepp.SkriptItemsAdder.other.aliases.CustomItemType;
-import me.asleepp.SkriptItemsAdder.other.util.Util;
+import me.asleepp.SkriptItemsAdder.util.Util;
 import org.bukkit.Location;
 import org.bukkit.event.Event;
 
@@ -79,7 +78,6 @@ public class EffPlaceBlockOrCrop extends Effect {
                 try {
                     if (isCrop) {
                         CustomCrop.place(customBlockId, location);
-                        Skript.info("Placed custom crop with ID: " + customBlockId + " at location: " + location);
                     } else {
                         CustomBlock existingBlock = CustomBlock.byAlreadyPlaced(location.getBlock());
                         if (existingBlock != null) {
@@ -88,7 +86,6 @@ public class EffPlaceBlockOrCrop extends Effect {
                         CustomBlock block = CustomBlock.getInstance(customBlockId);
                         if (block != null) {
                             block.place(location);
-                            Skript.info("Placed custom block with ID: " + customBlockId + " at location: " + location);
                         } else {
                             Skript.error("Failed to get CustomBlock instance for ID: " + customBlockId);
                         }

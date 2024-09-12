@@ -12,12 +12,13 @@ import ch.njol.skript.lang.SkriptParser;
 import ch.njol.util.Kleenean;
 import dev.lone.itemsadder.api.CustomBlock;
 import me.asleepp.SkriptItemsAdder.SkriptItemsAdder;
-import me.asleepp.SkriptItemsAdder.other.aliases.AliasesGenerator;
-import me.asleepp.SkriptItemsAdder.other.util.Util;
+import me.asleepp.SkriptItemsAdder.aliases.AliasesGenerator;
+import me.asleepp.SkriptItemsAdder.util.Util;
 import org.bukkit.Location;
 import org.bukkit.event.Event;
 
 import javax.annotation.Nullable;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -31,7 +32,6 @@ public class EffSetBlocksBetween extends Effect {
     private Expression<Location> location1Expr;
     private Expression<Location> location2Expr;
     private Expression<?> customBlockIdExpr;
-    private List<String> aliases;
     private AliasesGenerator aliasesGenerator = SkriptItemsAdder.getInstance().getAliasesGenerator();
 
     static {
@@ -43,14 +43,6 @@ public class EffSetBlocksBetween extends Effect {
         location1Expr = (Expression<Location>) exprs[0];
         location2Expr = (Expression<Location>) exprs[1];
         customBlockIdExpr = exprs[2];
-        aliases = Arrays.stream(exprs)
-                .filter(expr -> expr instanceof Expression)
-                .map(expr -> {
-                    Object value = ((Expression<?>) expr).getSingle(null);
-                    return Util.getCustomBlockId(value);
-                })
-                .filter(name -> name != null)
-                .collect(Collectors.toList());
         return true;
     }
 
@@ -60,6 +52,16 @@ public class EffSetBlocksBetween extends Effect {
         Location location2 = location2Expr.getSingle(e);
         Object customBlockIdObj = customBlockIdExpr.getSingle(e);
         String customBlockId = Util.getCustomBlockId(customBlockIdObj);
+
+        List<String> customBlockIds = new ArrayList<>();
+        if (customBlockIdExpr.isSingle()) {
+            Object itemType = customBlockIdExpr.getSingle(e);
+            customBlockIds.add(Util.getCustomBlockId(itemType));
+        } else {
+            for (Object itemType : customBlockIdExpr.getArray(e)) {
+                customBlockIds.add(Util.getCustomBlockId(itemType));
+            }
+        }
 
         if (location1 == null || location2 == null || customBlockId == null) {
             return;

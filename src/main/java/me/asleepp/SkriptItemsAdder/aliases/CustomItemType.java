@@ -1,4 +1,4 @@
-package me.asleepp.SkriptItemsAdder.other.aliases;
+package me.asleepp.SkriptItemsAdder.aliases;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -12,6 +12,8 @@ import java.util.function.Function;
 public class CustomItemType {
 
     private String namespacedID;
+
+    public CustomItemType() { }
 
     public CustomItemType(String namespacedID) {
         this.namespacedID = namespacedID;

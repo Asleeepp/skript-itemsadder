@@ -3,3 +3,33 @@ version: @version@
 types:
     texturedinventorywrapper: texturedinventorywrapper
     customitemtype: custom item type
+    action: action|s
+    blockface: block face|s
+
+actions:
+    left_click_air: left click air
+    right_click_air: right click air
+    left_click_block: left click block
+    right_click_block: right click block
+    physical: physical
+
+block faces:
+    down: down
+    east: east
+    east_north_east: east north east
+    east_south_east: east south east
+    north: north
+    north_east: north east
+    north_north_east: north north east
+    north_north_west: north north west
+    north_west: north west
+    self: self
+    south: south
+    south_east: south east
+    south_south_east: south south east
+    south_south_west: south south west
+    south_west: south west
+    up: up
+    west: west
+    west_north_west: west north west
+    west_south_west: west south west

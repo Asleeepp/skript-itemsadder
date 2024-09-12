@@ -97,7 +97,6 @@ tasks {
 
         downloadPlugins {
             url("https://download.luckperms.net/1552/bukkit/loader/LuckPerms-Bukkit-5.4.137.jar")
-            url("https://ci.lucko.me/job/spark/439/artifact/spark-bukkit/build/libs/spark-1.10.93-bukkit.jar")
             url("https://github.com/SkriptLang/Skript/releases/download/2.9.1/Skript-2.9.1.jar")
             url("https://github.com/dmulloy2/ProtocolLib/releases/download/5.2.0/ProtocolLib.jar")
             url("https://github.com/LoneDev6/SpigotUtilities/raw/master/LoneLibs.jar")

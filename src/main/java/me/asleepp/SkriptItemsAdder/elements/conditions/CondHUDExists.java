@@ -33,7 +33,7 @@ public class CondHUDExists extends Condition {
         String id = hudID.getSingle(event);
         Player[] playersArray = players != null ? players.getArray(event) : new Player[]{};
 
-        if (id != null && playersArray.length > 0) {
+        if (id != null) {
             for (Player player : playersArray) {
                 PlayerHudsHolderWrapper hudHolder = new PlayerHudsHolderWrapper(player);
                 PlayerHudWrapper hudWrapper = new PlayerHudWrapper(hudHolder, id);

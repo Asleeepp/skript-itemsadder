@@ -11,12 +11,11 @@ import ch.njol.skript.lang.Expression;
 import ch.njol.skript.lang.SkriptParser;
 import ch.njol.util.Kleenean;
 import dev.lone.itemsadder.api.CustomBlock;
-import me.asleepp.SkriptItemsAdder.other.aliases.CustomItemType;
+import me.asleepp.SkriptItemsAdder.aliases.CustomItemType;
 import org.bukkit.block.Block;
 import org.bukkit.event.Event;
 
 import javax.annotation.Nullable;
-import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -39,7 +38,7 @@ public class CondIsCustomBlock extends Condition {
     static {
         Skript.registerCondition(CondIsCustomBlock.class,
                 "%blocks% (is [a[n]]|are) [custom] (ia|itemsadder) block[s] [[with id] %-customitemtypes/strings%]",
-                "%blocks% (is[n't| not]) [a] [custom] (ia|itemsadder) block[s] [[with id] %-customitemtypes/strings%]");
+                "%blocks% (isn't|is not|aren't|are not) [a] [custom] (ia|itemsadder) block[s] [[with id] %-customitemtypes/strings%]");
     }
 
     @SuppressWarnings("unchecked")
@@ -53,7 +52,7 @@ public class CondIsCustomBlock extends Condition {
 
     @Override
     public boolean check(Event event) {
-        List<String> expectedIds = Arrays.stream(ids.getArray(event))
+        List<String> expectedIds = ids.stream(event)
                 .map(id -> {
                     if (id instanceof CustomItemType) {
                         return ((CustomItemType) id).getNamespacedID();

@@ -1,4 +1,4 @@
-package me.asleepp.SkriptItemsAdder.other.aliases;
+package me.asleepp.SkriptItemsAdder.aliases;
 
 import ch.njol.skript.Skript;
 import ch.njol.skript.aliases.Aliases;

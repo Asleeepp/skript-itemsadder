@@ -1,7 +1,7 @@
-package me.asleepp.SkriptItemsAdder.other.util;
+package me.asleepp.SkriptItemsAdder.util;
 
 import dev.lone.itemsadder.api.CustomBlock;
-import me.asleepp.SkriptItemsAdder.other.aliases.CustomItemType;
+import me.asleepp.SkriptItemsAdder.aliases.CustomItemType;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.Plugin;

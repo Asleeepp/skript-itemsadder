@@ -16,7 +16,7 @@ public class EffUpdateHUD extends Effect {
     private Expression<Player> players;
 
     static {
-        Skript.registerEffect(EffUpdateHUD.class, "(update|refresh) %players%[`s] [current] [custom] (itemsadder|ia) hud");
+        Skript.registerEffect(EffUpdateHUD.class, "(update|refresh) %players%'[s] [current] [custom] (itemsadder|ia) hud");
     }
 
     @Override

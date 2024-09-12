@@ -1,4 +1,4 @@
-package me.asleepp.SkriptItemsAdder.other.util;
+package me.asleepp.SkriptItemsAdder.util;
 
 import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;

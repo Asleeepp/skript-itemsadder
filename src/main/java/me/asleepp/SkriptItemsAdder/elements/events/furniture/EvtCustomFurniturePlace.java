@@ -1,26 +1,21 @@
 package me.asleepp.SkriptItemsAdder.elements.events.furniture;
 
 import ch.njol.skript.Skript;
-import ch.njol.skript.doc.Description;
-import ch.njol.skript.doc.Examples;
-import ch.njol.skript.doc.Name;
-import ch.njol.skript.doc.RequiredPlugins;
-import ch.njol.skript.doc.Since;
 import ch.njol.skript.lang.Literal;
 import ch.njol.skript.lang.SkriptEvent;
 import ch.njol.skript.lang.SkriptParser;
 import dev.lone.itemsadder.api.Events.FurnitureBreakEvent;
 import dev.lone.itemsadder.api.Events.FurniturePlaceEvent;
 import me.asleepp.SkriptItemsAdder.SkriptItemsAdder;
-import me.asleepp.SkriptItemsAdder.other.aliases.AliasesGenerator;
-import me.asleepp.SkriptItemsAdder.other.aliases.CustomItemType;
-import me.asleepp.SkriptItemsAdder.other.util.Util;
+import me.asleepp.SkriptItemsAdder.aliases.AliasesGenerator;
+import me.asleepp.SkriptItemsAdder.util.Util;
 import org.bukkit.event.Event;
 
 import javax.annotation.Nullable;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class EvtCustomFurniturePlace extends SkriptEvent {
 
@@ -42,12 +37,12 @@ public class EvtCustomFurniturePlace extends SkriptEvent {
         furnitureIDs = args;
         if (furnitureIDs != null) {
             aliases = Arrays.stream(furnitureIDs)
-                    .map(literal -> {
+                    .flatMap(literal -> {
                         if (literal != null) {
-                            Object value = literal.getSingle();
-                            return Util.getCustomBlockId(value);
+                            return Arrays.stream(literal.getArray())
+                                    .map(Util::getCustomBlockId);
                         }
-                        return null;
+                        return Stream.empty();
                     })
                     .filter(name -> name != null)
                     .collect(Collectors.toList());

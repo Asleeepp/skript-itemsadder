@@ -1,11 +1,6 @@
 package me.asleepp.SkriptItemsAdder.elements.events.blocks;
 
 import ch.njol.skript.Skript;
-import ch.njol.skript.doc.Description;
-import ch.njol.skript.doc.Examples;
-import ch.njol.skript.doc.Name;
-import ch.njol.skript.doc.RequiredPlugins;
-import ch.njol.skript.doc.Since;
 import ch.njol.skript.lang.Literal;
 import ch.njol.skript.lang.SkriptEvent;
 import ch.njol.skript.lang.SkriptParser;
@@ -14,16 +9,18 @@ import ch.njol.skript.util.Getter;
 import dev.lone.itemsadder.api.CustomBlock;
 import dev.lone.itemsadder.api.Events.CustomBlockInteractEvent;
 import me.asleepp.SkriptItemsAdder.SkriptItemsAdder;
-import me.asleepp.SkriptItemsAdder.other.aliases.AliasesGenerator;
-import me.asleepp.SkriptItemsAdder.other.aliases.CustomItemType;
-import me.asleepp.SkriptItemsAdder.other.util.Util;
+import me.asleepp.SkriptItemsAdder.aliases.AliasesGenerator;
+import me.asleepp.SkriptItemsAdder.util.Util;
 import org.bukkit.Location;
+import org.bukkit.block.BlockFace;
 import org.bukkit.event.Event;
+import org.bukkit.event.block.Action;
 
 import javax.annotation.Nullable;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 
 public class EvtCustomBlockInteract extends SkriptEvent {
@@ -43,13 +40,25 @@ public class EvtCustomBlockInteract extends SkriptEvent {
             public CustomBlock get(CustomBlockInteractEvent event) {
                 return CustomBlock.byAlreadyPlaced(event.getBlockClicked());
             }
-        }, 0);
+        }, EventValues.TIME_NOW);
         EventValues.registerEventValue(CustomBlockInteractEvent.class, Location.class, new Getter<Location, CustomBlockInteractEvent>() {
             @Override
             public Location get(CustomBlockInteractEvent event) {
                 return event.getBlockClicked().getLocation();
             }
-        }, 0);
+        }, EventValues.TIME_NOW);
+        EventValues.registerEventValue(CustomBlockInteractEvent.class, Action.class, new Getter<Action, CustomBlockInteractEvent>() {
+            @Override
+            public Action get(CustomBlockInteractEvent customBlockInteractEvent) {
+                return customBlockInteractEvent.getAction();
+            }
+        }, EventValues.TIME_NOW);
+        EventValues.registerEventValue(CustomBlockInteractEvent.class, BlockFace.class, new Getter<BlockFace, CustomBlockInteractEvent>() {
+            @Override
+            public BlockFace get(CustomBlockInteractEvent customBlockInteractEvent) {
+                return customBlockInteractEvent.getBlockFace();
+            }
+        }, EventValues.TIME_NOW);
     }
 
     @SuppressWarnings("unchecked")
@@ -58,12 +67,12 @@ public class EvtCustomBlockInteract extends SkriptEvent {
         blockNames = args;
         if (blockNames != null) {
             aliases = Arrays.stream(blockNames)
-                    .map(literal -> {
-                        if (literal instanceof Literal) {
-                            Object value = literal.getSingle();
-                            return Util.getCustomBlockId(value);
+                    .flatMap(literal -> {
+                        if (literal != null) {
+                            return Arrays.stream(literal.getArray())
+                                    .map(Util::getCustomBlockId);
                         }
-                        return null;
+                        return Stream.empty();
                     })
                     .filter(name -> name != null)
                     .collect(Collectors.toList());

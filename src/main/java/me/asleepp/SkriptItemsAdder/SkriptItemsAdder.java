@@ -4,20 +4,18 @@ import java.io.IOException;
 
 import ch.njol.skript.util.Version;
 import lombok.Getter;
-import lombok.Setter;
-import me.asleepp.SkriptItemsAdder.other.aliases.AliasesGenerator;
-import me.asleepp.SkriptItemsAdder.other.listeners.ItemsAdderEventListener;
-import me.asleepp.SkriptItemsAdder.other.util.Metrics;
-import me.asleepp.SkriptItemsAdder.other.util.SkriptItemsAdderCommand;
-import me.asleepp.SkriptItemsAdder.other.util.UpdateChecker;
-import me.asleepp.SkriptItemsAdder.other.util.Util;
+import me.asleepp.SkriptItemsAdder.aliases.AliasesGenerator;
+import me.asleepp.SkriptItemsAdder.listeners.ItemsAdderEventListener;
+import me.asleepp.SkriptItemsAdder.util.Metrics;
+import me.asleepp.SkriptItemsAdder.util.SkriptItemsAdderCommand;
+import me.asleepp.SkriptItemsAdder.util.UpdateChecker;
+import me.asleepp.SkriptItemsAdder.util.Util;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import ch.njol.skript.Skript;
 import ch.njol.skript.SkriptAddon;
-import org.bukkit.scheduler.BukkitRunnable;
 
 import javax.annotation.Nullable;
 
@@ -49,7 +47,7 @@ public class SkriptItemsAdder extends JavaPlugin {
             getLogger().severe("Could not find Skript! Disabling...");
             manager.disablePlugin(this);
             return;
-        } else if (Skript.getVersion().compareTo(new Version(2, 7, 0)) < 0) {
+        } else if (Skript.getVersion().isSmallerThan(new Version(2, 7, 0))) {
             getLogger().severe("You are running an unsupported version of Skript. Disabling...");
             manager.disablePlugin(this);
             return;

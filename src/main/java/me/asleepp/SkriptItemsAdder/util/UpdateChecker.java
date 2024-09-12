@@ -1,9 +1,8 @@
-package me.asleepp.SkriptItemsAdder.other.util;
+package me.asleepp.SkriptItemsAdder.util;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import me.asleepp.SkriptItemsAdder.SkriptItemsAdder;
-import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -36,9 +35,9 @@ public class UpdateChecker implements Listener {
         if (player.hasPermission("skript-itemsadder.update.check") && latestVersion != null) {
             if (!currentVersion.equals(latestVersion)) {
                 player.sendMessage(" ");
-                player.sendMessage(MiniMessage.miniMessage().deserialize("<dark_red>[<red>skript-itemsadder<dark_red>] <white>skript-itemsadder is <red><bold>OUTDATED</bold><white>!"));
-                player.sendMessage(MiniMessage.miniMessage().deserialize("<dark_red>[<red>skript-itemsadder<dark_red>] <white>New version: <gold>" + latestVersion));
-                player.sendMessage(MiniMessage.miniMessage().deserialize("<dark_red>[<red>skript-itemsadder<dark_red>] <white>Download <gold><click:open_url:https://github.com/Asleeepp/skript-itemsadder/releases><hover:show_text:'<red>Click here to get the latest version!'>here<white>!</click>"));
+                player.sendRichMessage("<dark_red>[<red>skript-itemsadder<dark_red>] <white>skript-itemsadder is <red><bold>OUTDATED</bold><white>!");
+                player.sendRichMessage("<dark_red>[<red>skript-itemsadder<dark_red>] <white>New version: <gold>" + latestVersion);
+                player.sendRichMessage("<dark_red>[<red>skript-itemsadder<dark_red>] <white>Download <gold><click:open_url:https://github.com/Asleeepp/skript-itemsadder/releases><hover:show_text:'<red>Click here to get the latest version!'>here<white>!</click>");
                 player.sendMessage(" ");
             }
         }

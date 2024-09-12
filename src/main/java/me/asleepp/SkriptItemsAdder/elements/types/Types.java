@@ -1,6 +1,7 @@
 package me.asleepp.SkriptItemsAdder.elements.types;
 
 import ch.njol.skript.classes.ClassInfo;
+import ch.njol.skript.classes.EnumClassInfo;
 import ch.njol.skript.classes.Parser;
 import ch.njol.skript.classes.Serializer;
 import ch.njol.skript.lang.ParseContext;
@@ -8,11 +9,14 @@ import ch.njol.skript.registrations.Classes;
 import ch.njol.yggdrasil.Fields;
 import dev.lone.itemsadder.api.FontImages.TexturedInventoryWrapper;
 import me.asleepp.SkriptItemsAdder.SkriptItemsAdder;
-import me.asleepp.SkriptItemsAdder.other.aliases.AliasesGenerator;
-import me.asleepp.SkriptItemsAdder.other.aliases.CustomItemType;
+import me.asleepp.SkriptItemsAdder.aliases.AliasesGenerator;
+import me.asleepp.SkriptItemsAdder.aliases.CustomItemType;
+import org.bukkit.block.BlockFace;
+import org.bukkit.event.block.Action;
 import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nullable;
+import java.io.StreamCorruptedException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -26,19 +30,35 @@ public class Types {
                 .name("Custom Item Type")
                 .description("Represents a custom item type using aliases.")
                 .serializer(new Serializer<CustomItemType>() {
+                    private static final String FIELD_NAME = "namespacedID";
+
                     @Override
                     public @NotNull Fields serialize(CustomItemType customItemType) {
                         Fields fields = new Fields();
-                        fields.putObject("namespacedID", customItemType.getNamespacedID());
+                        fields.putObject(FIELD_NAME, customItemType.getNamespacedID());
                         return fields;
                     }
 
                     @Override
                     public void deserialize(CustomItemType customItemType, @NotNull Fields fields) {
                         try {
-                            customItemType.setNamespacedID((String) fields.getObject("namespacedID"));
-                        } catch (java.io.StreamCorruptedException e) {
+                            String namespacedID = (String) fields.getObject(FIELD_NAME);
+                            if (namespacedID != null) {
+                                customItemType.setNamespacedID(namespacedID);
+                            }
+                        } catch (StreamCorruptedException e) {
                             e.printStackTrace();
+                        }
+                    }
+
+                    @Override
+                    public @Nullable CustomItemType deserialize(@NotNull Fields fields) {
+                        try {
+                            String namespacedID = (String) fields.getObject(FIELD_NAME);
+                            return namespacedID != null ? new CustomItemType(namespacedID) : null;
+                        } catch (StreamCorruptedException e) {
+                            e.printStackTrace();
+                            return null;
                         }
                     }
 
@@ -108,5 +128,19 @@ public class Types {
                         return ".+";
                     }
                 }));
+        if (Classes.getExactClassInfo(Action.class) == null) {
+            Classes.registerClass(new EnumClassInfo<>(Action.class, "action", "actions")
+                    .user("actions?")
+                    .name("Action")
+                    .description("The action taken in an event.")
+                    .since("1.6"));
+        }
+        if (Classes.getExactClassInfo(BlockFace.class) == null) {
+            Classes.registerClass(new EnumClassInfo<>(BlockFace.class, "blockface", "block faces")
+                    .user("block ?faces?")
+                    .name("Block faces")
+                    .description("The block face clicked in an event.")
+                    .since("1.6"));
+        }
     }
 }
