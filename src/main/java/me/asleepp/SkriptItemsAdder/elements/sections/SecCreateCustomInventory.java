@@ -37,7 +37,7 @@ import java.util.UUID;
         "To create an Inventory, you need a Texture, everything else is optional. See Examples for a demonstration."
 })
 @Examples({
-    "create a new custom inventory:",
+    "create a new custom itemsadder inventory:",
         "\ttitle: \"Shop\"",
         "\trows: 5",
         "\ttexture: \"inventory:shop\" and \"inventory:shop_extras\"",
@@ -65,7 +65,7 @@ public class SecCreateCustomInventory extends Section {
             .build();
 
     static {
-        Skript.registerSection(SecCreateCustomInventory.class, "create [a] [new] (custom|ia|itemsadder) [chest] inventory");
+        Skript.registerSection(SecCreateCustomInventory.class, "create [a] [new] [custom] (ia|itemsadder) [chest] inventory");
     }
 
     @Override

@@ -19,8 +19,8 @@ import javax.annotation.Nullable;
 @Description({"Makes an ItemsAdder entity play an animation."})
 @Examples({
     "on right click:",
-        "\tif clicked entity is a custom entity",
-            "\t\tmake clicked entity play animation \"fortnite:default_dance\""})
+        "\tif clicked entity is an itemsadder entity",
+            "\t\tmake clicked entity play itemsadder animation \"fortnite:default_dance\""})
 @Since("1.0")
 @RequiredPlugins("ItemsAdder")
 public class EffMakeEntityPlayAnimation extends Effect {
@@ -30,7 +30,7 @@ public class EffMakeEntityPlayAnimation extends Effect {
 
 
     static {
-        Skript.registerEffect(EffMakeEntityPlayAnimation.class, new String[] {"(make|force) %entities% [to] play (anim|animation) %string%"});
+        Skript.registerEffect(EffMakeEntityPlayAnimation.class, "(make|force) %entities% [to] play [custom] (ia|itemsadder) (anim[ation]) %string%");
     }
 
     @Override

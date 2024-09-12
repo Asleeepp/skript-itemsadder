@@ -19,9 +19,9 @@ import javax.annotation.Nullable;
 @Description({"Checks if the entity is an ItemsAdder entity."})
 @Examples({
     "on damage:",
-        "\tif event-entity is a custom entity:",
+        "\tif event-entity is an itemsadder entity:",
             "\t\tsend \"how could you?\" to player",
-        "\tif event-entity is not a custom entity:",
+        "\telse if event-entity is not an itemsadder entity:",
             "\t\t send \"Incredible!\" to player "})
 @Since("1.0, 1.5 (Negative Comparison)")
 @RequiredPlugins("ItemsAdder")
@@ -31,7 +31,7 @@ public class CondIsCustomEntity extends Condition {
     private Expression<String> entityId;
 
     static {
-        Skript.registerCondition(CondIsCustomEntity.class, new String[] {"%entities% (is [a[n]]|are) (custom|ia|itemsadder) entit(y|ies) [[with id] %-string%]", "%entities% (is[n't| not]) [a] (custom|ia|itemsadder) entit(y|ies) [[with id] %-string%]"});
+        Skript.registerCondition(CondIsCustomEntity.class, "%entities% (is [a[n]]|are) [custom] (ia|itemsadder) entit(y|ies) [[with id] %-string%]", "%entities% (is[n't| not]) [a] [custom] (ia|itemsadder) entit(y|ies) [[with id] %-string%]");
     }
 
     @SuppressWarnings("unchecked")

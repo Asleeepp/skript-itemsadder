@@ -27,7 +27,7 @@ public class EffPlayBreakEffect extends Effect {
     private Expression<Block> blocks;
 
     static {
-        Skript.registerEffect(EffPlayBreakEffect.class, "(show|play) break[ing] effect on [custom|ia|itemsadder] %blocks%");
+        Skript.registerEffect(EffPlayBreakEffect.class, "(show|play) break[ing] effect on [custom] (ia|itemsadder) %blocks%");
     }
 
     @SuppressWarnings("unchecked")

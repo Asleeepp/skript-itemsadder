@@ -1,0 +1,2 @@
+# Enable or disable the Update Checker.
+check-for-updates: true
