@@ -17,7 +17,7 @@ import org.bukkit.event.Event;
 import javax.annotation.Nullable;
 @Name("Get URL of Resource Pack")
 @Description({"Gets the URL of a resource pack."})
-@Examples({"set {_t} to resource pack url"})
+@Examples("set {_t} to resource pack url")
 @Since("1.0")
 @RequiredPlugins("ItemsAdder")
 public class ExprGetURL extends SimpleExpression<String> {

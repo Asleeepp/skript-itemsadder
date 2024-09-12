@@ -27,7 +27,10 @@ import java.util.List;
 @Description({"Gets an ItemsAdder item, or items."})
 @Examples({
         "give player itemsadder item \"_iainternal:icon_arrow_chest\"",
-        "give player itemsadder items \"_iainternal:icon_back_orange\" and \"_iainternal:icon_cancel\""})
+        "give player itemsadder items \"_iainternal:icon_back_orange\" and \"_iainternal:icon_cancel\"",
+        "send all itemsadder items to player",
+        "set {_paperItems::*} to all itemsadder items that uses material paper"
+})
 @Since("1.0, 1.5 (multiple items)")
 @RequiredPlugins("ItemsAdder")
 public class ExprGetCustomItem extends SimpleExpression<ItemType> {

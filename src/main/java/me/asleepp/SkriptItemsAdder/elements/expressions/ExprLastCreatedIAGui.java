@@ -17,7 +17,7 @@ import org.bukkit.event.Event;
 
 import javax.annotation.Nullable;
 @Name("Last Created ItemsAdder Gui")
-@Description("Get's the last created ItemsAdder inventory by the Create ItemsAdder Inventory section.")
+@Description("Gets the last created ItemsAdder inventory by the Create ItemsAdder Inventory section.")
 @Examples({
     "create a new custom itemsadder inventory:",
         "\ttitle: \"Auction House\"",

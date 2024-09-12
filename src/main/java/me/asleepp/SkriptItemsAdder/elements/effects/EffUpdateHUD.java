@@ -1,6 +1,11 @@
 package me.asleepp.SkriptItemsAdder.elements.effects;
 
 import ch.njol.skript.Skript;
+import ch.njol.skript.doc.Description;
+import ch.njol.skript.doc.Examples;
+import ch.njol.skript.doc.Name;
+import ch.njol.skript.doc.RequiredPlugins;
+import ch.njol.skript.doc.Since;
 import ch.njol.skript.lang.Effect;
 import ch.njol.skript.lang.Expression;
 import ch.njol.skript.lang.SkriptParser;
@@ -11,6 +16,11 @@ import org.bukkit.event.Event;
 
 import javax.annotation.Nullable;
 
+@Name("Update HUD")
+@Description("Update the player's currently enabled HUD.")
+@Examples("update player's current itemsadder hud")
+@Since("1.6")
+@RequiredPlugins("ItemsAdder")
 public class EffUpdateHUD extends Effect {
 
     private Expression<Player> players;

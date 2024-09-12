@@ -21,7 +21,10 @@ import java.util.List;
 
 @Name("Get ItemsAdder Font Image")
 @Description({"Gets ItemsAdder font image(s) with optional offset"})
-@Examples({"set {_t::*} to font images \"emojis:laughing_emoji\" and \"emojis:crying_emoji\" with x offset 2"})
+@Examples({
+        "send font image \"emojis:crying_emoji\"",
+        "set {_t::*} to font images \"emojis:laughing_emoji\" and \"emojis:crying_emoji\" with x offset 2"
+})
 @Since("1.0, 1.5 (Multiple Images), 1.6 (With Offset)")
 @RequiredPlugins("ItemsAdder")
 public class ExprGetFontImage extends SimpleExpression<String> {
