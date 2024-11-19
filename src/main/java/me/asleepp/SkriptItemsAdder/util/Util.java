@@ -48,12 +48,17 @@ public class Util {
     }
 
     public static String getCustomBlockId(Object itemType) {
-        if (itemType instanceof CustomItemType) {
-            return ((CustomItemType) itemType).getNamespacedID();
-        } else if (itemType instanceof String) {
-            return CustomBlock.getInstance((String) itemType) != null ? (String) itemType : null;
+        if (itemType == null) {
+            return null;
+        }
+        if (itemType instanceof CustomItemType customItemType) {
+            return customItemType.getNamespacedID();
+        } else if (itemType instanceof String stringItemType) {
+            CustomBlock customBlock = CustomBlock.getInstance(stringItemType);
+            return customBlock != null ? stringItemType : null;
         }
         return null;
     }
+
 
 }
