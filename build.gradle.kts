@@ -22,7 +22,7 @@ java {
 
 description = "A skript addon that aims to bring more to linking ItemsAdder and Skript"
 group = "me.asleepp"
-version = "1.6"
+version = "1.6.1"
 
 dependencies {
     compileOnly(libs.paper.api)
